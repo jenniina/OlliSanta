@@ -1,0 +1,45 @@
+.submit-wrap {
+  flex: 1 1 100%;
+  align-self: stretch;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+}
+.submit {
+  flex: 1 1 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+}
+.submit:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.file-preview-wrap {
+  flex: 1 0 auto;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.5em;
+  margin: 0 auto 2em;
+  width: 100%;
+}
+.file-preview {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5em;
+  min-width: 100%;
+  max-width: 100%;
+  border-bottom: 1px dashed gray;
+  padding-bottom: 0.4em;
+}
+.file-preview-wrap .file-preview button {
+  margin-left: auto;
+}

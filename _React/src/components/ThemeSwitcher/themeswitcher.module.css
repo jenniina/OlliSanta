@@ -1,0 +1,32 @@
+.theme-btn {
+  overflow: hidden;
+  position: relative;
+  height: 1.3em;
+  transition-duration: 0.5s;
+}
+.theme-btn .theme-svg-wrap:first-child {
+  position: relative;
+  top: 0.15em;
+  left: 0.05em;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4em;
+  transform: translateY(-1.4em) scale(0.9);
+  transition-duration: 0.8s;
+  color: var(--color-2);
+}
+.theme-btn:hover .theme-svg-wrap:first-child,
+.theme-btn:focus-visible .theme-svg-wrap:first-child {
+  transform: translateY(-0.1em) scale(0.9);
+  color: var(--color-2);
+}
+.dark.theme-btn .theme-svg-wrap:first-child {
+  transform: translateY(-0.1em) scale(0.9);
+  color: var(--color-2);
+}
+.dark.theme-btn:hover .theme-svg-wrap:first-child,
+.dark.theme-btn:focus-visible .theme-svg-wrap:first-child {
+  transform: translateY(-1.4em) scale(0.9);
+}

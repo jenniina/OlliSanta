@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "outDir": "./olli",
+        "rootDir": "./",
+        "strict": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": [
+        "src/**/*",
+        "app.ts",
+    ],
+    "exclude": [
+        "node_modules",
+        ".vscode",
+        "_React",
+        "build",
+        "olli"
+    ]
+}

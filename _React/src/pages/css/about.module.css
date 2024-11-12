@@ -1,0 +1,122 @@
+.intro-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.5em 2.5em;
+}
+.intro-wrap .olli,
+.intro-wrap .intro-text {
+  border: 1px solid var(--color-7);
+  border-radius: 0.5em;
+  box-shadow: 1em 0.5em 3em -2.8em var(--color-1);
+}
+.intro-wrap .olli {
+  border-color: var(--color-6);
+  box-shadow: 1em 0.5em 2em -1.8em var(--color-1);
+}
+.dark .intro-wrap .olli,
+.dark .intro-wrap .intro-text {
+  box-shadow: 1em 0.5em 3em -1.5em black;
+}
+.dark .intro-wrap .olli {
+  box-shadow: 1em 0.5em 3em -1em black;
+  border-color: var(--color-7);
+}
+.tra .intro-wrap .olli {
+  transition-property: opacity, transform, border-radius;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.intro-wrap .olli {
+  opacity: 1;
+  flex: 0 0 auto;
+  height: clamp(100px, 80vw, 250px);
+  border-radius: 60% 110% 60% 110%;
+  cursor: pointer;
+}
+.intro-wrap .olli:hover {
+  transform: scale(1.03);
+  border-radius: 80% 100% 80% 100%;
+}
+.intro-wrap .olli2 {
+  border-radius: 30% 70% 50% 55% / 30% 50% 50% 70%;
+}
+.intro-wrap .olli2:hover {
+  transform: scale(1.03);
+  border-radius: 70% 100% 80% 100%;
+}
+.intro-wrap .olli.hidden {
+  opacity: 0;
+}
+.intro-wrap .intro-text {
+  flex: 0 1 100%;
+  max-width: 90%;
+  padding: 1em 1.6em 0.8em;
+}
+.video-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1em 2em;
+}
+.video {
+  flex: 1 1 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 0;
+  max-width: 500px;
+}
+.video-wrap .video iframe {
+  border: 0;
+  outline: none;
+}
+
+.heading3 {
+  margin: 1.5em 0 1em;
+  padding: 0;
+}
+.video-wrap h4 {
+  font-size: clamp(var(--title-S), 2vw, var(--title-M));
+  min-height: 3.6em;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: left;
+  margin: 0 0 0.4rem 0;
+}
+.video-wrap p {
+  text-align: left;
+  margin-top: 0.4em;
+}
+
+@media (min-width: 300px) {
+  .intro-wrap .intro-text {
+    max-width: 400px;
+  }
+  .video-wrap h4 {
+    min-height: 2.4em;
+  }
+}
+@media (min-width: 600px) {
+  .intro-wrap .olli {
+    flex: 0 0 auto;
+    height: clamp(100px, 25vw, 250px);
+  }
+  .intro-wrap .intro-text {
+    flex: 0 1 50%;
+    max-width: 50%;
+  }
+  .video {
+    flex: 1 1 calc(50% - 2em);
+  }
+}
+@media (min-width: 1000px) {
+  .video {
+    flex: 1 1 calc(33% - 4em);
+  }
+}

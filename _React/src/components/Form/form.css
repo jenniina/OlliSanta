@@ -1,0 +1,500 @@
+.select-container .container {
+  background: linear-gradient(4deg, var(--color-7) 0%, var(--color-8) 100%);
+}
+.input-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+.input-container .input-wrap {
+  flex: 1 1 100%;
+  max-width: calc(100vw - var(--scrollbar-width) - calc(var(--page-padding) * 2));
+}
+
+fieldset {
+  width: 100%;
+  max-width: calc(100vw - var(--scrollbar-width) - calc(var(--page-padding) * 2));
+  display: flex;
+  padding: 0 0 1.3em;
+  border: 0;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 0.8em;
+  margin-left: 0;
+  margin-right: 0;
+}
+fieldset > * {
+  flex: 1 1 100%;
+}
+#root fieldset * {
+  max-width: calc(100vw - var(--scrollbar-width) - calc(var(--page-padding) * 2));
+  margin-left: 0;
+  margin-right: 0;
+}
+fieldset .full {
+  flex-basis: 100%;
+}
+fieldset .left {
+  text-align: left;
+}
+form {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.5em;
+}
+form .half,
+form .third {
+  flex-basis: 100%;
+}
+form .nowrap {
+  white-space: nowrap;
+}
+form > * {
+  width: 100%;
+}
+
+fieldset:not(:last-of-type) {
+  border-bottom: 1px dashed var(--color-gray-6);
+}
+legend {
+  font-size: clamp(var(--title-M), 5vw, var(--title-L));
+  letter-spacing: var(--letter-spacing);
+  margin: 0;
+  text-align: left;
+  padding-top: 1.5em;
+  font-family: var(--title-family);
+}
+legend > p {
+  font-size: clamp(calc(1rem * var(--responsive_scale)), 1.5vw, var(--title-XS));
+  font-family: var(--text-family);
+  letter-spacing: 0;
+  padding-top: 0;
+}
+@media (min-width: 300px) {
+  form .half {
+    flex-basis: 47%;
+    max-width: initial;
+  }
+  form .third {
+    flex-basis: 27%;
+    max-width: initial;
+  }
+}
+@media (min-width: 500px) {
+  .input-container .input-wrap {
+    flex: 1 1 46%;
+  }
+}
+@media (min-width: 600px) {
+  fieldset {
+    gap: 1rem 0.5rem;
+    justify-content: flex-start;
+  }
+  legend {
+    padding-top: 0;
+  }
+}
+
+@media (min-width: 800px) {
+  .input-container .input-wrap {
+    flex: 1 1 28%;
+  }
+}
+
+input[type='text' i],
+input[type='number' i],
+input[type='email' i],
+input[type='password' i],
+textarea {
+  width: 100%;
+  line-height: 2;
+  font-size: calc(1rem * var(--responsive_scale));
+  padding-left: 0.5em;
+  color: var(--color-0);
+  background-color: var(--color-9);
+  border-radius: var(--corner-small);
+  font-family: inherit;
+  /*also change border properties in select.module.css to match*/
+  border-color: var(--color-4);
+  border-top-color: var(--color-3);
+  border-bottom-color: var(--color-7);
+  border-style: solid;
+  border-width: 0.09em 0.05em 0.1em 0.05em;
+
+  background-color: transparent;
+  border: none;
+}
+textarea,
+    input.bg /*give className of 'bg' to any inputs that need a background */ {
+  background-color: var(--color-9);
+  background: linear-gradient(4deg, var(--color-7) 0%, var(--color-8) 100%);
+  border-bottom: solid 0.1em var(--color-7);
+}
+.textarea-wrap {
+  width: 100%;
+  flex: 1 1 100%;
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5em;
+}
+.textarea-wrap > span {
+  padding-left: 0.4em;
+  font-size: calc(1rem * var(--responsive_scale));
+}
+.file-wrap {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  background: linear-gradient(4deg, var(--color-8) 0%, var(--color-9) 100%);
+  border: 0;
+  border-radius: var(--corner-small);
+  padding: 0.5em;
+  color: var(--color-0);
+  font-size: calc(1rem * var(--responsive_scale));
+}
+.file-wrap label {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5em;
+}
+.file-wrap span {
+  order: 1;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.3em;
+  text-align: left;
+}
+.file-wrap input[type='file' i] {
+  order: 2;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5em;
+}
+.file-wrap input[type='file' i]:focus {
+  outline-offset: 3px;
+}
+.tra .file-wrap input[type='file' i]::-webkit-file-upload-button {
+  transition-property: background-color, color, outline-offset, transform;
+  transition-timing-function: ease-in-out;
+  transition-duration: 300ms;
+}
+.file-wrap input[type='file' i]::-webkit-file-upload-button {
+  margin-right: 0.5em;
+  overflow: visible;
+  cursor: pointer;
+  background-color: var(--color-7);
+  outline: solid 0.1em var(--color-9);
+  outline-offset: -0.35em;
+  border: 0;
+  border-radius: var(--corner-small);
+  padding: 0.5em;
+  color: var(--color-0);
+  font-size: calc(1rem * var(--responsive_scale));
+}
+.file-wrap input[type='file' i]::-webkit-file-upload-button:hover,
+.file-wrap input[type='file' i]::-webkit-file-upload-button:focus {
+  background-color: var(--color-6);
+  outline-color: var(--color-4);
+  color: var(--color-0);
+  -webkit-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  -o-transform: scale(1.05);
+  -moz-transform: scale(1.05);
+  transform: scale(1.05);
+  outline-offset: -0.3em;
+  border: 0;
+}
+.file-wrap input[type='file' i]::-webkit-file-upload-button:active {
+  background-color: var(--color-6);
+  color: var(--color-0);
+}
+.file-wrap input[type='file' i]::-webkit-file-upload-button:focus {
+  outline: none;
+}
+.file-wrap input[type='file' i]::-webkit-file-upload-button::-moz-focus-inner {
+  border: 0;
+}
+
+.input-wrap {
+  margin-top: 2.5em;
+  margin-bottom: 0.5rem;
+}
+.input-wrap {
+  position: relative;
+  flex: 1 1 46%;
+}
+.tra .input-wrap::before,
+.tra .input-wrap.not-required::before,
+.tra .input-wrap.not-required.not-filled::before {
+  transition-property: transform;
+  transition-timing-function: ease-in-out;
+  transition-duration: 300ms;
+}
+.input-wrap::before,
+.input-wrap.not-required::before,
+.input-wrap.not-required.not-filled::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2em;
+  -webkit-transform: scaleY(0.08);
+  -ms-transform: scaleY(0.08);
+  -o-transform: scaleY(0.08);
+  -moz-transform: scaleY(0.08);
+  transform: scaleY(0.08);
+  -webkit-transform-origin: bottom;
+  -ms-transform-origin: bottom;
+  -o-transform-origin: bottom;
+  -moz-transform-origin: bottom;
+  transform-origin: bottom;
+  background-color: var(--color-9);
+  background: linear-gradient(4deg, var(--color-7) 0%, var(--color-8) 100%);
+  pointer-events: none;
+  border-radius: var(--corner-small);
+  border-bottom: solid 0.1em var(--color-7);
+}
+
+#root input:-internal-autofill-selected {
+  appearance: none !important;
+  background-color: var(--color-5) !important;
+  color: var(--color-9) !important;
+}
+
+#root input:-webkit-autofill,
+#root input:-webkit-autofill:focus {
+  color: var(--color-9) !important;
+  -webkit-box-shadow: inset 0 0 0px 1000px var(--color-5);
+  box-shadow: inset 0 0 0px 1000px var(--color-5);
+  -webkit-text-fill-color: var(--color-9) !important;
+}
+#root input:-webkit-autofill,
+#root input:-webkit-autofill:focus {
+  /*transition: background-color 600000s 0s, color 600000s 0s;*/
+}
+#root input:is(:-webkit-autofill, :autofill) {
+  background-color: var(--color-5) !important;
+  color: var(--color-9) !important;
+  -webkit-box-shadow: inset 0 0 0px 1000px var(--color-5);
+  -moz-box-shadow: inset 0 0 0px 1000px var(--color-5);
+  -o-box-shadow: inset 0 0 0px 1000px var(--color-5);
+  -ms-box-shadow: inset 0 0 0px 1000px var(--color-5);
+  box-shadow: inset 0 0 0px 1000px var(--color-5);
+}
+#root .input-wrap:has(input:-webkit-autofill, input:autofill)::before,
+.input-wrap:has(input:focus)::before,
+.input-wrap:has(input:valid)::before,
+.input-wrap.not-required:has(input:focus)::before,
+.input-wrap.not-required.filled::before {
+  -webkit-transform: scaleY(1);
+  -ms-transform: scaleY(1);
+  -o-transform: scaleY(1);
+  -moz-transform: scaleY(1);
+  transform: scaleY(1);
+}
+.input-wrap label {
+  position: relative;
+  min-width: 100%;
+  line-height: 2;
+  max-height: 2em;
+}
+.tra .input-wrap label span,
+.tra .input-wrap.not-required input:valid ~ span {
+  transition-property: transform;
+  transition-timing-function: ease-in-out;
+  transition-duration: 300ms;
+}
+.input-wrap label span,
+.input-wrap.not-required input:valid ~ span {
+  position: absolute;
+  display: inline-block;
+  top: -0.4em;
+  left: 0.6em;
+  /* min-width: max-content; */
+  width: 100%;
+  word-wrap: break-word;
+  cursor: text;
+  font-size: calc(1rem * var(--responsive_scale));
+}
+.input-wrap input:focus-visible {
+  outline: none;
+}
+
+.input-wrap.not-required:not(.filled) input[type='text' i] {
+  color: transparent !important;
+}
+.input-wrap.not-required input:focus {
+  color: inherit !important;
+}
+#root .input-wrap.not-required label:has(:-internal-autofill-selected) {
+  transition-property: color;
+  transition-timing-function: ease-in-out;
+  transition-duration: 300ms;
+}
+#root .input-wrap.not-required label:has(:-internal-autofill-selected) {
+  color: transparent;
+}
+.input-wrap.not-required label:focus-within {
+  color: inherit;
+}
+#root .input-wrap input:is(:-webkit-autofill, :autofill) ~ span,
+.input-wrap input:focus ~ span,
+.input-wrap:not(.not-required) input:valid ~ span,
+.input-wrap.not-required input:focus ~ span,
+.input-wrap.not-required.filled input ~ span,
+.input-wrap.placeholder input ~ span {
+  -webkit-transform: translateY(-2em);
+  -ms-transform: translateY(-2em);
+  -o-transform: translateY(-2em);
+  -moz-transform: translateY(-2em);
+  transform: translateY(-2em);
+}
+textarea {
+  resize: vertical;
+  min-height: 3.6em;
+  line-height: 1.45;
+  padding-right: 0.25em;
+}
+textarea::-webkit-scrollbar {
+  width: 1em;
+}
+textarea::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 0.3em hsla(var(--hue1), 80%, 40%, 0.6);
+  cursor: pointer;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: hsla(var(--hue2), 80%, 90%, 0.8);
+  border-radius: var(--corner-small);
+  border: 3px solid hsla(var(--hue2), 80%, 75%, 0.4);
+  cursor: grab;
+}
+.dark textarea::-webkit-scrollbar-thumb {
+  background-color: hsla(var(--hue1), 80%, 40%, 0.8);
+  border: 3px solid hsla(var(--hue1), 80%, 30%, 0.4);
+}
+textarea::-webkit-resizer {
+  display: none;
+}
+.textarea-wrap::before {
+  content: '';
+  position: absolute;
+  bottom: -0.3em;
+  right: 0.1em;
+  width: 0;
+  height: 0;
+  border: 0.4em solid transparent;
+  border-top-color: var(--color-5);
+  border-top-width: 0.8em;
+  outline: none;
+  z-index: 2;
+  pointer-events: none;
+}
+.textarea-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: 0.1em;
+  right: 0.051em;
+  width: 0.9em;
+  height: 0.9em;
+  background: var(--color-7);
+  /* box-shadow: inset 0 0.6em 0 var(--color-7); */
+  outline: 0.1em solid var(--color-7);
+  z-index: 1;
+  pointer-events: none;
+}
+input[type='color' i] {
+  height: 3.4em;
+  cursor: pointer;
+  border-width: 1px;
+  width: 48%;
+  border-radius: var(--corner-small);
+}
+input[type='checkbox' i],
+input[type='radio' i] {
+  --offset: 4px;
+  position: relative;
+  width: 1em;
+  height: 1em;
+  cursor: pointer;
+  border-radius: var(--corner-small);
+  align-self: center;
+  margin: 0 0 0 calc(var(--offset) * 2);
+}
+input[type='checkbox' i] {
+  margin-right: 1.3em;
+}
+.radio-checkbox {
+  position: relative;
+}
+input[type='checkbox' i]:checked,
+input[type='radio' i]:checked {
+  accent-color: var(--color-4);
+}
+input[type='radio' i]::before,
+input[type='checkbox' i]::before {
+  content: '';
+  position: absolute;
+  outline: 0.1em solid var(--color-gray-7);
+  outline-offset: var(--offset);
+  z-index: -1;
+  pointer-events: none;
+}
+input[type='radio' i]::before {
+  top: -0em;
+  left: -0em;
+  right: -0em;
+  bottom: -0em;
+  border-radius: 50%;
+  border: 1px solid var(--color-gray-7);
+  background-color: var(--color-gray-5);
+}
+input[type='checkbox' i]::before {
+  top: -0.05em;
+  left: -0.05em;
+  right: -0.05em;
+  bottom: -0.05em;
+  border-radius: 1px;
+  outline-offset: 3px;
+}
+input[type='radio' i]:checked::before,
+input[type='checkbox' i]:checked::before {
+  outline-color: currentColor;
+  outline-width: 0.22em;
+}
+input[type='radio' i]:checked::before {
+  background-color: var(--color-4);
+  border: 1px solid var(--color-0);
+}
+input[type='checkbox' i]:checked::before {
+}
+.input-wrap input[type='text' i],
+.input-wrap input[type='number' i],
+.input-wrap input[type='email' i],
+.input-wrap input[type='password' i] {
+  padding-left: 0.8em;
+  padding-right: 0.8em;
+}
+
+@media (max-width: 300px) {
+  .file-wrap input[type='file' i]::-webkit-file-upload-button {
+    display: block;
+    margin-bottom: 0.6em;
+  }
+}

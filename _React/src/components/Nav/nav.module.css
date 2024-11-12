@@ -1,0 +1,93 @@
+.nav ul {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: flex-end;
+  list-style: none;
+  padding: 0.1rem 0.5rem 0.3rem;
+  margin: 0;
+  gap: 0.8em;
+  font-size: 1.1em;
+}
+.nav ul a,
+.nav ul button {
+  color: var(--color-0);
+  font-weight: 300;
+}
+
+/* .nav ul button svg {
+  fill: var(--color-3);
+}
+.nav ul button:hover svg {
+  fill: var(--color-5);
+}
+.dark.nav ul button:hover svg {
+  fill: var(--color-0);
+} */
+
+.skip-links {
+  z-index: 999;
+  position: absolute; /*so it shows up over other elements*/
+  top: 0;
+  left: 0;
+}
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background: var(--color-6);
+  color: var(--color-0);
+  padding: 1em 2em;
+  margin-top: 2px;
+  margin-left: 2px;
+  outline: 2px solid currentColor;
+  outline-offset: -4px;
+  -webkit-transform: translateX(-109%);
+  -ms-transform: translateX(-109%);
+  -o-transform: translateX(-109%);
+  -moz-transform: translateX(-109%);
+  transform: translateX(-109%);
+  transition: 0.3s transform ease-in-out;
+}
+.skip-link:focus {
+  width: max-content;
+  -webkit-transform: translateX(0%);
+  -ms-transform: translateX(0%);
+  -o-transform: translateX(0%);
+  -moz-transform: translateX(0%);
+  transform: translateX(0%);
+}
+.skip-links ul {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0;
+  margin: 0;
+}
+.skip-links li {
+  white-space: nowrap;
+}
+
+@media (max-width: 300px) {
+  .nav ul {
+    max-width: 200px;
+  }
+}
+@media (max-width: 250px) {
+  .nav ul {
+    max-width: 160px;
+  }
+  .nav ul li {
+    flex: 1 1 100%;
+    text-align: center;
+    margin: 0 auto;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  .nav ul li > * {
+    flex: 1 1 100%;
+  }
+}
