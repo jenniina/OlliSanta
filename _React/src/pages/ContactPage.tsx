@@ -62,7 +62,14 @@ const ContactPage: FC<Props> = ({ heading }) => {
   const [isSending, setIsSending] = useState(false)
 
   useEffect(() => {
-    setData((prevData) => ({ ...prevData, lang: language, subject: subject.label }))
+    setSubject(subjectOptions.find((o) => o.value === subject.value) ?? subjectOptions[0])
+    setData((prevData) => ({
+      ...prevData,
+      lang: language,
+      subject:
+        subjectOptions.find((o) => o.value === subject.value)?.label ??
+        subjectOptions[0].label,
+    }))
   }, [language])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
