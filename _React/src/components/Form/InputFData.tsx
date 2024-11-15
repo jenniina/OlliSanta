@@ -102,7 +102,7 @@ export default function InputFData({
           type={type}
           name={name}
           autoComplete={name}
-          accept={allowedFileTypes.join(',')}
+          accept={type === 'file' ? allowedFileTypes.join(',') : undefined}
           value={type !== 'file' ? value : undefined}
           onChange={handleChange}
         />

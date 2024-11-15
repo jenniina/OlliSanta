@@ -275,7 +275,7 @@ const ContactPage: FC<Props> = ({ heading }) => {
             )}
           </div>
 
-          <div>
+          <div className='file-upload-container'>
             <p>
               <big> {t('sendMaterials')} </big>
               <br />
@@ -292,8 +292,10 @@ const ContactPage: FC<Props> = ({ heading }) => {
               multiple
             />
           </div>
-          <p>{t('files')}:</p>
-          {attachments?.length < 1 && <p>{t('noFiles')}</p>}
+          <p>
+            <big>{t('files')}:</big>
+          </p>
+          {attachments?.length < 1 && <p>[ {t('noFiles')} ]</p>}
           <div className={styles['file-preview-wrap']}>
             {attachments?.map((file, i) => (
               <div key={i} className={styles['file-preview']}>
