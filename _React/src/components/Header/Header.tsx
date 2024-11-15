@@ -1,5 +1,6 @@
 import { FC, useEffect, useRef, useState, CSSProperties } from 'react'
 import ollisanta from '../../assets/ollisanta.svg'
+import ollisantaGif from '../../assets/olli-santa-nimi.gif'
 import useShadow from '../../hooks/useShadow'
 import useWindowSize from '../../hooks/useWindowSize'
 import { useTheme } from '../../contexts/ThemeContext'
@@ -45,31 +46,32 @@ const Header: FC<Props> = ({ location }) => {
   const width =
     location !== '/'
       ? '130px'
-      : windowWidth <= 200
+      : windowWidth < 200
       ? '150px'
-      : windowWidth <= 300
+      : windowWidth < 300
       ? '200px'
-      : windowWidth <= 400
+      : windowWidth < 400
       ? '300px'
-      : windowWidth <= 500
-      ? '400px'
-      : windowWidth < 700
+      : windowWidth < 500
       ? '350px'
-      : windowWidth < 1000
+      : windowWidth < 700
       ? '390px'
+      : windowWidth < 1000
+      ? '400px'
       : '420px'
 
+  const widthPlus = parseInt(width) + 7 + 'px'
+
   useEffect(() => {
-    // find img in h1
     const img1 = spanRef.current?.querySelector('img')
     const img2 = elementRef.current?.querySelector('img')
 
     setTimeout(() => {
       if (!darkMode) {
-        img1?.setAttribute('style', 'filter: invert(0.4), opacity: 0.9')
+        img1?.setAttribute('style', 'filter: invert(0.4); opacity: 0.7')
         img2?.setAttribute('style', 'filter: invert(0.2)')
       } else {
-        img1?.removeAttribute('style')
+        img1?.setAttribute('style', 'filter: none; opacity: 1')
         img2?.setAttribute('style', 'filter: invert(0.9)')
       }
     }, 300)
@@ -87,16 +89,33 @@ const Header: FC<Props> = ({ location }) => {
         />
       </span>
       <h1 ref={elementRef} className='tooltip-wrap' style={{ width: width }}>
-        <img
-          src={ollisanta}
-          alt='Olli Santa'
-          width={width}
-          height='auto'
-          onClick={() => {
-            clickCounter < 2 ? setClickCounter(clickCounter + 1) : null
-            setShadow(!noShadow)
-          }}
-        />
+        {location === '/' && !noShadow ? (
+          <img
+            id='gif'
+            className='gif'
+            src={ollisantaGif}
+            alt='Olli Santa name animation'
+            width={widthPlus}
+            height='auto'
+            onClick={() => {
+              clickCounter < 2 ? setClickCounter(clickCounter + 1) : null
+              setShadow(!noShadow)
+            }}
+          />
+        ) : (
+          <img
+            id='img'
+            className='h1-img'
+            src={ollisanta}
+            alt='Olli Santa name'
+            width={width}
+            height='auto'
+            onClick={() => {
+              clickCounter < 2 ? setClickCounter(clickCounter + 1) : null
+              setShadow(!noShadow)
+            }}
+          />
+        )}
         {!hasClickedTwice && (
           <span className='tooltip below narrow'>{t('clickMeShadow')}</span>
         )}
