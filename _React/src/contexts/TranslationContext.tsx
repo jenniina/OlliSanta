@@ -36,8 +36,8 @@ const translations: Translations = {
     solist: 'Solist',
     choirs: 'Choirs',
     and: 'and',
-    introText1: `I am a professional choir and orchestra conductor in the Southern Finland area. Closest to my heart is choir and orchestra music, but entertainment, pop, rock and jazz music have always been an essential part of my work.`,
-    introText2: `At the moment I conduct three choirs. In addition to the artistic director's work, I compose and arrange music for all types of choirs, orchestras and bands.`,
+    introText1: `I am a professional choir and orchestra conductor in the Southern Finland area. Choir and orchestra music is closest to my heart, but entertainment, pop, rock and jazz music have always been an essential part of my work.`,
+    introText2: `At the moment I conduct four choirs. In addition to the artistic director's work, I compose and arrange music for all types of choirs, orchestras and bands.`,
     services: 'Services',
     howToOrder: 'How to order',
     howToOrderProduct: 'How to order a product?',
@@ -185,9 +185,9 @@ const translations: Translations = {
     choirs: 'Kuorot',
     and: 'ja',
     introText1:
-      'Olen ammattimainen kuoron- ja orkesterinjohtaja Etelä-Suomen alueella. Sydäntäni lähinnä on kuoro- ja orkesterimusiikki, mutta viihde-, pop-, rock- ja jazzmusiikki ovat aina olleet tärkeä osa työtäni.',
+      'Olen ammattimainen kuoron- ja orkesterinjohtaja Etelä-Suomen alueella. Kuoro- ja orkesterimusiikki ovat sydäntäni lähinnä, mutta viihde-, pop-, rock- ja jazzmusiikki ovat aina olleet tärkeä osa työtäni.',
     introText2:
-      'Tällä hetkellä johdan kolmea kuoroa. Taiteellisen johtajan työn ohessa teen tilauksesta sävellyksiä ja sovituksia kaikille kuoromuodoille, orkestereille ja yhtyeille.',
+      'Tällä hetkellä johdan neljää kuoroa. Taiteellisen johtajan työn ohessa teen tilauksesta sävellyksiä ja sovituksia kaikille kuoromuodoille, orkestereille ja yhtyeille.',
     services: 'Palvelut',
     howToOrder: 'Kuinka toimia',
     howToOrderProduct: 'Kuinka tilaan tuotteen?',

@@ -148,10 +148,13 @@ const AboutPage: FC<Props> = ({ heading }) => {
                   </a>
                 </li>
                 <li>
-                  <a href='https://www.vantaannaislaulajat.net/'>Vantaan Naislaulajat</a>
+                  <a href='https://www.vantaannaislaulajat.net'>Vantaan Naislaulajat</a>
                 </li>
                 <li>
-                  <a href='https://www.oltermannit.net/'>Vantaan Laulun Oltermannit</a>
+                  <a href='https://www.oltermannit.net'>Vantaan Laulun Oltermannit</a>
+                </li>
+                <li>
+                  <a href='https://rekolansekakuoro.com'>Rekolan Sekakuoro</a>
                 </li>
               </ul>
             </Accordion>

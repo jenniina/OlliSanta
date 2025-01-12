@@ -3,7 +3,7 @@
   "description": "",
   "main": "src/app.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "concurrently \"tsc -b\" \"cd _React && npm run build\"",
     "dev": "concurrently \"tsc -w\" \"nodemon olli/app.js\"",
     "start": "node olli/app.js"
   },
