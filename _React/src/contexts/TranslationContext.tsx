@@ -2,13 +2,13 @@ import { FC, createContext, useContext, ReactNode } from 'react'
 import useLocalStorage from '../hooks/useStorage'
 import { ELang } from '../interfaces'
 
-type Translations = {
-  [key: string]: {
-    [key: string]: string
-  }
-}
+// type Translations = {
+//   [key: string]: {
+//     [key: string]: string
+//   }
+// }
 
-const translations: Translations = {
+const translations = {
   en: {
     homePage: 'Home page',
     home: 'Home',
@@ -51,6 +51,8 @@ const translations: Translations = {
     sendMaterials: 'Send what materials you have available',
     whatEnsemble: 'For what kind of ensemble the piece should be arranged',
     ensemble: 'Ensemble',
+    close: 'Close',
+    schedule: 'Schedule',
     scheduleRequest: 'Schedule request',
     scheduleRequestLong:
       'Schedule request, when should the arrangement be available for you',
@@ -201,6 +203,8 @@ const translations: Translations = {
     sendMaterials: 'Lähetä mitä materiaalia sinulla on käytettävissä',
     whatEnsemble: 'Minkälaiselle kokoonpanolle teos on sovitettava',
     ensemble: 'Kokoonpano',
+    close: 'Sulje',
+    schedule: 'Aikataulu',
     scheduleRequest: 'Aikataulutoive',
     scheduleRequestLong:
       'Aikataulutoive eli milloin sovitus pitäisi olla käytettävissänne',
@@ -307,10 +311,14 @@ const translations: Translations = {
   },
 }
 
+export type Translations = typeof translations
+export type TranslationLang = keyof Translations
+export type TranslationKey = keyof (typeof translations)[TranslationLang]
+
 type TranslationContextType = {
   language: ELang
   setLanguage: (language: ELang) => void
-  t: (key: string) => string
+  t: (key: TranslationKey) => string
 }
 
 const TranslationContext = createContext<TranslationContextType | undefined>(undefined)
@@ -318,8 +326,8 @@ const TranslationContext = createContext<TranslationContextType | undefined>(und
 export const TranslationProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useLocalStorage<ELang>('OlliSantaLanguage', ELang.fi)
 
-  const t = (key: string) => {
-    return translations[language][key] || key
+  const t = (key: TranslationKey) => {
+    return translations[language as TranslationLang][key] || key
   }
 
   return (
