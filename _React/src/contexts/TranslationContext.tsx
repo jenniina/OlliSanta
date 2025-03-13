@@ -309,7 +309,7 @@ const translations = {
     emptyFields: 'Tyhjennä lomake',
     emptyFieldsConfirmation: 'Haluatko varmasti tyhjentää kaikki kentät?',
   },
-}
+} as const
 
 export type Translations = typeof translations
 export type TranslationLang = keyof Translations
