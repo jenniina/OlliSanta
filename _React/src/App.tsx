@@ -1,68 +1,61 @@
-import { createRef, CSSProperties, useEffect, useState } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { user } from './utils'
-import AboutPage from './pages/AboutPage'
-import LandingPage from './pages/LandingPage'
-import ContactPage from './pages/ContactPage'
-import Header from './components/Header/Header'
-import Nav from './components/Nav/Nav'
-import Footer from './components/Footer/Footer'
-import Notification from './components/Notification/Notification'
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
-import { useScrollbarWidth } from './hooks/useScrollbarWidth'
-import { useTheme } from './contexts/ThemeContext'
-import { useTranslation } from './contexts/TranslationContext'
-import { ELang } from './interfaces'
-import DashboardPage from './pages/DashboardPage'
-import LoginPage from './pages/LoginPage'
+import { CSSProperties, useEffect, useRef, useState } from "react"
+import { Routes, Route, useLocation } from "react-router-dom"
+import { user } from "./utils"
+import AboutPage from "./pages/AboutPage"
+import LandingPage from "./pages/LandingPage"
+import ContactPage from "./pages/ContactPage"
+import Header from "./components/Header/Header"
+import Nav from "./components/Nav/Nav"
+import Footer from "./components/Footer/Footer"
+import Notification from "./components/Notification/Notification"
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute"
+import { useScrollbarWidth } from "./hooks/useScrollbarWidth"
+import { useTheme } from "./contexts/useTheme"
+import { useTranslation } from "./contexts/useTranslation"
+import { ELang } from "./interfaces"
+import DashboardPage from "./pages/DashboardPage"
+import LoginPage from "./pages/LoginPage"
 // import RegisterPage from './pages/RegisterPage'
-import Message from './components/Message/Message'
-import ChangePage from './pages/ChangePage'
+import Message from "./components/Message/Message"
+import ChangePage from "./pages/ChangePage"
 
 function App() {
   const darkMode = useTheme()
   const location = useLocation()
   const { t, language, setLanguage } = useTranslation()
 
-  useEffect(() => {
-    // set language from ?lang= query
-    const url = new URL(window.location.href)
-    const lang = url.searchParams.get('lang') as ELang
-    if (lang) {
-      setLanguage(lang)
-    }
-  }, [])
+  // set language from ?lang= query (single effect)
 
   const scrollbarWidth = useScrollbarWidth()
   const styleWrapper: CSSProperties = {
-    ['--scrollbar-width' as string]: `${scrollbarWidth}px`,
+    ["--scrollbar-width" as string]: `${scrollbarWidth}px`,
   }
-  const appRef = createRef<HTMLDivElement>()
+  const appRef = useRef<HTMLDivElement>(null)
 
-  const [displayLocation, setDisplayLocation] = useState<typeof location | undefined>(
-    location
-  )
-  const [transitionStage, setTransitionStage] = useState('fadeIn')
+  const [displayLocation, setDisplayLocation] = useState<
+    typeof location | undefined
+  >(location)
+  const [transitionStage, setTransitionStage] = useState("fadeIn")
 
   useEffect(() => {
-    document.body.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`)
+    document.body.style.setProperty("--scrollbar-width", `${scrollbarWidth}px`)
   }, [scrollbarWidth])
 
   useEffect(() => {
-    appRef.current?.classList.remove('tra')
+    appRef.current?.classList.remove("tra")
     setTimeout(() => {
-      appRef.current?.classList.add('tra')
+      appRef.current?.classList.add("tra")
     }, 500)
   }, [location, darkMode])
 
   useEffect(() => {
-    appRef.current?.classList.add('fadeOut')
+    appRef.current?.classList.add("fadeOut")
     setTimeout(() => {
-      appRef.current?.classList.remove('fadeOut')
-      appRef.current?.classList.add('fadeIn')
+      appRef.current?.classList.remove("fadeOut")
+      appRef.current?.classList.add("fadeIn")
       darkMode
-        ? appRef.current?.classList.add('dark')
-        : appRef.current?.classList.remove('dark')
+        ? appRef.current?.classList.add("dark")
+        : appRef.current?.classList.remove("dark")
     }, 300)
   }, [darkMode])
 
@@ -71,88 +64,97 @@ function App() {
     if (hash) {
       const element = document.querySelector(hash)
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' })
+        element.scrollIntoView({ behavior: "smooth" })
         ;(element as HTMLElement).focus()
       }
     } else {
       window.scrollTo({
         top: 0,
-        behavior: 'smooth',
+        behavior: "smooth",
       })
     }
     if (displayLocation && location.pathname !== displayLocation.pathname) {
-      setTransitionStage('fadeOut')
+      setTransitionStage("fadeOut")
     }
   }, [location, displayLocation])
 
   // Set the document language and title
   useEffect(() => {
-    const script = document.createElement('script')
-    script.type = 'text/javascript'
+    const script = document.createElement("script")
+    script.type = "text/javascript"
     script.innerHTML = `document.documentElement.lang = '${language}';`
     document.head.appendChild(script)
-    const headingElement = document.querySelector('#hidden-heading')
-    const headingText = headingElement ? headingElement.textContent : ''
-    document.title = `${t('composerAndArranger')} Olli Santa: ${headingText}`
+    const headingElement = document.querySelector("#hidden-heading")
+    const headingText = headingElement ? headingElement.textContent : ""
+    document.title = `${t("composerAndArranger")} Olli Santa: ${headingText}`
 
     return () => {
       document.head.removeChild(script)
     }
-  }, [language])
+  }, [language, t])
 
   // Set the language from ?lang=fi or ?lang=en
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
-    const lang = urlParams.get('lang') as ELang
+    const lang = urlParams.get("lang") as ELang
     if (lang) {
       setLanguage(lang)
     }
-  }, [])
+    // only depends on stable setLanguage
+  }, [setLanguage])
 
   return (
     <div
       ref={appRef}
       className={`app tra ${
-        displayLocation?.pathname === '/' ? 'home' : ''
+        displayLocation?.pathname === "/" ? "home" : ""
       } ${transitionStage} ${language}`}
       style={styleWrapper}
       onAnimationEnd={() => {
-        if (transitionStage === 'fadeOut') {
-          setTransitionStage('fadeIn')
+        if (transitionStage === "fadeOut") {
+          setTransitionStage("fadeIn")
           setDisplayLocation(location)
         }
       }}
     >
-      <div className='inner'>
+      <div className="inner">
         <header>
-          <Header location={displayLocation?.pathname ?? '/'} />
-          <Nav location={displayLocation?.pathname ?? '/'} />
+          <Header location={displayLocation?.pathname ?? "/"} />
+          <Nav location={displayLocation?.pathname ?? "/"} />
         </header>
-        <main id='main-content'>
+        <main id="main-content">
           <Routes location={displayLocation}>
             <Route
-              path='/login'
-              element={<LoginPage heading={user ? t('logout') : t('login')} />}
+              path="/login"
+              element={<LoginPage heading={user ? t("logout") : t("login")} />}
             />
             {/* <Route
               path='/register'
               element={<RegisterPage heading={t('register')} />}
             /> */}
             <Route
-              path='/dashboard'
-              element={<ProtectedRoute component={DashboardPage} requiredRole={2} />}
-            />{' '}
-            <Route path='/message' element={<Message />} />
-            <Route path='/' element={<LandingPage />} />
-            <Route path='/about' element={<AboutPage heading={t('about')} />} />
-            <Route path='/contact' element={<ContactPage heading={t('contact')} />} />
-            <Route
-              path='/change'
+              path="/dashboard"
               element={
-                <ProtectedRoute component={ChangePage} heading={t('changeInfo')} />
+                <ProtectedRoute component={DashboardPage} requiredRole={2} />
+              }
+            />{" "}
+            <Route path="/message" element={<Message />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/about" element={<AboutPage heading={t("about")} />} />
+            <Route
+              path="/contact"
+              element={<ContactPage heading={t("contact")} />}
+            />
+            <Route
+              path="/change"
+              element={
+                <ProtectedRoute
+                  component={ChangePage}
+                  heading={t("changeInfo")}
+                />
               }
             />
-            <Route path='*' element={<h2 className='center'>404</h2>} />
+            <Route path="*" element={<h2 className="center">404</h2>} />
           </Routes>
         </main>
         <Footer />

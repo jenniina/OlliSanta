@@ -5,6 +5,7 @@
   "scripts": {
     "build": "concurrently \"tsc -b\" \"cd _React && npm run build\"",
     "dev": "concurrently \"tsc -w\" \"nodemon olli/app.js\"",
+    "lint": "cd _React && npm run lint",
     "start": "node olli/app.js"
   },
   "author": "Jenniina Laine",
@@ -17,7 +18,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.3",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.7",
+    "nodemailer": "^7.0.11",
     "sanitize-html": "^2.11.0"
   },
   "devDependencies": {
@@ -27,8 +28,12 @@
     "@types/jsonwebtoken": "^9.0.3",
     "@types/multer": "^1.4.12",
     "@types/node": "^20.8.2",
+    "@typescript-eslint/eslint-plugin": "^8.46.4",
+    "@typescript-eslint/parser": "^8.46.4",
     "concurrently": "^8.2.1",
+    "eslint": "^9.39.1",
+    "knip": "^5.69.0",
     "nodemon": "^3.0.1",
-    "typescript": "^5.5.4"
+    "typescript": "^5.9.3"
   }
 }

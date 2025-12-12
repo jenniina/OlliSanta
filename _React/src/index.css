@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,1..1000;1,1..1000&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,1..1000;1,1..1000&display=swap");
 :root {
   --hue1: 220;
   --hue2: 210;
@@ -17,15 +17,17 @@
   --responsive_scale: 0.7;
   --letter-spacing: -0.03em;
   --title-XS: calc(1rem * var(--responsive_scale));
-  --title-S: calc(calc(var(--typography_ratio) * var(--responsive_scale)) * 1rem);
+  --title-S: calc(
+    calc(var(--typography_ratio) * var(--responsive_scale)) * 1rem
+  );
   --title-M: calc(
     calc(var(--typography_ratio) * var(--typography_ratio) * 1rem) *
       var(--responsive_scale)
   );
   --title-L: calc(
     calc(
-        calc(var(--typography_ratio) * var(--typography_ratio)) * var(--typography_ratio) *
-          1rem
+        calc(var(--typography_ratio) * var(--typography_ratio)) *
+          var(--typography_ratio) * 1rem
       ) * var(--responsive_scale)
   );
   --title-XL: calc(
@@ -56,8 +58,8 @@
           ) * var(--typography_ratio) * 1rem
       ) * var(--responsive_scale)
   );
-  --title-family: 'Sofia Sans', system-ui, Avenir, Helvetica, Arial, sans-serif;
-  --text-family: 'Sofia Sans', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --title-family: "Sofia Sans", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --text-family: "Sofia Sans", system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-family: var(--text-family);
   line-height: 1.3;
   font-weight: 300;
@@ -252,10 +254,10 @@ h1 {
   margin: 0;
   cursor: pointer;
 }
-img.gif {
+.gif {
   margin-left: -0.2rem;
 }
-img.h1-img {
+.h1-img {
   margin-bottom: 2px; /* To compensate for the height of the gif */
 }
 .shadow {
@@ -335,7 +337,8 @@ button {
   transform: scale(1);
 }
 .tra button {
-  transition-property: transform, background-color, color, outline-color, outline-offset;
+  transition-property: transform, background-color, color, outline-color,
+    outline-offset;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
 }
@@ -458,7 +461,7 @@ a:not(.active)::before,
 a:not(.active)::after,
 button.link::before,
 button.link::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -855,10 +858,11 @@ ol li:not(:first-of-type) {
 
 .tooltip-wrap:hover .tooltip::before,
 .tooltip-wrap:focus .tooltip::before {
-  content: '';
+  content: "";
   position: absolute;
   border: 1em solid transparent;
-  border-width: calc(var(--tooltip-offset) * 0.5) calc(var(--tooltip-offset) * 0.2);
+  border-width: calc(var(--tooltip-offset) * 0.5)
+    calc(var(--tooltip-offset) * 0.2);
   z-index: 1;
 }
 .tooltip-wrap:hover .tooltip.below::before,

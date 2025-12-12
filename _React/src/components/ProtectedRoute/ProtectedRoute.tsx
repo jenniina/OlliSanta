@@ -1,28 +1,25 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { user } from '../../utils'
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { user } from "../../utils"
+import { AnyProps, ProtectedRouteProps } from "../../interfaces"
 
-interface ProtectedRouteProps {
-  component: React.ComponentType<any>
-  requiredRole?: number
-  [key: string]: any
-}
-
-const ProtectedRoute = ({
+const ProtectedRoute = <T extends AnyProps>({
   component: Component,
   requiredRole = 1,
   ...rest
-}: ProtectedRouteProps) => {
+}: ProtectedRouteProps<T> & T) => {
   const navigate = useNavigate()
 
   useEffect(() => {
     if (!user || user.role < requiredRole) {
-      navigate('/')
+      navigate("/")
     }
-  }, [user, requiredRole, navigate])
+    // Only depend on navigate and requiredRole; `user` is a mutable external value
+    // and doesn't trigger rerenders. Checking it inside the effect is sufficient.
+  }, [requiredRole, navigate])
 
   if (user && user.role >= requiredRole) {
-    return <Component {...rest} />
+    return <Component {...(rest as unknown as T)} />
   } else {
     return <></>
   }

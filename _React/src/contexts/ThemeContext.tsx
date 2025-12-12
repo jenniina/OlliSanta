@@ -1,26 +1,19 @@
-import { useContext, createContext, useEffect, ReactPortal, EffectCallback } from 'react'
-import useMediaQuery from '../hooks/useMediaQuery'
-import useLocalStorage from '../hooks/useStorage'
+import { useEffect, ReactPortal } from "react"
+import useMediaQuery from "../hooks/useMediaQuery"
+import useLocalStorage from "../hooks/useStorage"
+import { ThemeContext, ThemeUpdateContext } from "./useThemeContexts"
 
-const ThemeContext = createContext(false)
-const ThemeUpdateContext = createContext<EffectCallback | undefined>(undefined)
-
-export function useTheme() {
-  return useContext(ThemeContext)
-}
-
-export function useThemeUpdate() {
-  return useContext(ThemeUpdateContext)
-}
+// Custom hooks moved to a separate module to satisfy Fast Refresh only-export-components rule
 
 export function ThemeProvider({ children }: ReactPortal) {
-  const prefersDark = useMediaQuery('(prefers-color-scheme: dark)')
+  const prefersDark = useMediaQuery("(prefers-color-scheme: dark)")
 
   const isLocalhost =
-    window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1"
 
   const [darkTheme, setDarkTheme] = useLocalStorage(
-    `${isLocalhost ? 'local-' : ''}useDarkMode`,
+    `${isLocalhost ? "local-" : ""}useDarkMode`,
     prefersDark ? true : false
   )
 
@@ -32,7 +25,7 @@ export function ThemeProvider({ children }: ReactPortal) {
 
   useEffect(() => {
     setTimeout(() => {
-      document.body.classList.toggle('dark', darkEnabled)
+      document.body.classList.toggle("dark", darkEnabled)
     }, 300)
   }, [darkEnabled])
 

@@ -1,8 +1,8 @@
-import { FC, ReactNode, useEffect, useRef, useState } from 'react'
-import { IoTriangleSharp } from 'react-icons/io5'
-import styles from './accordion.module.css'
-import { useTheme } from '../../contexts/ThemeContext'
-import { useLocation } from 'react-router-dom'
+import { FC, ReactNode, useEffect, useRef, useState } from "react"
+import { IoTriangleSharp } from "react-icons/io5"
+import styles from "./accordion.module.css"
+import { useTheme } from "../../contexts/useTheme"
+import { useLocation } from "react-router-dom"
 
 interface AccordionProps {
   title: string
@@ -11,7 +11,12 @@ interface AccordionProps {
   flex?: boolean
 }
 
-const Accordion: FC<AccordionProps> = ({ title, children, classNames, flex }) => {
+const Accordion: FC<AccordionProps> = ({
+  title,
+  children,
+  classNames,
+  flex,
+}) => {
   const darkMode = useTheme()
   const location = useLocation()
   const detailsRef = useRef<HTMLButtonElement>(null)
@@ -33,17 +38,17 @@ const Accordion: FC<AccordionProps> = ({ title, children, classNames, flex }) =>
   }, [open])
 
   useEffect(() => {
-    detailsRef.current?.classList.remove(styles['tra'])
+    detailsRef.current?.classList.remove(styles["tra"])
     setTimeout(() => {
-      detailsRef.current?.classList.add(styles['tra'])
+      detailsRef.current?.classList.add(styles["tra"])
     }, 500)
   }, [location, darkMode])
 
   useEffect(() => {
     setTimeout(() => {
       darkMode
-        ? detailsRef.current?.classList.add(styles['dark'])
-        : detailsRef.current?.classList.remove(styles['dark'])
+        ? detailsRef.current?.classList.add(styles["dark"])
+        : detailsRef.current?.classList.remove(styles["dark"])
     }, 300)
   }, [darkMode])
 
@@ -65,9 +70,9 @@ const Accordion: FC<AccordionProps> = ({ title, children, classNames, flex }) =>
       aria-expanded={open}
       className={`reset ${styles.details} ${classNames.map(
         (c) => styles[`${c}`]
-      )} ${classNames.join(' ')} ${flex ? styles.flex : ''} ${open ? styles.open : ''} ${
-        closing ? styles.closing : ''
-      } ${styles['tra']}
+      )} ${classNames.join(" ")} ${flex ? styles.flex : ""} ${
+        open ? styles.open : ""
+      } ${closing ? styles.closing : ""} ${styles["tra"]}
       `}
     >
       <span className={styles.summary}>
@@ -75,18 +80,18 @@ const Accordion: FC<AccordionProps> = ({ title, children, classNames, flex }) =>
           style={
             !open || closing
               ? {
-                  WebkitTransform: 'rotate(90deg)',
-                  OTransform: 'rotate(90deg)',
-                  MozTransform: 'rotate(90deg)',
-                  msTransform: 'rotate(90deg)',
-                  transform: 'rotate(90deg)',
+                  WebkitTransform: "rotate(90deg)",
+                  OTransform: "rotate(90deg)",
+                  MozTransform: "rotate(90deg)",
+                  msTransform: "rotate(90deg)",
+                  transform: "rotate(90deg)",
                 }
               : {
-                  WebkitTransform: 'rotate(180deg)',
-                  OTransform: 'rotate(180deg)',
-                  MozTransform: 'rotate(180deg)',
-                  msTransform: 'rotate(180deg)',
-                  transform: 'rotate(180deg)',
+                  WebkitTransform: "rotate(180deg)",
+                  OTransform: "rotate(180deg)",
+                  MozTransform: "rotate(180deg)",
+                  msTransform: "rotate(180deg)",
+                  transform: "rotate(180deg)",
                 }
           }
         />

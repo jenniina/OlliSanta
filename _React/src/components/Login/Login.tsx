@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import authService from '../../services/auth'
-import InputFData from '../Form/Input'
-import { useTranslation } from '../../contexts/TranslationContext'
-import { useNotification } from '../../contexts/NotificationContext'
-import { user } from '../../utils'
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import authService from "../../services/auth"
+import InputFData from "../Form/Input"
+import { useTranslation } from "../../contexts/useTranslation"
+import { useNotification } from "../../contexts/useNotification"
+import { user } from "../../utils"
 
 const Login = () => {
   const { t, language } = useTranslation()
   const navigate = useNavigate()
   const { notify } = useNotification()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [isSending, setIsSending] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,35 +22,36 @@ const Login = () => {
       .login(email, password, language)
       .then(() => {
         setIsSending(false)
-        user && user.role > 1 ? navigate('/dashboard') : navigate('/change')
+        user && user.role > 1 ? navigate("/dashboard") : navigate("/change")
       })
       .catch((error) => {
-        if (error.response?.data?.message) notify(error.response.data.message, true, 6)
-        else notify(t('errorLoggingIn'), true, 6)
-        console.error(t('errorLoggingIn'), error)
+        if (error.response?.data?.message)
+          notify(error.response.data.message, true, 6)
+        else notify(t("errorLoggingIn"), true, 6)
+        console.error(t("errorLoggingIn"), error)
         setIsSending(false)
       })
   }
   if (user) {
     return (
       <>
-        <div className='flex column gap center margin0auto'>
+        <div className="flex column gap center margin0auto">
           {user.role > 1 ? (
-            <Link to='/dashboard' className='margin0auto'>
-              {t('messages')}
+            <Link to="/dashboard" className="margin0auto">
+              {t("messages")}
             </Link>
           ) : (
             <></>
           )}
-          <Link to='/change'>{t('changeInfo')}</Link>
+          <Link to="/change">{t("changeInfo")}</Link>
           <button
             onClick={() => {
-              if (window.confirm(t('logoutConfirmation'))) {
+              if (window.confirm(t("logoutConfirmation"))) {
                 authService.logout
               }
             }}
           >
-            {t('logout')}
+            {t("logout")}
           </button>
         </div>
       </>
@@ -60,27 +61,27 @@ const Login = () => {
       <>
         <form onSubmit={handleSubmit}>
           <InputFData
-            type='email'
-            name='email'
+            type="email"
+            name="email"
             value={email}
             onChange={() => setEmail}
             required
-            label={t('email')}
+            label={t("email")}
           />
           <InputFData
-            type='password'
-            name='password'
+            type="password"
+            name="password"
             value={password}
             onChange={() => setPassword}
             required
-            label={t('password')}
+            label={t("password")}
           />
-          <button type='submit' disabled={isSending}>
-            {t('login')}
+          <button type="submit" disabled={isSending}>
+            {t("login")}
           </button>
         </form>
-        <Link className='m3top center margin0auto' to='/register'>
-          {t('register')}
+        <Link className="m3top center margin0auto" to="/register">
+          {t("register")}
         </Link>
       </>
     )

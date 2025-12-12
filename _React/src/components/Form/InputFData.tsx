@@ -1,8 +1,8 @@
-import { ChangeEvent, Dispatch, SetStateAction } from 'react'
-import { FData } from '../../interfaces'
-import { PiUploadSimple } from 'react-icons/pi'
-import { useTranslation } from '../../contexts/TranslationContext'
-import { useNotification } from '../../contexts/NotificationContext'
+import { ChangeEvent, Dispatch, SetStateAction } from "react"
+import { FData } from "../../interfaces"
+import { PiUploadSimple } from "react-icons/pi"
+import { useTranslation } from "../../contexts/useTranslation"
+import { useNotification } from "../../contexts/useNotification"
 
 type FormProps = {
   value: string | number | undefined
@@ -12,10 +12,15 @@ type FormProps = {
   required?: boolean
   multiple?: boolean
   onChange: Dispatch<SetStateAction<FData>>
-  updateAttachments?: Dispatch<SetStateAction<FData['attachments']>>
+  updateAttachments?: Dispatch<SetStateAction<FData["attachments"]>>
 }
 
-const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf']
+const allowedFileTypes = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "application/pdf",
+]
 
 export const maxFileSize = 5 * 1024 * 1024 // 5 MB
 
@@ -38,13 +43,13 @@ export default function InputFData({
       const validFiles = filesArray.filter((file) => {
         if (file.size > maxFileSize) {
           notify(
-            t('fileSizeExceeded') + ': ' + maxFileSize / (1024 * 1024) + 'MB',
+            t("fileSizeExceeded") + ": " + maxFileSize / (1024 * 1024) + "MB",
             true,
             8
           )
           return false
         } else if (!allowedFileTypes.includes(file.type)) {
-          notify(t('allowedFileTypes'), true, 8)
+          notify(t("allowedFileTypes"), true, 8)
           return false
         }
 
@@ -52,33 +57,33 @@ export default function InputFData({
       })
 
       if (validFiles.length !== filesArray.length) {
-        notify(t('allowedFileTypes'), true, 8)
+        notify(t("allowedFileTypes"), true, 8)
         return
       }
 
-      const totalFiles =
-        (updateAttachments ? updateAttachments.length : 0) + validFiles.length
-      if (totalFiles > 10) {
-        notify(t('maxFiles10'), true, 6)
-        return
-      }
-
-      updateAttachments &&
+      if (updateAttachments) {
         updateAttachments((prev) => {
+          const previous = prev ?? []
+          const remainingSlots = Math.max(10 - previous.length, 0)
+          const filesToAdd = validFiles.slice(0, remainingSlots)
+          if (filesToAdd.length < validFiles.length) {
+            notify(t("maxFiles10"), true, 6)
+          }
           return [
-            ...(prev || []),
-            ...validFiles?.map((file) => ({
-              file: file,
+            ...previous,
+            ...filesToAdd.map((file) => ({
+              file,
               filename: file.name,
               path: URL.createObjectURL(file),
             })),
           ]
         })
+      }
     }
   }
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (type === 'file') {
+    if (type === "file") {
       handleFileChange(e)
     } else {
       onChange((prev) => ({ ...prev, [name]: e.target.value }))
@@ -87,12 +92,12 @@ export default function InputFData({
 
   return (
     <div
-      className={`${type === 'file' ? 'file-wrap' : 'input-wrap'} ${
-        !required ? 'not-required' : ''
+      className={`${type === "file" ? "file-wrap" : "input-wrap"} ${
+        !required ? "not-required" : ""
       } ${
-        !required && typeof value === 'string' && value?.trim() !== ''
-          ? 'filled'
-          : 'not-filled'
+        !required && typeof value === "string" && value?.trim() !== ""
+          ? "filled"
+          : "not-filled"
       }`}
     >
       <label>
@@ -102,14 +107,14 @@ export default function InputFData({
           type={type}
           name={name}
           autoComplete={name}
-          accept={type === 'file' ? allowedFileTypes.join(',') : undefined}
-          value={type !== 'file' ? value : undefined}
+          accept={type === "file" ? allowedFileTypes.join(",") : undefined}
+          value={type !== "file" ? value : undefined}
           onChange={handleChange}
         />
         <span>
-          {type === 'file' && <PiUploadSimple />} {label}{' '}
+          {type === "file" && <PiUploadSimple />} {label}{" "}
           {required && (
-            <i className='required' aria-hidden='true'>
+            <i className="required" aria-hidden="true">
               *
             </i>
           )}

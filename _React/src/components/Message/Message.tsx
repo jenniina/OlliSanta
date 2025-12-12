@@ -1,12 +1,16 @@
-import emailService from '../../services'
-import { user } from '../../utils'
-import { FData } from '../../interfaces'
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useNotification } from '../../contexts/NotificationContext'
-import { formatDate, split } from '../../utils'
-import { useTranslation } from '../../contexts/TranslationContext'
-import { GrStatusWarning } from 'react-icons/gr'
+type ApiError = { response?: { data?: { message?: string } } }
+const isApiError = (e: unknown): e is ApiError =>
+  typeof e === "object" && e !== null && "response" in e
+import emailService from "../../services"
+import { user } from "../../utils"
+import { FData } from "../../interfaces"
+import { useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useNotification } from "../../contexts/useNotification"
+import { formatDate } from "../../utils"
+import { useTranslation } from "../../contexts/useTranslation"
+import { GrStatusWarning } from "react-icons/gr"
+import { split } from "../../utils/split"
 
 const Message = () => {
   const { notify } = useNotification()
@@ -20,21 +24,22 @@ const Message = () => {
   useEffect(() => {
     // get orderID from ?id= query
     const url = new URL(window.location.href)
-    const orderID = url.searchParams.get('id')
+    const orderID = url.searchParams.get("id")
 
     if (!orderID) return
     const fetchData = async () => {
       try {
         const res = await emailService.getSingleData(orderID)
         setData(res)
-      } catch (error: any) {
-        if (error.response?.data?.message) notify(error.response.data.message, true, 4)
-        else notify(t('error'), true, 4)
-        console.error(t('error'), error)
+      } catch (error: unknown) {
+        if (isApiError(error) && error.response?.data?.message)
+          notify(error.response.data.message, true, 4)
+        else notify(t("error"), true, 4)
+        console.error(t("error"), error)
       }
     }
     fetchData()
-  }, [refetch])
+  }, [refetch, notify, t])
 
   const deleteFile = async (filename: string) => {
     try {
@@ -45,10 +50,11 @@ const Message = () => {
         }
       )
       setEdited(true)
-    } catch (error: any) {
-      if (error.response?.data?.message) notify(error.response.data.message, true, 4)
-      else notify(t('error'), true, 4)
-      console.error(t('error'), error)
+    } catch (error: unknown) {
+      if (isApiError(error) && error.response?.data?.message)
+        notify(error.response.data.message, true, 4)
+      else notify(t("error"), true, 4)
+      console.error(t("error"), error)
     }
   }
 
@@ -57,39 +63,41 @@ const Message = () => {
       emailService
         .editData(data)
         .then(() => {
-          notify(t('messageEdited'), false, 3)
+          notify(t("messageEdited"), false, 3)
         })
         .catch((error) => {
-          if (error.response?.data?.message) notify(error.response.data.message, true, 4)
-          else notify(t('errorChangingMessage'), true, 4)
-          console.error(t('errorChangingMessage'), error)
+          if (error.response?.data?.message)
+            notify(error.response.data.message, true, 4)
+          else notify(t("errorChangingMessage"), true, 4)
+          console.error(t("errorChangingMessage"), error)
         })
         .finally(() => {
           setEdited(false)
           setRefetch(!refetch)
         })
     }
-  }, [edited])
+  }, [edited, data, notify, t, refetch])
 
-  const deleteMessage = async (orderID: FData['orderID']) => {
-    if (window.confirm(t('confirmRemoveMessage'))) {
+  const deleteMessage = async (orderID: FData["orderID"]) => {
+    if (window.confirm(t("confirmRemoveMessage"))) {
       emailService
         .deleteData(orderID)
         .then(() => {
-          notify(t('messageRemoved'), false, 3)
+          notify(t("messageRemoved"), false, 3)
         })
         .catch((error) => {
-          if (error.response?.data?.message) notify(error.response.data.message, true, 4)
-          else notify(t('errorRemovingMessage'), true, 4)
-          console.error(t('errorRemovingMessage'), error)
+          if (error.response?.data?.message)
+            notify(error.response.data.message, true, 4)
+          else notify(t("errorRemovingMessage"), true, 4)
+          console.error(t("errorRemovingMessage"), error)
         })
         .finally(() => {
-          user ? navigate('/dashboard') : navigate('/')
+          user ? navigate("/dashboard") : navigate("/")
         })
     }
   }
 
-  if (!data) return <div className='center'>No data</div>
+  if (!data) return <div className="center">No data</div>
 
   return (
     <div>
@@ -97,18 +105,18 @@ const Message = () => {
       <p>
         {data.createdAt ? (
           <>
-            {t('received')}: {`${formatDate(data.createdAt)}`}
+            {t("received")}: {`${formatDate(data.createdAt)}`}
           </>
         ) : (
-          ''
+          ""
         )}
         {data.updatedAt ? (
           <>
             <br />
-            {t('updated')}: {`${formatDate(data.updatedAt)}`}
+            {t("updated")}: {`${formatDate(data.updatedAt)}`}
           </>
         ) : (
-          ''
+          ""
         )}
       </p>
       <p>
@@ -121,53 +129,53 @@ const Message = () => {
         </strong>
       </p>
 
-      {data && data.piece.trim() !== '' && (
+      {data && data.piece.trim() !== "" && (
         <p>
-          <strong>{t('pieceName')}:</strong> {data.piece}
+          <strong>{t("pieceName")}:</strong> {data.piece}
         </p>
       )}
-      {data && data.ensemble.trim() !== '' && (
+      {data && data.ensemble.trim() !== "" && (
         <p>
-          <strong>{t('ensemble')}:</strong> {data.ensemble}
+          <strong>{t("ensemble")}:</strong> {data.ensemble}
         </p>
       )}
-      {data && data.schedule.trim() !== '' && (
+      {data && data.schedule.trim() !== "" && (
         <p>
-          <strong>{t('schedule')}:</strong> {data.schedule}
+          <strong>{t("schedule")}:</strong> {data.schedule}
         </p>
       )}
       <p>
-        <strong>{t('subject')}:</strong> {data.subject}
+        <strong>{t("subject")}:</strong> {data.subject}
       </p>
       <p>{split(data.message)}</p>
-      <h3>{t('contactInfo')}</h3>
-      <div className='flex column margin0auto max-content'>
+      <h3>{t("contactInfo")}</h3>
+      <div className="flex column margin0auto max-content">
         <p>
           {data.firstName}
           <br />
           {data.lastName}
           <br />
           {data.email}
-          {data.address && data.address.trim() !== '' && (
+          {data.address && data.address.trim() !== "" && (
             <>
               <br />
               <br />
               {data.address}
             </>
           )}
-          {data.zip && data.zip.trim() !== '' && (
+          {data.zip && data.zip.trim() !== "" && (
             <>
               <br />
               {data.zip}
             </>
           )}
-          {data.city && data.city.trim() !== '' && (
+          {data.city && data.city.trim() !== "" && (
             <>
               <br />
               {data.city}
             </>
           )}
-          {data.country && data.country.trim() !== '' && (
+          {data.country && data.country.trim() !== "" && (
             <>
               <br />
               {data.country}
@@ -176,41 +184,44 @@ const Message = () => {
         </p>
       </div>
 
-      <h3>{t('attachments')}:</h3>
+      <h3>{t("attachments")}:</h3>
       {data && data.attachments && data.attachments.length > 0 ? (
-        <ul className='flex column gap'>
+        <ul className="flex column gap">
           {data.attachments.map((attachment) => (
-            <li className='flex center gap05' key={attachment.filename}>
+            <li className="flex center gap05" key={attachment.filename}>
               <a href={`/uploads/${attachment.filename}`} download>
                 {attachment.filename}
               </a>
               <button
-                className='small danger'
+                className="small danger"
                 onClick={() => {
-                  if (window.confirm(t('confirmRemoveFile')))
+                  if (window.confirm(t("confirmRemoveFile")))
                     deleteFile(attachment.filename)
                 }}
               >
                 <GrStatusWarning />
-                <span>{t('remove')}</span>
+                <span>{t("remove")}</span>
                 <GrStatusWarning />
               </button>
             </li>
           ))}
         </ul>
       ) : (
-        <p className='center'>[ {t('noAttachments')} ]</p>
+        <p className="center">[ {t("noAttachments")} ]</p>
       )}
 
-      <button className='m2top danger' onClick={() => deleteMessage(data.orderID)}>
+      <button
+        className="m2top danger"
+        onClick={() => deleteMessage(data.orderID)}
+      >
         <GrStatusWarning />
         <span>
-          {t('removeMessage')} {data.orderID}
+          {t("removeMessage")} {data.orderID}
         </span>
         <GrStatusWarning />
       </button>
-      <div className='m2top'>
-        <Link to='/dashboard'>{t('back')}</Link>
+      <div className="m2top">
+        <Link to="/dashboard">{t("back")}</Link>
       </div>
     </div>
   )

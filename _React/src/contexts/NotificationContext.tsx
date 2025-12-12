@@ -1,15 +1,10 @@
-import { FC, createContext, useContext, useState, ReactNode, useEffect } from 'react'
-import { notification } from '../interfaces'
+import { FC, useState, ReactNode, useEffect } from "react"
+import type { notification } from "../interfaces"
+import { NotificationValueContext } from "./NotificationValueContext"
 
-interface NotificationContextType {
-  notification: notification | null
-  setNotification: (notification: notification | null) => void
-  notify: (message: string, isError: boolean, duration: number) => void
-}
-
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
-
-export const NotificationProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const NotificationProvider: FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [notification, setNotification] = useState<notification | null>(null)
 
   useEffect(() => {
@@ -27,16 +22,12 @@ export const NotificationProvider: FC<{ children: ReactNode }> = ({ children }) 
   }
 
   return (
-    <NotificationContext.Provider value={{ notification, setNotification, notify }}>
+    <NotificationValueContext.Provider
+      value={{ notification, setNotification, notify }}
+    >
       {children}
-    </NotificationContext.Provider>
+    </NotificationValueContext.Provider>
   )
 }
 
-export const useNotification = () => {
-  const context = useContext(NotificationContext)
-  if (!context) {
-    throw new Error('useNotification must be used within a NotificationProvider')
-  }
-  return context
-}
+// Hook moved to ./useNotification

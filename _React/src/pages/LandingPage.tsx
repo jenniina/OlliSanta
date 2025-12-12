@@ -1,18 +1,42 @@
-import { FC } from 'react'
-//import { useTranslation } from '../contexts/TranslationContext'
-
-{
-  /* <h1>Test text</h1>
-<h2>Test text</h2>
-<h3>Test text</h3>
-<h4>Test text</h4>
-<h5>Test text</h5>
-<h6>Test text</h6> */
-}
+import { FC } from "react"
+import SEO from "../components/SEO/SEO"
+import { useTranslation } from "../contexts/useTranslation"
+import {
+  getBreadcrumbJsonLd,
+  getOrganizationJsonLd,
+  getWebsiteJsonLd,
+} from "../utils"
+import JsonLdScript from "../components/SEO/JsonLdScript"
 
 const LandingPage: FC = () => {
-  //const { t } = useTranslation()
-  return <></>
+  const { t } = useTranslation()
+  return (
+    <>
+      <SEO
+        title={t("homePage") + " - Olli Santa - " + t("composerAndConductor")}
+        description={t("introMetaDescription")}
+        canonical="https://ollisanta.fi/"
+        keywords={[
+          "Olli Santa",
+          "composer",
+          "music",
+          "arrangement",
+          "notation",
+        ]}
+        ogTitle={t("homePage") + " - Olli Santa - " + t("composerAndConductor")}
+        ogDescription={t("introMetaDescription")}
+      />
+      <JsonLdScript data={getOrganizationJsonLd()} />
+      <JsonLdScript
+        data={getWebsiteJsonLd({ description: t("introMetaDescription") })}
+      />
+      <JsonLdScript
+        data={getBreadcrumbJsonLd([
+          { name: t("homePage"), url: "https://ollisanta.fi/" },
+        ])}
+      />
+    </>
+  )
 }
 
 export default LandingPage
