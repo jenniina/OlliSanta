@@ -111,7 +111,8 @@ ul.list li {
   padding-left: 0.3em;
 }
 ul.list li::marker {
-  transform: translateY(-0.1em);
+  transform: translateY(-0.12em);
+  color: var(--color-3);
 }
 
 @media (min-width: 300px) {

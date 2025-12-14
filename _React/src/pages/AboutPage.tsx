@@ -134,7 +134,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
     <>
       <SEO
         title={`${heading} - Olli Santa`}
-        description={`${t("aboutMe")} ${t("introText1")}`}
+        description={`${t("aboutMe")} Olli Santa. ${t("introText1")}`}
         canonical="https://ollisanta.fi/about"
         keywords={[
           "about",
@@ -178,7 +178,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
             />
             <div className={styles["intro-text"]}>
               <p>
-                {t("aboutMe")} {t("introText1")}
+                {t("aboutMe")} <i>Olli Santa.</i> {t("introText1")}
               </p>
               <p>{t("introText2")}</p>
               <Accordion
