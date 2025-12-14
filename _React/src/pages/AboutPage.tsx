@@ -194,7 +194,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
                     >
                       {t("seniorChoir")} Ruusut ja Ritarit
                     </a>
-                    <span className="tooltip below narrow">
+                    <span className="tooltip below right narrow">
                       {t("seniorMixedChoir63Plus")}
                     </span>
                   </li>
@@ -205,7 +205,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
                     >
                       Vantaan Naislaulajat
                     </a>
-                    <span className="tooltip below narrow">
+                    <span className="tooltip below right narrow">
                       {t("womensChoir")}: {t("isCelebrating")}
                     </span>
                   </li>
@@ -216,7 +216,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
                     >
                       Vantaan Laulun Oltermannit
                     </a>
-                    <span className="tooltip below narrow">
+                    <span className="tooltip below right narrow">
                       {t("maleChoir")}:{" "}
                       {t("theChoirAcceptsSingersWhoAreAtLeast55YearsOld")}
                     </span>
@@ -228,7 +228,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
                     >
                       {t("rekolaMixedChoir")}
                     </a>
-                    <span className="tooltip below narrow">
+                    <span className="tooltip below right narrow">
                       {t("rekolaIntro")}
                     </span>
                   </li>
@@ -239,7 +239,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
                     >
                       Urisevat Ukot
                     </a>
-                    <span className="tooltip below narrow">
+                    <span className="tooltip below right narrow">
                       {t("lauluMiehetSeniorChoir")}
                     </span>
                   </li>
