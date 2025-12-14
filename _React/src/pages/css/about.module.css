@@ -3,7 +3,7 @@
   flex-flow: row wrap;
   justify-content: center;
   align-items: flex-start;
-  gap: 1.5em 2.5em;
+  gap: 1.5em;
 }
 .intro-wrap .olli {
   display: flex;
