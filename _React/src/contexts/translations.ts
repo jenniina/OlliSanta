@@ -2,6 +2,10 @@ import { ELang } from "../interfaces"
 
 export const translations = {
   about: { en: "About", fi: "Tietoa" },
+  aboutMe: {
+    en: "I am Olli Männistö (artist name Olli Santa).",
+    fi: "Olen Olli Männistö (taiteilijanimeltä Olli Santa).",
+  },
   addContactInfo: {
     en: "Add your contact information",
     fi: "Lisää yhteystietosi",
@@ -65,6 +69,7 @@ export const translations = {
     fi: "Voit ottaa yhteyttä minuun yhteydenottolomakkeen kautta",
   },
   country: { en: "Country", fi: "Maa" },
+  currentPlural: { en: "Current", fi: "Nykyiset" },
   eachOrderIndividual: {
     en: "Each order is individual in price and delivery time, depending on the scope and complexity of the order.",
     fi: "Jokainen tilaus on yksilöllinen hinnassa ja toimitusajassa, riippuen tilauksen laajuudesta ja kompleksisuudesta.",
@@ -137,15 +142,23 @@ export const translations = {
     fi: "Olen ammattimainen kuoron- ja orkesterinjohtaja Etelä-Suomen alueella. Kuoro- ja orkesterimusiikki ovat sydäntäni lähinnä, mutta viihde-, pop-, rock- ja jazzmusiikki ovat aina olleet tärkeä osa työtäni.",
   },
   introText2: {
-    en: `At the moment I conduct four choirs. In addition to the artistic director's work, I compose and arrange music for all types of choirs, orchestras and bands.`,
-    fi: "Tällä hetkellä johdan neljää kuoroa. Taiteellisen johtajan työn ohessa teen tilauksesta sävellyksiä ja sovituksia kaikille kuoromuodoille, orkestereille ja yhtyeille.",
+    en: `At the moment I conduct five choirs. In addition to the artistic director's work, I compose and arrange music for all types of choirs, orchestras and bands.`,
+    fi: "Tällä hetkellä johdan viittä kuoroa. Taiteellisen johtajan työn ohessa teen tilauksesta sävellyksiä ja sovituksia kaikille kuoromuodoille, orkestereille ja yhtyeille.",
   },
   introMetaDescription: {
     en: `Professional choir and orchestra conductor in Southern Finland. Composer and arranger of music for choirs, orchestras and bands.`,
     fi: "Ammattimainen kuoron- ja orkesterinjohtaja Etelä-Suomessa. Säveltäjä ja sovittaja kuoroille, orkestereille ja yhtyeille.",
   },
+  isCelebrating: {
+    en: "is celebrating its 50th anniversary in 2026",
+    fi: "viettää 50-vuotisjuhlavuottaan vuonna 2026",
+  },
   kuokkalaChurch: { en: "Kuokkala Church", fi: "Kuokkalan kirkko" },
   lastName: { en: "Last name", fi: "Sukunimi" },
+  lauluMiehetSeniorChoir: {
+    en: "Laulu-Miehet male senior choir",
+    fi: "Laulu-Miesten seniorikuoro",
+  },
   linkToVideo: { en: "Link to video page", fi: "Linkki videon sivulle" },
   login: { en: "Log in", fi: "Kirjaudu sisään" },
   logout: { en: "Log out", fi: "Kirjaudu ulos" },
@@ -154,6 +167,7 @@ export const translations = {
     fi: "Haluatko varmasti kirjautua ulos?",
   },
   lyr: { en: "Lyr.", fi: "San." },
+  maleChoir: { en: "Male choir", fi: "Miesikuoro" },
   maxFiles10: {
     en: "Maximum of 10 files allowed",
     fi: "Enintään 10 tiedostoa sallittu",
@@ -170,6 +184,7 @@ export const translations = {
     en: "Message sent successfully",
     fi: "Viesti lähetetty onnistuneesti",
   },
+  mixedChoir: { en: "Mixed choir", fi: "Sekakuoro" },
   newPassword: { en: "New password", fi: "Uusi salasana" },
   newPasswordAgain: { en: "New password again", fi: "Uusi salasana uudelleen" },
   newUsername: { en: "New username", fi: "Uusi käyttäjänimi" },
@@ -216,6 +231,11 @@ export const translations = {
   },
   received: { en: "Received", fi: "Vastaanotettu" },
   register: { en: "Register", fi: "Rekisteröidy" },
+  rekolaMixedChoir: { en: "Rekola Mixed Choir", fi: "Rekolan sekakuoro" },
+  rekolaIntro: {
+    en: "The choir has a wide age range, from students to retirees, and team spirit is built with wrap parties.",
+    fi: "Kuorossa on laaja ikäskaala, opiskelijoista eläkeikäisiin ja yhteishenkeä luodaan karonkoilla.",
+  },
   remove: { en: "Remove", fi: "Poista" },
   removeMessage: { en: "Remove message", fi: "Poista viesti" },
   requiredField: { en: "Required field", fi: "Vaadittu kenttä" },
@@ -236,13 +256,18 @@ export const translations = {
     fi: "Lähetä nuotti joko kuvana liitteenä tai kysy postitusosoitetta alkuperäisen lähettämiseksi.",
   },
   sendMaterials: {
-    en: "Send what materials you have available",
-    fi: "Lähetä mitä materiaalia sinulla on saatavilla",
+    en: "You may send what materials you have available",
+    fi: "Voit lähettää tätä kautta materiaalisi",
   },
   sendSheetMusicInstructions: {
     en: "Send sheet music: The sheet music you are sending must include melody, lyrics and at least some chord symbols; also the desired key.",
     fi: "Lähetä nuotit: Lähettämäsi nuotit on sisällettävä melodia, sanat ja ainakin joitakin sointumerkkejä; myös haluttu sävellaji.",
   },
+  seniorMixedChoir63Plus: {
+    en: "A cheerful and warm mixed choir for seniors (+63 years old)",
+    fi: "Senioreille (+63-v.) suunnattu iloinen ja lämminhenkinen sekakuoro.",
+  },
+  seniorChoir: { en: "Senior choir", fi: "Seniorikuoro" },
   services: { en: "Services", fi: "Palvelut" },
   siteBy: { en: "Site by", fi: "Sivuston toteuttanut" },
   skipToFooter: { en: "Skip to footer", fi: "Siirry alatunnisteeseen" },
@@ -258,6 +283,10 @@ export const translations = {
   suitableArrangements: {
     en: "Get an arrangement suitable for your band, orchestra or vocal ensemble.",
     fi: "Hanki juuri sinun bändisi, orkesterisi tai lauluyhtyeesi kokoonpanolle sopiva sovitus.",
+  },
+  theChoirAcceptsSingersWhoAreAtLeast55YearsOld: {
+    en: "The choir accepts singers who are at least 55 years old:",
+    fi: "Kuoroon hyväksytään vähintään 55 vuotta täyttäneitä laulajia:",
   },
   toggleLanguage: { en: "Change language", fi: "Vaihda kieltä" },
   toggleTheme: { en: "Toggle theme", fi: "Vaihda teemaa" },
@@ -276,6 +305,7 @@ export const translations = {
   },
   whichPiece: { en: "Which piece it is", fi: "Mikä kappale kyseessä on" },
   wishes: { en: "Your wishes", fi: "Toiveesi" },
+  womensChoir: { en: "Women's choir", fi: "Naiskuoro" },
   yourMessage: { en: "Your message", fi: "Viestisi" },
   youWillReceiveAnOffer: {
     en: "You will receive an offer in return; delivery content, price information and an estimate of the schedule.",
