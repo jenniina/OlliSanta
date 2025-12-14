@@ -310,7 +310,7 @@ p {
 }
 
 .btn-wrap.btn-4 {
-  max-width: 22em;
+  max-width: 25em;
 }
 
 button {
@@ -338,21 +338,22 @@ button {
 }
 .tra button {
   transition-property: transform, background-color, color, outline-color,
-    outline-offset;
+    outline-offset, border-radius;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
 }
 button:hover,
 button:focus-visible {
   background-color: var(--color-6);
+  border-radius: calc(var(--corner-small) * 0.5);
   color: var(--color-0);
-  outline: 2px solid var(--color-6);
-  outline-offset: 4px;
-  -webkit-transform: scale(1.05);
-  -moz-transform: scale(1.05);
-  -ms-transform: scale(1.05);
-  -o-transform: scale(1.05);
-  transform: scale(1.05);
+  outline: 3px solid var(--color-6);
+  outline-offset: 3px;
+  -webkit-transform: scale(1.02, 1.04);
+  -moz-transform: scale(1.02, 1.04);
+  -ms-transform: scale(1.02, 1.04);
+  -o-transform: scale(1.02, 1.04);
+  transform: scale(1.02, 1.04);
 }
 
 button.big {
@@ -361,11 +362,11 @@ button.big {
 }
 button.big:hover,
 button.big:focus {
-  -webkit-transform: scale(1.02);
-  -moz-transform: scale(1.02);
-  -ms-transform: scale(1.02);
-  -o-transform: scale(1.02);
-  transform: scale(1.02);
+  -webkit-transform: scale(1.01, 1.02);
+  -moz-transform: scale(1.01, 1.02);
+  -ms-transform: scale(1.01, 1.02);
+  -o-transform: scale(1.01, 1.02);
+  transform: scale(1.01, 1.02);
 }
 
 a,
@@ -684,7 +685,11 @@ ol li:not(:first-of-type) {
   }
   .btn-wrap.btn-4 {
     max-width: 100%;
-    gap: 0.2em;
+    gap: 0.7em;
+  }
+  .fi .btn-wrap.btn-4 {
+    max-width: 100%;
+    gap: 0.3em;
   }
 }
 
