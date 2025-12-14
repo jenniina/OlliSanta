@@ -106,7 +106,7 @@ function App() {
   return (
     <div
       ref={appRef}
-      className={`app tra ${
+      className={`app tra ${language} ${
         displayLocation?.pathname === "/" ? "home" : ""
       } ${transitionStage} ${language}`}
       style={styleWrapper}
@@ -117,7 +117,7 @@ function App() {
         }
       }}
     >
-      <div className="inner">
+      <div className={`inner`}>
         <header>
           <Header location={displayLocation?.pathname ?? "/"} />
           <Nav location={displayLocation?.pathname ?? "/"} />

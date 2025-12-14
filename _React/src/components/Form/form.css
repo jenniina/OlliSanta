@@ -11,12 +11,16 @@
 }
 .input-container .input-wrap {
   flex: 1 1 100%;
-  max-width: calc(100vw - var(--scrollbar-width) - calc(var(--page-padding) * 2));
+  max-width: calc(
+    100vw - var(--scrollbar-width) - calc(var(--page-padding) * 2)
+  );
 }
 
 fieldset {
   width: 100%;
-  max-width: calc(100vw - var(--scrollbar-width) - calc(var(--page-padding) * 2));
+  max-width: calc(
+    100vw - var(--scrollbar-width) - calc(var(--page-padding) * 2)
+  );
   display: flex;
   padding: 0 0 1.3em;
   border: 0;
@@ -32,7 +36,9 @@ fieldset > * {
   flex: 1 1 100%;
 }
 #root fieldset * {
-  max-width: calc(100vw - var(--scrollbar-width) - calc(var(--page-padding) * 2));
+  max-width: calc(
+    100vw - var(--scrollbar-width) - calc(var(--page-padding) * 2)
+  );
   margin-left: 0;
   margin-right: 0;
 }
@@ -72,7 +78,11 @@ legend {
   font-family: var(--title-family);
 }
 legend > p {
-  font-size: clamp(calc(1rem * var(--responsive_scale)), 1.5vw, var(--title-XS));
+  font-size: clamp(
+    calc(1rem * var(--responsive_scale)),
+    1.5vw,
+    var(--title-XS)
+  );
   font-family: var(--text-family);
   letter-spacing: 0;
   padding-top: 0;
@@ -108,10 +118,10 @@ legend > p {
   }
 }
 
-input[type='text' i],
-input[type='number' i],
-input[type='email' i],
-input[type='password' i],
+input[type="text" i],
+input[type="number" i],
+input[type="email" i],
+input[type="password" i],
 textarea {
   width: 100%;
   line-height: 2;
@@ -131,8 +141,14 @@ textarea {
   background-color: transparent;
   border: none;
 }
-textarea,
-    input.bg /*give className of 'bg' to any inputs that need a background */ {
+textarea {
+  background-color: var(--color-9);
+  background: linear-gradient(4deg, var(--color-7) 20%, var(--color-8) 100%);
+  border-bottom: none;
+  outline: 0.2em transparent solid;
+  outline-offset: 0;
+}
+input.bg /*give className of 'bg' to any inputs that need a background */ {
   background-color: var(--color-9);
   background: linear-gradient(4deg, var(--color-7) 0%, var(--color-8) 100%);
   border-bottom: solid 0.1em var(--color-7);
@@ -185,7 +201,7 @@ textarea,
   gap: 0.3em;
   text-align: left;
 }
-.file-wrap input[type='file' i] {
+.file-wrap input[type="file" i] {
   order: 2;
   display: flex;
   flex-flow: column nowrap;
@@ -193,15 +209,15 @@ textarea,
   align-items: flex-start;
   gap: 0.5em;
 }
-.file-wrap input[type='file' i]:focus {
+.file-wrap input[type="file" i]:focus {
   outline-offset: 3px;
 }
-.tra .file-wrap input[type='file' i]::-webkit-file-upload-button {
+.tra .file-wrap input[type="file" i]::-webkit-file-upload-button {
   transition-property: background-color, color, outline-offset, transform;
   transition-timing-function: ease-in-out;
   transition-duration: 300ms;
 }
-.file-wrap input[type='file' i]::-webkit-file-upload-button {
+.file-wrap input[type="file" i]::-webkit-file-upload-button {
   margin-right: 0.5em;
   overflow: visible;
   cursor: pointer;
@@ -214,8 +230,8 @@ textarea,
   color: var(--color-0);
   font-size: calc(1rem * var(--responsive_scale));
 }
-.file-wrap input[type='file' i]::-webkit-file-upload-button:hover,
-.file-wrap input[type='file' i]::-webkit-file-upload-button:focus {
+.file-wrap input[type="file" i]::-webkit-file-upload-button:hover,
+.file-wrap input[type="file" i]::-webkit-file-upload-button:focus {
   background-color: var(--color-6);
   outline-color: var(--color-4);
   color: var(--color-0);
@@ -227,14 +243,14 @@ textarea,
   outline-offset: -0.3em;
   border: 0;
 }
-.file-wrap input[type='file' i]::-webkit-file-upload-button:active {
+.file-wrap input[type="file" i]::-webkit-file-upload-button:active {
   background-color: var(--color-6);
   color: var(--color-0);
 }
-.file-wrap input[type='file' i]::-webkit-file-upload-button:focus {
+.file-wrap input[type="file" i]::-webkit-file-upload-button:focus {
   outline: none;
 }
-.file-wrap input[type='file' i]::-webkit-file-upload-button::-moz-focus-inner {
+.file-wrap input[type="file" i]::-webkit-file-upload-button::-moz-focus-inner {
   border: 0;
 }
 
@@ -256,7 +272,7 @@ textarea,
 .input-wrap::before,
 .input-wrap.not-required::before,
 .input-wrap.not-required.not-filled::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -292,10 +308,12 @@ textarea,
   box-shadow: inset 0 0 0px 1000px var(--color-5);
   -webkit-text-fill-color: var(--color-9) !important;
 }
+/*
 #root input:-webkit-autofill,
 #root input:-webkit-autofill:focus {
-  /*transition: background-color 600000s 0s, color 600000s 0s;*/
+  transition: background-color 600000s 0s, color 600000s 0s;
 }
+  */
 #root input:is(:-webkit-autofill, :autofill) {
   background-color: var(--color-5) !important;
   color: var(--color-9) !important;
@@ -344,7 +362,7 @@ textarea,
   outline: none;
 }
 
-.input-wrap.not-required:not(.filled) input[type='text' i] {
+.input-wrap.not-required:not(.filled) input[type="text" i] {
   color: transparent !important;
 }
 .input-wrap.not-required input:focus {
@@ -378,6 +396,13 @@ textarea {
   min-height: 3.6em;
   line-height: 1.45;
   padding-right: 0.25em;
+  border-radius: calc(var(--corner-small) * 0.6) calc(var(--corner-small) * 0.6)
+    0 0;
+}
+textarea:focus,
+textarea:focus-visible {
+  outline: 0.2em var(--color-4) solid;
+  outline-offset: 0;
 }
 textarea::-webkit-scrollbar {
   width: 1em;
@@ -389,7 +414,7 @@ textarea::-webkit-scrollbar-track {
 
 textarea::-webkit-scrollbar-thumb {
   background-color: hsla(var(--hue2), 80%, 90%, 0.8);
-  border-radius: var(--corner-small);
+  border-radius: var(--corner-small) var(--corner-small) 0 var(--corner-small);
   border: 3px solid hsla(var(--hue2), 80%, 75%, 0.4);
   cursor: grab;
 }
@@ -401,7 +426,7 @@ textarea::-webkit-resizer {
   display: none;
 }
 .textarea-wrap::before {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -0.3em;
   right: 0.1em;
@@ -415,9 +440,9 @@ textarea::-webkit-resizer {
   pointer-events: none;
 }
 .textarea-wrap::after {
-  content: '';
+  content: "";
   position: absolute;
-  bottom: 0.1em;
+  bottom: 0.2em;
   right: 0.051em;
   width: 0.9em;
   height: 0.9em;
@@ -427,15 +452,15 @@ textarea::-webkit-resizer {
   z-index: 1;
   pointer-events: none;
 }
-input[type='color' i] {
+input[type="color" i] {
   height: 3.4em;
   cursor: pointer;
   border-width: 1px;
   width: 48%;
   border-radius: var(--corner-small);
 }
-input[type='checkbox' i],
-input[type='radio' i] {
+input[type="checkbox" i],
+input[type="radio" i] {
   --offset: 4px;
   position: relative;
   width: 1em;
@@ -445,26 +470,26 @@ input[type='radio' i] {
   align-self: center;
   margin: 0 0 0 calc(var(--offset) * 2);
 }
-input[type='checkbox' i] {
+input[type="checkbox" i] {
   margin-right: 1.3em;
 }
 .radio-checkbox {
   position: relative;
 }
-input[type='checkbox' i]:checked,
-input[type='radio' i]:checked {
+input[type="checkbox" i]:checked,
+input[type="radio" i]:checked {
   accent-color: var(--color-4);
 }
-input[type='radio' i]::before,
-input[type='checkbox' i]::before {
-  content: '';
+input[type="radio" i]::before,
+input[type="checkbox" i]::before {
+  content: "";
   position: absolute;
   outline: 0.1em solid var(--color-gray-7);
   outline-offset: var(--offset);
   z-index: -1;
   pointer-events: none;
 }
-input[type='radio' i]::before {
+input[type="radio" i]::before {
   top: -0em;
   left: -0em;
   right: -0em;
@@ -473,7 +498,7 @@ input[type='radio' i]::before {
   border: 1px solid var(--color-gray-7);
   background-color: var(--color-gray-5);
 }
-input[type='checkbox' i]::before {
+input[type="checkbox" i]::before {
   top: -0.05em;
   left: -0.05em;
   right: -0.05em;
@@ -481,27 +506,29 @@ input[type='checkbox' i]::before {
   border-radius: 1px;
   outline-offset: 3px;
 }
-input[type='radio' i]:checked::before,
-input[type='checkbox' i]:checked::before {
+input[type="radio" i]:checked::before,
+input[type="checkbox" i]:checked::before {
   outline-color: currentColor;
   outline-width: 0.22em;
 }
-input[type='radio' i]:checked::before {
+input[type="radio" i]:checked::before {
   background-color: var(--color-4);
   border: 1px solid var(--color-0);
 }
-input[type='checkbox' i]:checked::before {
+/*
+input[type="checkbox" i]:checked::before {
 }
-.input-wrap input[type='text' i],
-.input-wrap input[type='number' i],
-.input-wrap input[type='email' i],
-.input-wrap input[type='password' i] {
+*/
+.input-wrap input[type="text" i],
+.input-wrap input[type="number" i],
+.input-wrap input[type="email" i],
+.input-wrap input[type="password" i] {
   padding-left: 0.8em;
   padding-right: 0.8em;
 }
 
 @media (max-width: 300px) {
-  .file-wrap input[type='file' i]::-webkit-file-upload-button {
+  .file-wrap input[type="file" i]::-webkit-file-upload-button {
     display: block;
     margin-bottom: 0.6em;
   }

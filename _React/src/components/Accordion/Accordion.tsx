@@ -1,5 +1,4 @@
 import { FC, ReactNode, useEffect, useRef, useState } from "react"
-import { IoTriangleSharp } from "react-icons/io5"
 import styles from "./accordion.module.css"
 import { useTheme } from "../../contexts/useTheme"
 import { useLocation } from "react-router-dom"
@@ -68,33 +67,15 @@ const Accordion: FC<AccordionProps> = ({
         }
       }}
       aria-expanded={open}
-      className={`reset ${styles.details} ${classNames.map(
+      className={`${styles.details} ${classNames.map(
         (c) => styles[`${c}`]
       )} ${classNames.join(" ")} ${flex ? styles.flex : ""} ${
-        open ? styles.open : ""
+        open ? styles.open : styles.closed
       } ${closing ? styles.closing : ""} ${styles["tra"]}
       `}
     >
       <span className={styles.summary}>
-        <IoTriangleSharp
-          style={
-            !open || closing
-              ? {
-                  WebkitTransform: "rotate(90deg)",
-                  OTransform: "rotate(90deg)",
-                  MozTransform: "rotate(90deg)",
-                  msTransform: "rotate(90deg)",
-                  transform: "rotate(90deg)",
-                }
-              : {
-                  WebkitTransform: "rotate(180deg)",
-                  OTransform: "rotate(180deg)",
-                  MozTransform: "rotate(180deg)",
-                  msTransform: "rotate(180deg)",
-                  transform: "rotate(180deg)",
-                }
-          }
-        />
+        <span className={styles.triangle} aria-hidden="true" />
         {title}
       </span>
       <div ref={contentRef} className={styles.content}>

@@ -134,7 +134,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
     <>
       <SEO
         title={`${heading} - Olli Santa`}
-        description={`${t("introText1")}`}
+        description={`${t("aboutMe")} ${t("introText1")}`}
         canonical="https://ollisanta.fi/about"
         keywords={[
           "about",
@@ -177,41 +177,71 @@ const AboutPage: FC<Props> = ({ heading }) => {
               onClick={handleImageClick}
             />
             <div className={styles["intro-text"]}>
-              <p>{t("introText1")}</p>
+              <p>
+                {t("aboutMe")} {t("introText1")}
+              </p>
               <p>{t("introText2")}</p>
-              <Accordion title={t("choirs")} classNames={["left"]} flex>
-                <ul>
-                  <li>
+              <Accordion
+                title={`${t("currentPlural")} ${t("choirs").toLowerCase()} `}
+                classNames={["left"]}
+                flex
+              >
+                <ul className={styles.list}>
+                  <li className="tooltip-wrap">
                     <a
                       href="https://ilmonet.fi/course/E242012"
                       rel="noopener noreferrer"
                     >
-                      Seniorikuoro Ruusut ja Ritarit
+                      {t("seniorChoir")} Ruusut ja Ritarit
                     </a>
+                    <span className="tooltip below narrow">
+                      {t("seniorMixedChoir63Plus")}
+                    </span>
                   </li>
-                  <li>
+                  <li className="tooltip-wrap">
                     <a
                       href="https://www.vantaannaislaulajat.net"
                       rel="noopener noreferrer"
                     >
                       Vantaan Naislaulajat
                     </a>
+                    <span className="tooltip below narrow">
+                      {t("womensChoir")}: {t("isCelebrating")}
+                    </span>
                   </li>
-                  <li>
+                  <li className="tooltip-wrap">
                     <a
                       href="https://www.oltermannit.net"
                       rel="noopener noreferrer"
                     >
                       Vantaan Laulun Oltermannit
                     </a>
+                    <span className="tooltip below narrow">
+                      {t("maleChoir")}:{" "}
+                      {t("theChoirAcceptsSingersWhoAreAtLeast55YearsOld")}
+                    </span>
                   </li>
-                  <li>
+                  <li className="tooltip-wrap">
                     <a
                       href="https://rekolansekakuoro.com"
                       rel="noopener noreferrer"
                     >
-                      Rekolan Sekakuoro
+                      {t("rekolaMixedChoir")}
                     </a>
+                    <span className="tooltip below narrow">
+                      {t("rekolaIntro")}
+                    </span>
+                  </li>
+                  <li className="tooltip-wrap">
+                    <a
+                      href="https://laulumiehet.fi/laulu-miehet/urisevat-ukot/"
+                      rel="noopener noreferrer"
+                    >
+                      Urisevat Ukot
+                    </a>
+                    <span className="tooltip below narrow">
+                      {t("lauluMiehetSeniorChoir")}
+                    </span>
                   </li>
                 </ul>
               </Accordion>

@@ -103,6 +103,17 @@
   margin-top: 0.4em;
 }
 
+ul.list {
+  list-style: "\2605";
+  padding-left: 2em;
+}
+ul.list li {
+  padding-left: 0.3em;
+}
+ul.list li::marker {
+  transform: translateY(-0.1em);
+}
+
 @media (min-width: 300px) {
   .intro-wrap .intro-text {
     max-width: 400px;
@@ -113,7 +124,7 @@
 }
 @media (min-width: 600px) {
   .intro-wrap .olli {
-    width: clamp(100px, 100%, 250px);
+    width: clamp(100px, calc(35% - 2em), 250px);
     height: auto;
   }
   .intro-wrap .olli img {
@@ -122,8 +133,8 @@
     height: auto;
   }
   .intro-wrap .intro-text {
-    flex: 0 1 48%;
-    max-width: 48%;
+    flex: 0 1 calc(70% - 2em);
+    max-width: calc(65% - 2em);
   }
   .video {
     flex: 1 1 calc(50% - 2em);
