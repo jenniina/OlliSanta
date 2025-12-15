@@ -309,9 +309,7 @@ p {
   margin: 0 auto;
 }
 
-.btn-wrap.btn-4 {
-  max-width: 25em;
-}
+ 
 
 button {
   display: inline-flex;
@@ -683,14 +681,9 @@ ol li:not(:first-of-type) {
     -o-transform: rotateY(0deg) scale(1.1);
     transform: rotateY(0deg) scale(1.1);
   }
-  .btn-wrap.btn-4 {
-    max-width: 100%;
-    gap: 0.7em;
-  }
-  .fi .btn-wrap.btn-4 {
-    max-width: 100%;
-    gap: 0.3em;
-  }
+  .btn-wrap.btn-4 { 
+    gap: 0.1em;
+  } 
 }
 
 @media (min-width: 800px) {

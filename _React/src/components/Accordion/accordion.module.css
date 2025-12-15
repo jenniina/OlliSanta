@@ -137,11 +137,11 @@ button.details.closed:focus-visible {
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
   border-left: 8px solid currentColor;
-  transform-origin: 50% 100%;
-  transform: rotate(0deg) translateY(5px);
+  transform-origin: 20% 80%;
+  transform: rotate(0deg) translateY(3px);
 }
 .details.open > span > .triangle {
-  transform: rotate(90deg) translateY(-1px) translateY(8px);
+  transform: rotate(90deg) translateY(-1px) translateY(3px);
 }
 
 @keyframes open {
