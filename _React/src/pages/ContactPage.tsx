@@ -77,10 +77,12 @@ const ContactPage: FC<Props> = ({ heading }) => {
       ...prevData,
       lang: language,
       subject:
-        subjectOptions.find((o) => o.value === subject.value)?.label ?? other,
+        subject.value === "other"
+          ? subject.label + ": " + other
+          : subject.label ?? "other",
     }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language])
+  }, [language, other])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -89,14 +91,17 @@ const ContactPage: FC<Props> = ({ heading }) => {
       .sendMail(data, attachments)
       .then((response) => {
         notify(response.message, false, 5)
-        if (!response.error) {
+        if (response.success == true) {
           setData({
             orderID: makeOrderID(),
             lang: language ?? "fi",
             firstName: "",
             lastName: "",
             email: "",
-            subject: subject.value === "other" ? other : subject.label,
+            subject:
+              subject.value === "other"
+                ? subject.label + ": " + other
+                : subject.label,
             message: "",
             address: "",
             city: "",
@@ -131,12 +136,15 @@ const ContactPage: FC<Props> = ({ heading }) => {
         setSubject(option)
         setData((prevData) => ({
           ...prevData,
-          subject: option.value === "other" ? other : option.label,
+          subject:
+            option.value === "other"
+              ? option.label + ": " + other
+              : option.label,
         }))
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate, setSubject, setData])
+  }, [navigate, setSubject, setData, other])
 
   return (
     <>
