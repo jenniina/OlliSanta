@@ -33,7 +33,7 @@
   box-shadow: 1em 0.5em 3em -1em black;
   border-color: var(--color-7);
 }
-.tra .intro-wrap .olli img {
+.intro-wrap .olli img {
   transition-property: opacity, transform, border-radius;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
@@ -41,23 +41,24 @@
 .intro-wrap .olli img {
   opacity: 1;
   flex: 0 0 auto;
-  border-radius: 60% 110% 60% 110%;
   cursor: pointer;
+  border-radius: 74% 100% 80% 98%;
 }
 .intro-wrap .olli img:hover {
   transform: scale(1.03);
-  border-radius: 80% 100% 80% 100%;
+  border-radius: 60% 110% 60% 110%;
 }
-.intro-wrap .olli2 img {
-  border-radius: 30% 70% 50% 55% / 30% 50% 50% 70%;
+/* .intro-wrap .olli img {
+  border-radius: 38% 60% 50% 55% / 30% 50% 50% 70%;
 }
-.intro-wrap .olli2 img:hover {
+.intro-wrap .olli img:hover {
   transform: scale(1.03);
   border-radius: 70% 100% 80% 100%;
-}
-.intro-wrap .olli img.hidden {
+} */
+.intro-wrap .olli.hidden img {
   opacity: 0;
 }
+
 .intro-wrap .intro-text {
   flex: 0 1 100%;
   max-width: 90%;
@@ -105,7 +106,7 @@
 
 ul.list {
   list-style: "\2605";
-  padding-left: 2em;
+  padding-left: 1.8em;
 }
 ul.list li {
   padding-left: 0.3em;
@@ -113,6 +114,14 @@ ul.list li {
 ul.list li::marker {
   transform: translateY(-0.12em);
   color: var(--color-3);
+  transition-property: color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+ul.list li:hover::marker,
+ul.list li:focus::marker,
+ul.list li:focus-visible::marker {
+  color: var(--color-5);
 }
 
 @media (min-width: 300px) {

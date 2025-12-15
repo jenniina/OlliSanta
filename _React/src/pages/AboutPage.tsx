@@ -2,8 +2,8 @@ import { FC, useEffect, useRef, useState } from "react"
 import { TfiAngleDoubleDown, TfiAngleDoubleRight } from "react-icons/tfi"
 import { firstToLowerCase, scrollIntoView } from "../utils"
 import styles from "./css/about.module.css"
-import olli from "../assets/Olli-kuva-original.jpg"
-import olli2 from "../assets/olli_santa.jpg"
+import olli2 from "../assets/Olli-kuva-original.jpg"
+import olli from "../assets/olli_santa.jpg"
 import Image from "../components/Image/Image"
 import { useTranslation } from "../contexts/useTranslation"
 import { sanitize, getBreadcrumbJsonLd, getOrganizationJsonLd } from "../utils"
@@ -90,10 +90,8 @@ const AboutPage: FC<Props> = ({ heading }) => {
     }, 300)
   }, [darkMode])
 
-  const [currentImage, setCurrentImage] = useState(darkMode ? olli2 : olli)
-  const [currentClass, setCurrentClass] = useState(
-    darkMode ? `${styles["olli"]} ${styles["olli2"]}` : styles["olli"]
-  )
+  const [currentImage, setCurrentImage] = useState(olli)
+  const [currentClass, setCurrentClass] = useState(styles["olli"])
   const [isHidden, setIsHidden] = useState(false)
 
   const handleImageClick = () => {
@@ -102,9 +100,11 @@ const AboutPage: FC<Props> = ({ heading }) => {
       setCurrentImage((prevImage) => {
         if (prevImage === olli) {
           setCurrentClass(`${styles["olli"]} ${styles["olli2"]}`)
+
           return olli2
         } else {
-          setCurrentClass(styles["olli"])
+          setCurrentClass(`${styles["olli"]} ${styles["olli1"]}`)
+
           return olli
         }
       })
@@ -112,23 +112,23 @@ const AboutPage: FC<Props> = ({ heading }) => {
     }, 300) // Match the transition duration!
   }
 
-  useEffect(() => {
-    setIsHidden(true)
-    if (darkMode) {
-      setTimeout(() => {
-        setCurrentImage(olli2)
-        setCurrentClass(`${styles["olli"]} ${styles["olli2"]}`)
-      }, 300)
-    } else {
-      setTimeout(() => {
-        setCurrentImage(olli)
-        setCurrentClass(styles["olli"])
-      }, 300)
-    }
-    setTimeout(() => {
-      setIsHidden(false)
-    }, 400)
-  }, [darkMode])
+  // useEffect(() => {
+  //   setIsHidden(true)
+  //   if (darkMode) {
+  //     setTimeout(() => {
+  //       setCurrentImage(olli2)
+  //       setCurrentClass(`${styles["olli"]} ${styles["olli2"]}`)
+  //     }, 300)
+  //   } else {
+  //     setTimeout(() => {
+  //       setCurrentImage(olli)
+  //       setCurrentClass(styles["olli"])
+  //     }, 300)
+  //   }
+  //   setTimeout(() => {
+  //     setIsHidden(false)
+  //   }, 400)
+  // }, [darkMode])
 
   return (
     <>
