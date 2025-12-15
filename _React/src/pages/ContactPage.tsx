@@ -98,10 +98,7 @@ const ContactPage: FC<Props> = ({ heading }) => {
             firstName: "",
             lastName: "",
             email: "",
-            subject:
-              subject.value === "other"
-                ? subject.label + ": " + other
-                : subject.label,
+            subject: subject.label,
             message: "",
             address: "",
             city: "",
@@ -113,6 +110,7 @@ const ContactPage: FC<Props> = ({ heading }) => {
             schedule: "",
           })
           setAttachments([])
+          setOther("")
           setIsSending(false)
         } else setIsSending(false)
       })
