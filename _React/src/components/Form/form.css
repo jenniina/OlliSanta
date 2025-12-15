@@ -4,10 +4,17 @@
 .input-container {
   display: flex;
   flex-flow: row wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-end;
   gap: 0.5em;
   margin-bottom: 1em;
+}
+.input-container.wide .subject {
+  width: clamp(100px, 100%, 14em);
+}
+.input-container.wide .subject > div {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 .input-container .input-wrap {
   flex: 1 1 100%;
@@ -143,7 +150,7 @@ textarea {
 }
 textarea {
   background-color: var(--color-9);
-  background: linear-gradient(4deg, var(--color-7) 20%, var(--color-8) 100%);
+  background: linear-gradient(3deg, var(--color-7) 20%, var(--color-8) 100%);
   border-bottom: none;
   outline: 0.2em transparent solid;
   outline-offset: 0;
@@ -402,7 +409,7 @@ textarea {
 textarea:focus,
 textarea:focus-visible {
   outline: 0.2em var(--color-4) solid;
-  outline-offset: 0;
+  outline-offset: 1px;
 }
 textarea::-webkit-scrollbar {
   width: 1em;
@@ -410,6 +417,7 @@ textarea::-webkit-scrollbar {
 textarea::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 0.3em hsla(var(--hue1), 80%, 40%, 0.6);
   cursor: pointer;
+  width: 1em;
 }
 
 textarea::-webkit-scrollbar-thumb {
@@ -417,6 +425,7 @@ textarea::-webkit-scrollbar-thumb {
   border-radius: var(--corner-small) var(--corner-small) 0 var(--corner-small);
   border: 3px solid hsla(var(--hue2), 80%, 75%, 0.4);
   cursor: grab;
+  width: 1em;
 }
 .dark textarea::-webkit-scrollbar-thumb {
   background-color: hsla(var(--hue1), 80%, 40%, 0.8);
@@ -428,13 +437,13 @@ textarea::-webkit-resizer {
 .textarea-wrap::before {
   content: "";
   position: absolute;
-  bottom: -0.3em;
+  bottom: -0.2em;
   right: 0.1em;
   width: 0;
   height: 0;
   border: 0.4em solid transparent;
   border-top-color: var(--color-5);
-  border-top-width: 0.8em;
+  border-top-width: 0.6em;
   outline: none;
   z-index: 2;
   pointer-events: none;
@@ -442,13 +451,16 @@ textarea::-webkit-resizer {
 .textarea-wrap::after {
   content: "";
   position: absolute;
-  bottom: 0.2em;
-  right: 0.051em;
-  width: 0.9em;
-  height: 0.9em;
+  bottom: 0em;
+  right: 0em;
+  width: 1em;
+  height: 1em;
+  border-left: 0.05em solid var(--color-7);
+  border-top: 0.05em solid var(--color-7);
+  border-right: 0.05em solid var(--color-8);
+  border-bottom: 0.05em solid var(--color-8);
   background: var(--color-7);
   /* box-shadow: inset 0 0.6em 0 var(--color-7); */
-  outline: 0.1em solid var(--color-7);
   z-index: 1;
   pointer-events: none;
 }

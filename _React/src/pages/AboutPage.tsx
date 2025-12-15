@@ -82,13 +82,13 @@ const AboutPage: FC<Props> = ({ heading }) => {
     }, 500)
   }, [location, darkMode])
 
-  useEffect(() => {
-    setTimeout(() => {
-      darkMode
-        ? divRef.current?.classList.add(styles["dark"])
-        : divRef.current?.classList.remove(styles["dark"])
-    }, 300)
-  }, [darkMode])
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     darkMode
+  //       ? divRef.current?.classList.add(styles["dark"])
+  //       : divRef.current?.classList.remove(styles["dark"])
+  //   }, 300)
+  // }, [darkMode])
 
   const [currentImage, setCurrentImage] = useState(olli)
   const [currentClass, setCurrentClass] = useState(styles["olli"])
@@ -111,24 +111,6 @@ const AboutPage: FC<Props> = ({ heading }) => {
       setIsHidden(false)
     }, 300) // Match the transition duration!
   }
-
-  // useEffect(() => {
-  //   setIsHidden(true)
-  //   if (darkMode) {
-  //     setTimeout(() => {
-  //       setCurrentImage(olli2)
-  //       setCurrentClass(`${styles["olli"]} ${styles["olli2"]}`)
-  //     }, 300)
-  //   } else {
-  //     setTimeout(() => {
-  //       setCurrentImage(olli)
-  //       setCurrentClass(styles["olli"])
-  //     }, 300)
-  //   }
-  //   setTimeout(() => {
-  //     setIsHidden(false)
-  //   }, 400)
-  // }, [darkMode])
 
   return (
     <>
@@ -165,7 +147,10 @@ const AboutPage: FC<Props> = ({ heading }) => {
           { name: heading, url: "https://ollisanta.fi/about" },
         ])}
       />
-      <div ref={divRef} className={`${styles["tra"]}`}>
+      <div
+        ref={divRef}
+        className={`${styles["tra"]} ${darkMode ? styles.dark : ""}`}
+      >
         <section>
           <h2>{heading}</h2>
           <div className={styles["intro-wrap"]}>

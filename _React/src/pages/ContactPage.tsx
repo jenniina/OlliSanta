@@ -17,6 +17,7 @@ import { getRandomLetters, getRandomMinMax } from "../utils"
 import { getBreadcrumbJsonLd, getOrganizationJsonLd } from "../utils"
 import JsonLdScript from "../utils/JsonLd"
 import SEO from "../components/SEO/SEO"
+import Input from "../components/Form/Input"
 
 interface Props {
   heading: string
@@ -62,6 +63,7 @@ const ContactPage: FC<Props> = ({ heading }) => {
     ensemble: "",
     schedule: "",
   })
+  const [other, setOther] = useState("")
 
   const [attachments, setAttachments] = useState<FData["attachments"]>([])
 
@@ -75,11 +77,12 @@ const ContactPage: FC<Props> = ({ heading }) => {
       ...prevData,
       lang: language,
       subject:
-        subjectOptions.find((o) => o.value === subject.value)?.label ??
-        subjectOptions[0].label,
+        subject.value === "other"
+          ? subject.label + ": " + other
+          : subject.label ?? "other",
     }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language])
+  }, [language, other])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -88,7 +91,7 @@ const ContactPage: FC<Props> = ({ heading }) => {
       .sendMail(data, attachments)
       .then((response) => {
         notify(response.message, false, 5)
-        if (!response.error) {
+        if (response.success == true) {
           setData({
             orderID: makeOrderID(),
             lang: language ?? "fi",
@@ -107,6 +110,7 @@ const ContactPage: FC<Props> = ({ heading }) => {
             schedule: "",
           })
           setAttachments([])
+          setOther("")
           setIsSending(false)
         } else setIsSending(false)
       })
@@ -128,11 +132,17 @@ const ContactPage: FC<Props> = ({ heading }) => {
       if (option) {
         navigate("/contact")
         setSubject(option)
-        setData((prevData) => ({ ...prevData, subject: option.label }))
+        setData((prevData) => ({
+          ...prevData,
+          subject:
+            option.value === "other"
+              ? option.label + ": " + other
+              : option.label,
+        }))
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate, setSubject, setData])
+  }, [navigate, setSubject, setData, other])
 
   return (
     <>
@@ -202,7 +212,11 @@ const ContactPage: FC<Props> = ({ heading }) => {
           }`}
         >
           <form onSubmit={handleSubmit}>
-            <div className="input-container">
+            <div
+              className={`input-container ${
+                subject.value !== "parts" ? "" : "wide"
+              }`}
+            >
               <Select
                 options={subjectOptions}
                 value={subject}
@@ -251,6 +265,16 @@ const ContactPage: FC<Props> = ({ heading }) => {
                   name="ensemble"
                   label={t("ensemble")}
                   onChange={setData}
+                  required
+                />
+              )}
+              {subject.value === "other" && (
+                <Input
+                  value={other}
+                  type="text"
+                  name="otherSubject"
+                  label={t("subject")}
+                  onChange={setOther}
                   required
                 />
               )}

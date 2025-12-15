@@ -162,7 +162,9 @@ const Header: FC<Props> = ({ location }) => {
           />
         )}
         {!hasClickedTwice && (
-          <span className="tooltip below narrow">{t("clickMeShadow")}</span>
+          <span className="tooltip below right narrow">
+            {t("clickMeShadow")}
+          </span>
         )}
         {heading && (
           <span id="hidden-heading" className="scr">
