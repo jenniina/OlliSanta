@@ -1,26 +1,28 @@
 button.details {
-  transform-origin: 10% 50%;
+  transform-origin: 50%;
   width: 100%;
   background-color: transparent;
-  outline: 0 solid var(--color-3);
-  border: none;
+  outline: 1px solid var(--color-8);
+  border: 2px solid var(--color-8);
   transition-property: outline-color, outline-width, outline-offset,
-    background-color, border-color;
+    background-color, border-color, border-width;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
-  padding: 0.7em 0.8em 0.5em;
+  padding: 0.7em 0.8em 0.3em;
 }
 button.details:hover,
 button.details.open:focus,
 button.details.open:focus-visible {
   background-color: transparent;
+  outline-color: transparent;
   outline-width: 0;
 }
 button.details.closed:hover,
 button.details.closed:focus,
 button.details.closed:focus-visible {
-  outline: 2px solid var(--color-3);
-  outline-offset: 2px;
+  border: 2px solid var(--color-7);
+  outline: 3px solid var(--color-7);
+  outline-offset: 3px;
   background-color: transparent;
 }
 
@@ -28,10 +30,7 @@ button.details.closed:focus-visible {
   padding: 4px;
   border-radius: var(--corner-small);
 }
-.details:focus-visible > span {
-  outline: 2px solid var(--color-3);
-  outline-offset: -2px;
-}
+
 .details.open {
   -webkit-transform: none;
   -moz-transform: none;

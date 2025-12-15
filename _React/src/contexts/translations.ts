@@ -3,8 +3,8 @@ import { ELang } from "../interfaces"
 export const translations = {
   about: { en: "About", fi: "Tietoa" },
   aboutMe: {
-    en: "I am Olli Männistö (artist name Olli Santa).",
-    fi: "Olen Olli Männistö (taiteilijanimeltä Olli Santa).",
+    en: "I am Olli Männistö, artist name",
+    fi: "Olen Olli Männistö, taiteilijanimeltä",
   },
   addContactInfo: {
     en: "Add your contact information",
@@ -108,27 +108,27 @@ export const translations = {
   firstName: { en: "First name", fi: "Etunimi" },
   greatWesternText1: {
     en: "This text video is a demonstration on how important music is in movies. I composed the music for a scene in a movie that does not yet exist. The movie is called Great Western and this is the theme music for one scene.",
-    fi: "This text video is a demonstration on how important music is in movies. I composed the music for a scene in a movie that does not yet exist. The movie is called Great Western and this is the theme music for one scene.",
+    fi: "Tämä tekstivideo on demonstraatio siitä, kuinka tärkeää musiikki on elokuvissa. Sävelsin musiikin kohtaukseen elokuvaa varten, jota ei vielä ole olemassa. Elokuvan nimi on Great Western ja tämä on teemamusiikki yhtä kohtausta varten.",
   },
   greatWesternText3: {
     en: "Our Great Western series has now reached its third part. Now we get to follow the eventful life of the town sheriff for a day.",
-    fi: "Our Great Western series has now reached its third part. Now we get to follow the eventful life of the town sheriff for a day.",
+    fi: "Our Great Western sarja on nyt edennyt kolmanteen osaan. Nyt pääsemme seuraamaan kaupungin sheriffin tapahtumarikasta elämää yhden päivän ajan.",
   },
   greatWesternTitle1: {
     en: "Great Western - Letter Scene",
-    fi: "Great Western - Kirjeen kohtaus",
+    fi: "Great Western - Kirjekohtaus",
   },
   greatWesternTitle2: {
     en: "Overture of the Great Western",
-    fi: "Overture of the Great Western",
+    fi: "The Great Western Overture",
   },
   greatWesternTitle3: {
     en: "Great Western - Sheriff",
-    fi: "Great Western - Sheriff",
+    fi: "Great Western: Sheriff",
   },
   haveAHandwrittenScore: {
     en: "Do you have a difficult-to-read, handwritten score? Or a score simply too small to read? Send it to me and you will receive neatly written scores made with notation software.",
-    fi: "Do you have a difficult-to-read, handwritten score? Or a score simply too small to read? Send it to me and you will receive neatly written scores made with notation software.",
+    fi: "Onko sinulla vaikeasti luettava, käsin kirjoitettu nuotti? Tai liian pieni nuotti luettavaksi? Lähetä se minulle, niin saat siististi nuotintusohjelmalla tehdyt nuotit.",
   },
   home: { en: "Home", fi: "Alku" },
   homePage: { en: "Home page", fi: "Etusivu" },
@@ -201,11 +201,11 @@ export const translations = {
   },
   partsInstructions1: {
     en: "The part played and sung alone.",
-    fi: "The part played and sung alone.",
+    fi: "Osa, jota soitetaan ja lauletaan yksinään.",
   },
   partsInstructions2: {
     en: "The part reinforced so that other parts are heard in the background.",
-    fi: "The part reinforced so that other parts are heard in the background.",
+    fi: "Osa vahvistettuna siten, että taustalla kuuluu muita osia.",
   },
   partsInstructions3: {
     en: 'The piece so that "your part" is inaudible and the other parts are heard.',
