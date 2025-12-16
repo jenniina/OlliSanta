@@ -75,6 +75,12 @@ const AboutPage: FC<Props> = ({ heading }) => {
     id: sanitize(video.title ?? "default"),
   })) as Video[]
 
+  const [loadedVideos, setLoadedVideos] = useState<Set<string>>(new Set())
+
+  const handleVideoClick = (videoId: string) => {
+    setLoadedVideos((prev) => new Set(prev).add(videoId))
+  }
+
   useEffect(() => {
     divRef.current?.classList.remove(styles["tra"])
     setTimeout(() => {
@@ -420,30 +426,48 @@ const AboutPage: FC<Props> = ({ heading }) => {
         <section>
           <h3 className={styles["heading3"]}>{t("videos")}</h3>
           <div className={styles["video-wrap"]}>
-            {videosWithID?.map((video) => (
-              <div key={video.id} id={video.id} className={styles["video"]}>
-                <h4>{video.title}</h4>
-                <iframe
-                  width="100%"
-                  height="250"
-                  src={video.url}
-                  title={video.title}
-                  loading="lazy"
-                  sandbox="allow-scripts allow-same-origin allow-presentation"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  aria-label={`${t("videoTitled")} ${video.title}`}
-                ></iframe>
-                {video.description.trim() !== "" && (
-                  <p>
-                    {split(video.description)}
-                    <br />
-                    <a href={video.url2}>{t("linkToVideo")}</a>
-                  </p>
-                )}
-              </div>
-            ))}
+            {videosWithID?.map((video) => {
+              const isLoaded = loadedVideos.has(video.id)
+
+              return (
+                <div key={video.id} id={video.id} className={styles["video"]}>
+                  <h4>{video.title}</h4>
+                  {!isLoaded ? (
+                    <button
+                      onClick={() => handleVideoClick(video.id)}
+                      className={styles["video-thumbnail"]}
+                      aria-label={`${t("playVideo")} ${video.title}`}
+                    >
+                      <span
+                        className={styles["play-button"]}
+                        aria-hidden="true"
+                      >
+                        ▶
+                      </span>
+                    </button>
+                  ) : (
+                    <iframe
+                      width="100%"
+                      height="250"
+                      src={`${video.url}?autoplay=1`}
+                      title={video.title}
+                      sandbox="allow-scripts allow-same-origin allow-presentation"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      aria-label={`${t("videoTitled")} ${video.title}`}
+                    ></iframe>
+                  )}
+                  {video.description.trim() !== "" && (
+                    <p>
+                      {split(video.description)}
+                      <br />
+                      <a href={video.url2}>{t("linkToVideo")}</a>
+                    </p>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </section>
       </div>

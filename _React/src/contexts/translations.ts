@@ -225,6 +225,7 @@ export const translations = {
     fi: "Salasanat eivät täsmää",
   },
   pieceName: { en: "Name of the piece", fi: "Kappaleen nimi" },
+  playVideo: { en: "Play video", fi: "Toista video" },
   receiveBack: {
     en: "You will receive the finished product back within a week or two, either as a printout or in PDF format, according to your wishes.",
     fi: "Saat valmiin tuotteen takaisin viikon tai kahden sisällä, joko tulosteena tai PDF-muodossa, toiveidesi mukaan.",
