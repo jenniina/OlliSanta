@@ -121,7 +121,7 @@
 }
 
 .video-thumbnail:hover {
-  transform: scale(1.02);
+  transform: scale(1.01);
 }
 
 .video-thumbnail:focus-visible {
@@ -133,17 +133,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 68px;
+  width: 72px;
   height: 48px;
   background-color: rgba(255, 0, 0, 0.8);
   border-radius: 12px;
   color: white;
   font-size: 24px;
-  transition: background-color 0.2s ease-in-out;
+  transition-property: background-color, transform;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
 }
-
+.play-button::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 16px solid rgba(255, 255, 255, 0.84);
+  transition-property: border-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
 .video-thumbnail:hover .play-button {
   background-color: rgba(255, 0, 0, 1);
+  transform: scale(1.1);
+}
+.video-thumbnail:hover .play-button::after {
+  border-left-color: rgba(255, 255, 255, 1);
 }
 
 .heading3 {

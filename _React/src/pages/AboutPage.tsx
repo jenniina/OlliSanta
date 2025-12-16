@@ -441,9 +441,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
                       <span
                         className={styles["play-button"]}
                         aria-hidden="true"
-                      >
-                        ▶
-                      </span>
+                      ></span>
                     </button>
                   ) : (
                     <iframe
