@@ -66,13 +66,10 @@
   outline-width: 2px;
   outline-offset: -2px;
 }
-/* .intro-wrap .olli {
-  border-radius: 38% 60% 50% 55% / 30% 50% 50% 70%;
+.intro-wrap .olli1:hover {
+  border-radius: 50% 130% 60% 130% / 50% 130% 60% 140%;
 }
-.intro-wrap .olli:hover {
-  transform: scale(1.03);
-  border-radius: 70% 100% 80% 100%;
-} */
+
 .intro-wrap .olli.hidden img {
   opacity: 0;
 }
