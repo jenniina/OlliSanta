@@ -57,8 +57,11 @@
   cursor: pointer;
   border-radius: 74% 100% 80% 98%;
 }
+.intro-wrap .olli1 {
+  border-radius: 74% 120% 90% 100% / 75% 100% 100% 120%;
+}
 .intro-wrap .olli:hover {
-  transform: scale(1.03);
+  transform: scale(1.05);
   border-radius: 60% 110% 60% 110%;
   outline-width: 2px;
   outline-offset: -2px;

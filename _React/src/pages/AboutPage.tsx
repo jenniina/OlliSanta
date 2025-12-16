@@ -91,7 +91,9 @@ const AboutPage: FC<Props> = ({ heading }) => {
   // }, [darkMode])
 
   const [currentImage, setCurrentImage] = useState(olli)
-  const [currentClass, setCurrentClass] = useState(styles["olli"])
+  const [currentClass, setCurrentClass] = useState(
+    `${styles["olli"]} ${styles["olli1"]}`
+  )
   const [isHidden, setIsHidden] = useState(false)
 
   const handleImageClick = () => {
