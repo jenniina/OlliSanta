@@ -35,7 +35,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
 
   const videos: Partial<Video>[] = [
     {
-      title: `Taas kaikki kauniit muistot`,
+      title: `Taas kaikki kauniit muistot (${t("comp")} Olli Santa)`,
       url: "https://www.youtube-nocookie.com/embed/Y4XaeaOnwd8",
       url2: "https://youtu.be/Y4XaeaOnwd8",
       description: `Jyväskylän Salonkiorkesteri ${t(
@@ -43,6 +43,12 @@ const AboutPage: FC<Props> = ({ heading }) => {
       )} Jyväskylän Puhallinorkesteri, ${t("kuokkalaChurch")} 20.12.2021 \n${t(
         "lyr"
       )} Viljo Kojo \n${t("comp")} Olli Santa \n${t("solist")} Olli Santa`,
+    },
+    {
+      title: `Hän kulkevi kuin yli kukkien (${t("comp")} Olli Santa)`,
+      url: "https://www.youtube-nocookie.com/embed/0EkdsV4qTuw",
+      url2: "https://youtu.be/0EkdsV4qTuw",
+      description: `${t("comp")} Olli Santa, ${t("lyr")} Eino Leino`,
     },
     {
       title: `${t("greatWesternTitle3")}`,
@@ -61,12 +67,6 @@ const AboutPage: FC<Props> = ({ heading }) => {
       url: "https://www.youtube-nocookie.com/embed/Jy-hBuXrnoQ",
       url2: "https://youtu.be/Jy-hBuXrnoQ",
       description: `${t("greatWesternText1")} \n${t("comp")} Olli Santa`,
-    },
-    {
-      title: `Hän kulkevi kuin yli kukkien`,
-      url: "https://www.youtube-nocookie.com/embed/0EkdsV4qTuw",
-      url2: "https://youtu.be/0EkdsV4qTuw",
-      description: `${t("comp")} Olli Santa, ${t("lyr")} Eino Leino`,
     },
   ]
 
@@ -441,7 +441,11 @@ const AboutPage: FC<Props> = ({ heading }) => {
                       <span
                         className={styles["play-button"]}
                         aria-hidden="true"
-                      ></span>
+                      >
+                        <span></span>
+                        <i></i>
+                        <b></b>
+                      </span>
                     </button>
                   ) : (
                     <iframe
