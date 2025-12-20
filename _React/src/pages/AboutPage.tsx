@@ -35,7 +35,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
 
   const videos: Partial<Video>[] = [
     {
-      title: `Taas kaikki kauniit muistot`,
+      title: `Taas kaikki kauniit muistot (${t("comp")} Olli Santa)`,
       url: "https://www.youtube-nocookie.com/embed/Y4XaeaOnwd8",
       url2: "https://youtu.be/Y4XaeaOnwd8",
       description: `Jyväskylän Salonkiorkesteri ${t(
@@ -43,6 +43,12 @@ const AboutPage: FC<Props> = ({ heading }) => {
       )} Jyväskylän Puhallinorkesteri, ${t("kuokkalaChurch")} 20.12.2021 \n${t(
         "lyr"
       )} Viljo Kojo \n${t("comp")} Olli Santa \n${t("solist")} Olli Santa`,
+    },
+    {
+      title: `Hän kulkevi kuin yli kukkien (${t("comp")} Olli Santa)`,
+      url: "https://www.youtube-nocookie.com/embed/0EkdsV4qTuw",
+      url2: "https://youtu.be/0EkdsV4qTuw",
+      description: `${t("comp")} Olli Santa, ${t("lyr")} Eino Leino`,
     },
     {
       title: `${t("greatWesternTitle3")}`,
@@ -62,18 +68,18 @@ const AboutPage: FC<Props> = ({ heading }) => {
       url2: "https://youtu.be/Jy-hBuXrnoQ",
       description: `${t("greatWesternText1")} \n${t("comp")} Olli Santa`,
     },
-    {
-      title: `Hän kulkevi kuin yli kukkien`,
-      url: "https://www.youtube-nocookie.com/embed/0EkdsV4qTuw",
-      url2: "https://youtu.be/0EkdsV4qTuw",
-      description: `${t("comp")} Olli Santa, ${t("lyr")} Eino Leino`,
-    },
   ]
 
   const videosWithID = videos?.map((video) => ({
     ...video,
     id: sanitize(video.title ?? "default"),
   })) as Video[]
+
+  const [loadedVideos, setLoadedVideos] = useState<Set<string>>(new Set())
+
+  const handleVideoClick = (videoId: string) => {
+    setLoadedVideos((prev) => new Set(prev).add(videoId))
+  }
 
   useEffect(() => {
     divRef.current?.classList.remove(styles["tra"])
@@ -91,7 +97,9 @@ const AboutPage: FC<Props> = ({ heading }) => {
   // }, [darkMode])
 
   const [currentImage, setCurrentImage] = useState(olli)
-  const [currentClass, setCurrentClass] = useState(styles["olli"])
+  const [currentClass, setCurrentClass] = useState(
+    `${styles["olli"]} ${styles["olli1"]}`
+  )
   const [isHidden, setIsHidden] = useState(false)
 
   const handleImageClick = () => {
@@ -418,30 +426,50 @@ const AboutPage: FC<Props> = ({ heading }) => {
         <section>
           <h3 className={styles["heading3"]}>{t("videos")}</h3>
           <div className={styles["video-wrap"]}>
-            {videosWithID?.map((video) => (
-              <div key={video.id} id={video.id} className={styles["video"]}>
-                <h4>{video.title}</h4>
-                <iframe
-                  width="100%"
-                  height="250"
-                  src={video.url}
-                  title={video.title}
-                  loading="lazy"
-                  sandbox="allow-scripts allow-same-origin allow-presentation"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  aria-label={`${t("videoTitled")} ${video.title}`}
-                ></iframe>
-                {video.description.trim() !== "" && (
-                  <p>
-                    {split(video.description)}
-                    <br />
-                    <a href={video.url2}>{t("linkToVideo")}</a>
-                  </p>
-                )}
-              </div>
-            ))}
+            {videosWithID?.map((video) => {
+              const isLoaded = loadedVideos.has(video.id)
+
+              return (
+                <div key={video.id} id={video.id} className={styles["video"]}>
+                  <h4>{video.title}</h4>
+                  {!isLoaded ? (
+                    <button
+                      onClick={() => handleVideoClick(video.id)}
+                      className={styles["video-thumbnail"]}
+                      aria-label={`${t("playVideo")} ${video.title}`}
+                    >
+                      <span
+                        className={styles["play-button"]}
+                        aria-hidden="true"
+                      >
+                        <span></span>
+                        <i></i>
+                        <b></b>
+                      </span>
+                    </button>
+                  ) : (
+                    <iframe
+                      width="100%"
+                      height="250"
+                      src={`${video.url}?autoplay=1`}
+                      title={video.title}
+                      sandbox="allow-scripts allow-same-origin allow-presentation"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      referrerPolicy="strict-origin-when-cross-origin"
+                      aria-label={`${t("videoTitled")} ${video.title}`}
+                    ></iframe>
+                  )}
+                  {video.description.trim() !== "" && (
+                    <p>
+                      {split(video.description)}
+                      <br />
+                      <a href={video.url2}>{t("linkToVideo")}</a>
+                    </p>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </section>
       </div>

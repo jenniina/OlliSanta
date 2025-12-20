@@ -57,19 +57,19 @@
   cursor: pointer;
   border-radius: 74% 100% 80% 98%;
 }
+.intro-wrap .olli1 {
+  border-radius: 74% 120% 90% 100% / 75% 100% 100% 120%;
+}
 .intro-wrap .olli:hover {
-  transform: scale(1.03);
+  transform: scale(1.05);
   border-radius: 60% 110% 60% 110%;
   outline-width: 2px;
   outline-offset: -2px;
 }
-/* .intro-wrap .olli {
-  border-radius: 38% 60% 50% 55% / 30% 50% 50% 70%;
+.intro-wrap .olli1:hover {
+  border-radius: 50% 130% 60% 130% / 50% 130% 60% 140%;
 }
-.intro-wrap .olli:hover {
-  transform: scale(1.03);
-  border-radius: 70% 100% 80% 100%;
-} */
+
 .intro-wrap .olli.hidden img {
   opacity: 0;
 }
@@ -98,6 +98,300 @@
 .video-wrap .video iframe {
   border: 0;
   outline: none;
+}
+
+.video-thumbnail {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  background: linear-gradient(
+    6deg,
+    var(--color-1) 0%,
+    var(--color-2) 30%,
+    var(--color-4) 60%,
+    var(--color-7) 100%
+  );
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease-in-out;
+  border-radius: 0.25rem;
+}
+
+.video-thumbnail:hover {
+  transform: scale(1.05, 1.01);
+  outline-color: var(--color-7);
+}
+
+.video-thumbnail:focus-visible {
+  outline: 2px solid var(--color-7);
+  outline-offset: 2px;
+}
+
+.play-button {
+  --color1: hsl(0, 100%, 40%);
+  --color2: hsl(0, 100%, 55%);
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  left: 30px;
+  width: 132px;
+  height: 38px;
+  background-color: var(--color1);
+  border-radius: 12px;
+  border-radius: 70% 50% 90% 90% / 80% 60% 120% 80%;
+  color: var(--color1);
+  font-size: 24px;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+  animation: bodyMovement 2s infinite ease-in-out;
+  animation-play-state: paused;
+}
+.video-thumbnail:hover .play-button,
+.video-thumbnail:focus .play-button,
+.video-thumbnail:focus-visible .play-button {
+  animation-play-state: running;
+}
+.play-button::before {
+  /* tail end */
+  content: "";
+  z-index: -1;
+  position: absolute;
+  width: 0;
+  height: 6px;
+  top: 6px;
+  left: -55px;
+  color: var(--color1);
+  border-top: 11px solid transparent;
+  border-bottom: 11px solid transparent;
+  border-right: 66px solid currentColor;
+  border-radius: 0;
+  background-color: transparent;
+  transition-property: color, border-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+  transform-origin: right center;
+  animation: tailMovement 2s infinite ease-in-out;
+  animation-play-state: paused;
+}
+.video-thumbnail:hover .play-button::before,
+.video-thumbnail:focus .play-button::before,
+.video-thumbnail:focus-visible .play-button::before {
+  animation-play-state: running;
+}
+.play-button::after {
+  /* play icon*/
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 16px solid rgba(255, 255, 255, 0.84);
+  transition-property: color, border-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.play-button span,
+.play-button i,
+.play-button b {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  color: var(--color1);
+  transition-property: color, border-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+  transform-origin: left center;
+}
+.play-button b {
+  animation: tailMovement 2s infinite ease-in-out;
+  animation-play-state: paused;
+}
+.video-thumbnail:hover .play-button b,
+.video-thumbnail:focus .play-button b,
+.video-thumbnail:focus-visible .play-button b {
+  animation-play-state: running;
+}
+.play-button span::before {
+  /* Top fin */
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -38px;
+  left: 30%;
+  width: 0;
+  height: 0;
+  color: var(--color1);
+  border-bottom: 40px solid currentColor;
+  border-right: 30px solid transparent;
+  transition-property: color, border-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.play-button span::after {
+  /* Fin front */
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: -20px;
+  left: 40%;
+  width: 0;
+  height: 0;
+  color: var(--color1);
+  border-top: 26px solid currentColor;
+  border-right: 26px solid transparent;
+  transition-property: color, border-color;
+  transition-duration: 0.3s;
+  transform-origin: center top;
+  transition-timing-function: ease-in-out;
+  animation: lowerFin 2s infinite ease-in-out;
+  animation-play-state: paused;
+}
+.video-thumbnail:hover .play-button span::after,
+.video-thumbnail:focus .play-button span::after,
+.video-thumbnail:focus-visible .play-button span::after {
+  animation-play-state: running;
+}
+.play-button b::before,
+.play-button b::after {
+  /* tail fins */
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -74px;
+}
+.play-button b::before {
+  /* top tail fin */
+  bottom: 50%;
+  width: 0;
+  height: 0;
+  color: var(--color1);
+  border-left: 1px solid transparent;
+  border-right: 24px solid transparent;
+  border-bottom: 44px solid currentColor;
+  transform: skew(20deg);
+  transition-property: color, border-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.play-button b::after {
+  /* bottom tail fin */
+  top: calc(50% - 1px);
+  width: 0;
+  height: 0;
+  color: var(--color1);
+  border-left: 1px solid transparent;
+  border-right: 24px solid transparent;
+  border-top: 20px solid currentColor;
+  transform: skew(-40deg);
+  transition-property: color, border-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.play-button i::before {
+  /* underfin */
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 1;
+  bottom: -4px;
+  left: 6%;
+  width: 0;
+  height: 0;
+  color: var(--color1);
+  border-top: 5px solid transparent;
+  border-left: 16px solid currentColor;
+  border-bottom: 13px solid transparent;
+  transition-property: color, border-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.play-button i::after {
+  /* jaw */
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: 1;
+  bottom: 2px;
+  right: 10px;
+  width: 4px;
+  height: 4px;
+  color: var(--color1);
+  border-bottom: 15px solid currentColor;
+  border-right: 30px solid transparent;
+  transition-property: color, border-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.video-thumbnail:hover .play-button {
+  background-color: var(--color2);
+  color: var(--color2);
+}
+
+@keyframes tailMovement {
+  0%,
+  100% {
+    transform: rotate(-5deg) scaleX(1);
+  }
+  25% {
+    transform: rotate(0deg) scaleX(0.9);
+  }
+  50% {
+    transform: rotate(5deg) scaleX(1);
+  }
+  75% {
+    transform: rotate(0deg) scaleX(0.9);
+  }
+}
+@keyframes bodyMovement {
+  0%,
+  100% {
+    transform: translateY(-2px) scaleX(0.9);
+  }
+  25% {
+    transform: translateY(0px) scaleX(1);
+  }
+  50% {
+    transform: translateY(2px) scaleX(0.9);
+  }
+  75% {
+    transform: translateY(0px) scaleX(1);
+  }
+}
+@keyframes lowerFin {
+  0%,
+  100% {
+    transform: skewX(0deg);
+  }
+  50% {
+    transform: skewX(20deg);
+  }
+}
+
+.video-thumbnail:hover .play-button::before,
+.video-thumbnail:hover .play-button span,
+.video-thumbnail:hover .play-button i,
+.video-thumbnail:hover .play-button b,
+.video-thumbnail:hover .play-button span::before,
+.video-thumbnail:hover .play-button span::after,
+.video-thumbnail:hover .play-button b::before,
+.video-thumbnail:hover .play-button b::after,
+.video-thumbnail:hover .play-button i::before,
+.video-thumbnail:hover .play-button i::after {
+  color: var(--color2);
+}
+
+.video-thumbnail:hover .play-button::after {
+  border-left-color: rgba(255, 255, 255, 1);
 }
 
 .heading3 {
