@@ -131,8 +131,10 @@
 }
 
 .play-button {
+  --color0: hsl(0, 100%, 25%);
   --color1: hsl(0, 100%, 40%);
   --color2: hsl(0, 100%, 55%);
+  z-index: 1;
   display: flex;
   position: relative;
   align-items: center;
@@ -163,7 +165,7 @@
   position: absolute;
   width: 0;
   height: 6px;
-  top: 6px;
+  top: 7px;
   left: -55px;
   color: var(--color1);
   border-top: 11px solid transparent;
@@ -176,6 +178,7 @@
   transition-timing-function: ease-in-out;
   transform-origin: right center;
   animation: tailMovement 2s infinite ease-in-out;
+  animation-delay: -0.1s;
   animation-play-state: paused;
 }
 .video-thumbnail:hover .play-button::before,
@@ -192,15 +195,22 @@
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   border-left: 16px solid rgba(255, 255, 255, 0.84);
-  transition-property: color, border-color;
+  transition-property: color, border-color, transform;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
+  animation: sideToSideMovement 2s infinite ease-in-out;
+  animation-play-state: paused;
+}
+.video-thumbnail:hover .play-button::after,
+.video-thumbnail:focus .play-button::after,
+.video-thumbnail:focus-visible .play-button::after {
+  animation-play-state: running;
 }
 .play-button span,
 .play-button i,
 .play-button b {
   position: absolute;
-  z-index: -1;
+  z-index: 1;
   top: 0;
   left: 0;
   width: 100%;
@@ -214,14 +224,16 @@
 }
 .play-button b {
   animation: tailMovement 2s infinite ease-in-out;
+  animation-delay: -0.1s;
   animation-play-state: paused;
+  z-index: -1;
 }
 .video-thumbnail:hover .play-button b,
 .video-thumbnail:focus .play-button b,
 .video-thumbnail:focus-visible .play-button b {
   animation-play-state: running;
 }
-.play-button span::before {
+.play-button .top-fin::before {
   /* Top fin */
   content: "";
   position: absolute;
@@ -237,8 +249,9 @@
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
 }
-.play-button span::after {
-  /* Fin front */
+
+.play-button .front-fins::before {
+  /* Fin front 1 */
   content: "";
   position: absolute;
   z-index: 1;
@@ -253,13 +266,46 @@
   transition-duration: 0.3s;
   transform-origin: center top;
   transition-timing-function: ease-in-out;
-  animation: lowerFin 2s infinite ease-in-out;
+  animation: lowerFin2 2s infinite ease-in-out;
   animation-play-state: paused;
 }
-.video-thumbnail:hover .play-button span::after,
-.video-thumbnail:focus .play-button span::after,
-.video-thumbnail:focus-visible .play-button span::after {
+.play-button .front-fins::after {
+  /* Fin front 2 */
+  content: "";
+  position: absolute;
+  z-index: -3;
+  bottom: -14px;
+  left: 55%;
+  width: 0;
+  height: 0;
+  color: var(--color0);
+  border-top: 15px solid currentColor;
+  border-left: 15px solid transparent;
+  transition-property: color, border-color;
+  transition-duration: 0.3s;
+  transform-origin: center top;
+  transition-timing-function: ease-in-out;
+  animation: lowerFin2 2s infinite ease-in-out;
+  animation-delay: -1s;
+  animation-play-state: paused;
+}
+.video-thumbnail:hover .play-button .front-fins::after,
+.video-thumbnail:focus .play-button .front-fins::after,
+.video-thumbnail:focus-visible .play-button .front-fins::after,
+.video-thumbnail:hover .play-button .front-fins::before,
+.video-thumbnail:focus .play-button .front-fins::before,
+.video-thumbnail:focus-visible .play-button .front-fins::before {
   animation-play-state: running;
+}
+.video-thumbnail:hover .play-button .front-fins::before,
+.video-thumbnail:focus .play-button .front-fins::before,
+.video-thumbnail:focus-visible .play-button .front-fins::before {
+  color: var(--color2);
+}
+.video-thumbnail:hover .play-button .front-fins::after,
+.video-thumbnail:focus .play-button .front-fins::after,
+.video-thumbnail:focus-visible .play-button .front-fins::after {
+  color: var(--color1);
 }
 .play-button b::before,
 .play-button b::after {
@@ -297,23 +343,50 @@
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
 }
-.play-button i::before {
-  /* underfin */
+.play-button .back-fins::before {
+  /* underfin 1*/
   content: "";
   display: block;
   position: absolute;
   z-index: 1;
   bottom: -4px;
-  left: 6%;
+  left: 5%;
   width: 0;
   height: 0;
   color: var(--color1);
-  border-top: 5px solid transparent;
-  border-left: 16px solid currentColor;
-  border-bottom: 13px solid transparent;
+  border-top: 10px solid transparent;
+  border-left: 14px solid currentColor;
+  border-bottom: 11px solid transparent;
   transition-property: color, border-color;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
+  animation: backFin 2s infinite ease-in-out;
+  animation-play-state: paused;
+}
+.play-button .back-fins::after {
+  /* underfin 2*/
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  bottom: -2px;
+  left: 11%;
+  width: 0;
+  height: 0;
+  color: var(--color0);
+  border-right: 13px solid currentColor;
+  border-bottom: 7px solid transparent;
+  transition-property: color, border-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+  animation: backFin 2s infinite ease-in-out;
+  animation-play-state: paused;
+  animation-delay: -1s;
+}
+.video-thumbnail:hover .play-button .back-fins::after,
+.video-thumbnail:focus .play-button .back-fins::after,
+.video-thumbnail:focus-visible .play-button .back-fins::after {
+  color: var(--color1);
 }
 .play-button i::after {
   /* jaw */
@@ -322,7 +395,7 @@
   position: absolute;
   z-index: 1;
   bottom: 2px;
-  right: 10px;
+  right: 12px;
   width: 4px;
   height: 4px;
   color: var(--color1);
@@ -343,25 +416,25 @@
     transform: rotate(-5deg) scaleX(1);
   }
   25% {
-    transform: rotate(0deg) scaleX(0.9);
+    transform: rotate(0deg) scaleX(0.8);
   }
   50% {
     transform: rotate(5deg) scaleX(1);
   }
   75% {
-    transform: rotate(0deg) scaleX(0.9);
+    transform: rotate(0deg) scaleX(0.8);
   }
 }
 @keyframes bodyMovement {
   0%,
   100% {
-    transform: translateY(-2px) scaleX(0.9);
+    transform: translateY(-2px) scaleX(0.94);
   }
   25% {
     transform: translateY(0px) scaleX(1);
   }
   50% {
-    transform: translateY(2px) scaleX(0.9);
+    transform: translateY(2px) scaleX(0.94);
   }
   75% {
     transform: translateY(0px) scaleX(1);
@@ -370,10 +443,37 @@
 @keyframes lowerFin {
   0%,
   100% {
-    transform: skewX(0deg);
+    transform: skewX(0deg) translateX(-3px);
   }
   50% {
-    transform: skewX(20deg);
+    transform: skewX(20deg) translateX(3px);
+  }
+}
+@keyframes lowerFin2 {
+  0%,
+  100% {
+    transform: skewX(-10deg) translateX(-2px);
+  }
+  50% {
+    transform: skewX(14deg) translateX(2px);
+  }
+}
+@keyframes backFin {
+  0%,
+  100% {
+    transform: rotate(14eg) translateX(-3px);
+  }
+  50% {
+    transform: rotate(14deg) translateX(3px);
+  }
+}
+@keyframes sideToSideMovement {
+  0%,
+  100% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
   }
 }
 
