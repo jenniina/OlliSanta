@@ -1,16 +1,17 @@
-import { useEffect, ReactPortal } from "react"
+import { useEffect, type ReactNode } from "react"
 import useMediaQuery from "../hooks/useMediaQuery"
 import useLocalStorage from "../hooks/useStorage"
 import { ThemeContext, ThemeUpdateContext } from "./useThemeContexts"
 
 // Custom hooks moved to a separate module to satisfy Fast Refresh only-export-components rule
 
-export function ThemeProvider({ children }: ReactPortal) {
+export function ThemeProvider({ children }: { children: ReactNode }) {
   const prefersDark = useMediaQuery("(prefers-color-scheme: dark)")
 
   const isLocalhost =
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1"
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1")
 
   const [darkTheme, setDarkTheme] = useLocalStorage(
     `${isLocalhost ? "local-" : ""}useDarkMode`,

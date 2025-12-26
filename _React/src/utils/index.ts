@@ -1,5 +1,20 @@
+const decodeBase64Url = (value: string) => {
+  const base64 = value.replace(/-/g, "+").replace(/_/g, "/")
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (typeof window !== "undefined" && typeof window.atob === "function") {
+    return window.atob(base64)
+  }
+  // Node.js / prerender
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (typeof Buffer !== "undefined") {
+    return Buffer.from(base64, "base64").toString("utf-8")
+  }
+  throw new Error("No Base64 decoder available")
+}
+
 export const user = (() => {
-  const token = localStorage.getItem("OlliSanta_token")
+  if (typeof window === "undefined") return null
+  const token = window.localStorage.getItem("OlliSanta_token")
   if (
     token &&
     token !== undefined &&
@@ -9,7 +24,7 @@ export const user = (() => {
     /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/.test(token) // Check if the token is a valid JWT format
   ) {
     try {
-      return JSON.parse(atob(token.split(".")[1]))
+      return JSON.parse(decodeBase64Url(token.split(".")[1]))
     } catch (error) {
       console.error("Error parsing token:", error)
       return null
@@ -27,6 +42,7 @@ export const scrollIntoView = (
   block: ScrollLogicalPosition = "start",
   inline: ScrollLogicalPosition = "nearest"
 ) => {
+  if (typeof document === "undefined") return
   const element = document.getElementById(id)
   if (element) {
     element.scrollIntoView({ behavior: "smooth", block, inline })

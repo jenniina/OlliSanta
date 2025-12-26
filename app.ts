@@ -1,5 +1,6 @@
 import express, { Express } from 'express'
 import mongoose from 'mongoose'
+import fs from 'fs'
 import path from 'path'
 import routes from './src/routes/routes'
 
@@ -13,14 +14,21 @@ app.use(express.json())
 // Middleware to parse URL-encoded form data
 app.use(express.urlencoded({ extended: true }))
 
-app.use(express.static(path.join(__dirname, 'dist')))
+const distClientPath = path.join(__dirname, 'dist', 'client')
+app.use(express.static(distClientPath))
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 app.use('/api', routes)
 
 app.get('*', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+  const reqPath = _req.path.replace(/^\/+/, '')
+  const prerenderedHtmlPath = path.join(distClientPath, reqPath, 'index.html')
+  if (fs.existsSync(prerenderedHtmlPath)) {
+    res.sendFile(prerenderedHtmlPath)
+    return
+  }
+  res.sendFile(path.join(distClientPath, 'index.html'))
 })
 app.use((req, res) => {
   res.status(404).send('404 Not Found')

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, RefObject } from 'react'
 
 interface Props {
-  ref: RefObject<HTMLElement>
+  ref: RefObject<HTMLElement | null>
   onOutsideClick: (e: Event) => void
   allowAnyKey?: boolean
   triggerKeys?: string[]

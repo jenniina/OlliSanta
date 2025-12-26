@@ -6,6 +6,7 @@ import ollisantaWebP from "../../assets/olli-santa-nimi.webp"
 import Image from "../Image/Image"
 import { Helmet } from "react-helmet-async"
 import useShadow from "../../hooks/useShadow"
+import useMediaQuery from "../../hooks/useMediaQuery"
 import useWindowSize from "../../hooks/useWindowSize"
 import { useTheme } from "../../contexts/useTheme"
 import { useTranslation } from "../../contexts/useTranslation"
@@ -28,9 +29,7 @@ const Header: FC<Props> = ({ location }) => {
   const [clickCounter, setClickCounter] = useState(0)
   const [hasClickedTwice, setClickedTwice] = useState(false)
   const [noShadow, setShadow] = useState(false)
-  const prefersReducedMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches
+  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)")
 
   useEffect(() => {
     if (clickCounter === 2) {

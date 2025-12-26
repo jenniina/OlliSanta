@@ -442,7 +442,9 @@ const AboutPage: FC<Props> = ({ heading }) => {
                         className={styles["play-button"]}
                         aria-hidden="true"
                       >
-                        <span></span>
+                        <span className={styles["top-fin"]}></span>
+                        <span className={styles["front-fins"]}></span>
+                        <span className={styles["back-fins"]}></span>
                         <i></i>
                         <b></b>
                       </span>
