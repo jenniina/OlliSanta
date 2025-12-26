@@ -13,7 +13,7 @@ createRoot(document.getElementById("root")!).render(
     <HelmetProvider>
       <TranslationProvider>
         <Router>
-          <ThemeProvider key={null} type={""} props={undefined}>
+          <ThemeProvider>
             <NotificationProvider>
               <App />
             </NotificationProvider>

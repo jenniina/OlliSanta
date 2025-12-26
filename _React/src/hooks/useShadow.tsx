@@ -1,6 +1,6 @@
 import { useState, useEffect, RefObject, CSSProperties } from 'react'
 
-const useShadow = (elementRef: RefObject<HTMLElement>, prefersReducedMotion: boolean) => {
+const useShadow = (elementRef: RefObject<HTMLElement | null>, prefersReducedMotion: boolean) => {
   const [shadowStyle, setShadowStyle] = useState<CSSProperties>({})
 
   useEffect(() => {
