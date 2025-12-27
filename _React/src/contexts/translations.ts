@@ -137,6 +137,10 @@ export const translations = {
     en: "How to order a product?",
     fi: "Kuinka tilaan tuotteen?",
   },
+  introText0: {
+    fi: "Olli Santa on säveltäjä, sovittaja ja kapellimestari, joka tekee musiikkia kuorojen ja orkesterien käytännön tarpeisiin. Tilaa sovitus tai uusi teos; saat selkeät nuotit, toimivat stemmat ja tarvittaessa harjoitusäänitteet. Tutustu esimerkkeihin ja pyydä tarjous helposti.",
+    en: "Olli Santa is a composer, arranger, and conductor creating music for the practical needs of choirs and orchestras. Commission an arrangement or a new piece; you will receive clear notation, reliable parts, and, if needed, rehearsal recordings. Explore examples and request a quote with a simple message.",
+  },
   introText1: {
     en: `I am a professional choir and orchestra conductor in the Southern Finland area. Choir and orchestra music is closest to my heart, but entertainment, pop, rock and jazz music have always been an essential part of my work.`,
     fi: "Olen ammattimainen kuoron- ja orkesterinjohtaja Etelä-Suomen alueella. Kuoro- ja orkesterimusiikki ovat sydäntäni lähinnä, mutta viihde-, pop-, rock- ja jazzmusiikki ovat aina olleet tärkeä osa työtäni.",

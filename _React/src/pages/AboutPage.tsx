@@ -96,6 +96,43 @@ const AboutPage: FC<Props> = ({ heading }) => {
   //   }, 300)
   // }, [darkMode])
 
+  // go to #hash on load if present
+  useEffect(() => {
+    const hash = location.hash
+    if (!hash) return
+
+    const id = decodeURIComponent(hash.startsWith("#") ? hash.slice(1) : hash)
+    if (!id) return
+
+    let cancelled = false
+
+    const tryScroll = (attempt: number) => {
+      if (cancelled) return
+
+      const element = document.getElementById(id)
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" })
+
+        if (element instanceof HTMLElement) {
+          element.focus({ preventScroll: true })
+        }
+
+        return
+      }
+
+      if (attempt < 10) {
+        setTimeout(() => tryScroll(attempt + 1), 50)
+      }
+    }
+
+    // Defer so hydration/layout (images/fonts) has a tick to settle.
+    setTimeout(() => tryScroll(0), 0)
+
+    return () => {
+      cancelled = true
+    }
+  }, [location.hash])
+
   const [currentImage, setCurrentImage] = useState(olli)
   const [currentClass, setCurrentClass] = useState(
     `${styles["olli"]} ${styles["olli1"]}`

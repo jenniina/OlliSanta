@@ -35,6 +35,15 @@ const LandingPage: FC = () => {
           { name: t("homePage"), url: "https://ollisanta.fi/" },
         ])}
       />
+      <section>
+        <div className="middle-wrap">
+          <div className="middle-size">
+            <p className="tleft">
+              <small>{t("introText0")}</small>
+            </p>
+          </div>
+        </div>
+      </section>
     </>
   )
 }
