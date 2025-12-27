@@ -308,7 +308,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
                   {t("youWillReceiveAnOffer")} {t("eachOrderIndividual")}
                 </li>
               </ol>
-              <Link to="/contact?type=arrangement">
+              <Link to="/contact/arrangement">
                 <span>
                   {t("order")} {firstToLowerCase(t("arrangement"))}{" "}
                   <TfiAngleDoubleRight
@@ -339,7 +339,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
                   {t("youWillReceiveAnOffer")} {t("eachOrderIndividual")}
                 </li>
               </ol>
-              <Link to="/contact?type=composition">
+              <Link to="/contact/composition">
                 <span>
                   {t("order")} {firstToLowerCase(t("composition"))}{" "}
                   <TfiAngleDoubleRight
@@ -378,7 +378,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
                   {t("youWillReceiveAnOffer")} {t("eachOrderIndividual")}
                 </li>
               </ol>
-              <Link to="/contact?type=parts">
+              <Link to="/contact/parts">
                 <span>
                   {t("order")} {t("partRecordings").toLowerCase()}{" "}
                   <TfiAngleDoubleRight
@@ -405,7 +405,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
                 <li>{t("sendByMailOrAttachment")}</li>
                 <li>{t("receiveBack")}</li>
               </ol>
-              <Link to="/contact?type=notation">
+              <Link to="/contact/notation">
                 <span>
                   {t("order")} {t("notation").toLowerCase()}{" "}
                   <TfiAngleDoubleRight

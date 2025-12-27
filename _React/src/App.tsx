@@ -142,6 +142,10 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/about" element={<AboutPage heading={t("about")} />} />
             <Route
+              path="/contact/:type"
+              element={<ContactPage heading={t("contact")} />}
+            />
+            <Route
               path="/contact"
               element={<ContactPage heading={t("contact")} />}
             />
