@@ -191,12 +191,12 @@ body.dark {
   padding: 0 var(--page-padding);
   width: 100%;
   margin: 0 auto;
-  max-width: 1200px;
+  max-width: calc(100vw - var(--scrollbar-width));
 }
 section {
-  width: 100%;
+  width: calc(98vw - var(--scrollbar-width) - var(--page-padding, 0px) * 2);
   margin: 0 auto;
-  max-width: 1200px;
+  max-width: calc(98vw - var(--scrollbar-width) - var(--page-padding, 0px) * 2);
 }
 @media (min-width: 300px) {
   .app main {
@@ -222,10 +222,12 @@ section {
 section.medium {
   width: clamp(
     100px,
-    calc(100vw - var(--scrollbar-width) - calc(var(--page-padding) * 2) - 2px),
+    calc(
+      98vw - var(--scrollbar-width) - calc(var(--page-padding, 0px) * 2) - 2px
+    ),
     800px
   );
-  max-width: 100%;
+  max-width: calc(98vw - var(--scrollbar-width)- var(--page-padding, 0px) * 2);
   margin-left: auto;
   margin-right: auto;
 }
@@ -591,7 +593,9 @@ ol {
   text-align: left;
   width: clamp(
     100px,
-    calc(100vw - var(--scrollbar-width) - calc(var(--page-padding) * 2) - 2px),
+    calc(
+      98vw - var(--scrollbar-width) - calc(var(--page-padding, 0px) * 2) - 2px
+    ),
     600px
   );
   margin: 0 auto;
@@ -689,8 +693,12 @@ ol li:not(:first-of-type) {
 }
 
 @media (min-width: 800px) {
+  section {
+    max-width: 1200px;
+  }
   .app main {
     --page-padding: 1rem;
+    max-width: 1200px;
   }
   ul,
   ol {

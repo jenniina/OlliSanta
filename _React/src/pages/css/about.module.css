@@ -752,9 +752,10 @@ ul.list li:focus-visible::marker {
 }
 @media (min-width: 600px) {
   .intro-wrap .olli {
-    width: clamp(100px, calc(30vw - 2em), 250px);
-    height: clamp(100px, calc(30vw - 2em), 250px);
+    width: clamp(100px, calc(25vw - 2em), 200px);
+    height: clamp(100px, calc(25vw - 2em), 200px);
     margin-top: 1rem;
+    margin-right: -0.4rem;
   }
 
   .intro-wrap .intro-text {
@@ -762,8 +763,8 @@ ul.list li:focus-visible::marker {
     max-width: calc(clamp(200px, 60vw, 660px) - 2em);
   }
   .landing-section .landing .intro-text {
-    width: clamp(150px, 80vw, 500px);
-    max-width: clamp(150px, 80vw, 500px);
+    width: clamp(150px, 70vw, 400px);
+    max-width: clamp(150px, 70vw, 400px);
   }
   .video {
     flex: 1 1 calc(50% - 2em);
@@ -775,6 +776,10 @@ ul.list li:focus-visible::marker {
     margin-right: 1rem;
     width: clamp(100px, calc(30vw - 2em), 300px);
     height: clamp(100px, calc(30vw - 2em), 300px);
+  }
+  .landing-section .landing .intro-text {
+    width: clamp(150px, 70vw, 500px);
+    max-width: clamp(150px, 70vw, 500px);
   }
   .video {
     flex: 1 1 calc(33% - 4em);
