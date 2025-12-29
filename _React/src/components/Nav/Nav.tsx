@@ -5,6 +5,11 @@ import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher"
 import ThemeSwitcher from "../ThemeSwitcher/ThemeSwitcher"
 import styles from "./nav.module.css"
 import { useTheme } from "../../contexts/useTheme"
+import {
+  getAboutPath,
+  getContactPath,
+  getHomePath,
+} from "../../utils/localizedRoutes"
 
 interface NavProps {
   location: string
@@ -38,9 +43,13 @@ const SkipLinks: FC<{ skipLinks: LinkProps[] }> = ({ skipLinks }) => {
 }
 
 const Nav: FC<NavProps> = ({ location }) => {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const darkMode = useTheme()
   const navRef = useRef<HTMLDivElement>(null)
+
+  const homePath = getHomePath(language)
+  const aboutPath = getAboutPath(language)
+  const contactPath = getContactPath(language)
 
   const links = [
     {
@@ -72,20 +81,20 @@ const Nav: FC<NavProps> = ({ location }) => {
       </nav>
       <nav ref={navRef} id="site-navigation" className={`${styles.nav}`}>
         <ul>
-          {location !== "/" && (
+          {location !== homePath && (
             <li>
-              <NavLink to="/">
+              <NavLink to={homePath} end>
                 <span>{t("home")}</span>
               </NavLink>
             </li>
           )}
           <li>
-            <NavLink to="/about" id="link-about">
+            <NavLink to={aboutPath} id="link-about" end>
               <span>{t("about")}</span>
             </NavLink>
           </li>
           <li>
-            <NavLink to="/contact">
+            <NavLink to={contactPath}>
               <span>{t("contact")}</span>
             </NavLink>
           </li>

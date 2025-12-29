@@ -18,6 +18,15 @@ import { getBreadcrumbJsonLd, getOrganizationJsonLd } from "../utils"
 import JsonLdScript from "../utils/JsonLd"
 import SEO from "../components/SEO/SEO"
 import Input from "../components/Form/Input"
+import { SITE_BASE_URL } from "../components/SEO/constants"
+import { ELang } from "../interfaces"
+import {
+  ContactTypeValue,
+  contactTypeToSlug,
+  getContactPath,
+  getHomePath,
+  parseContactTypeFromSlug,
+} from "../utils/localizedRoutes"
 
 interface Props {
   heading: string
@@ -37,11 +46,6 @@ const ContactPage: FC<Props> = ({ heading }) => {
   const location = useLocation()
   const { type: typeParam } = useParams()
 
-  const allowedTypeValues = useMemo(
-    () => ["arrangement", "composition", "parts", "notation", "other"],
-    []
-  )
-
   const subjectOptions: SelectOption[] = useMemo(
     () => [
       { value: "arrangement", label: t("arrangement") },
@@ -58,16 +62,49 @@ const ContactPage: FC<Props> = ({ heading }) => {
     return params.get("type")
   }, [location.search])
 
-  const typeFromUrl = (typeParam ?? typeFromQuery)?.toLowerCase() ?? null
-  const normalizedType =
-    typeFromUrl && allowedTypeValues.includes(typeFromUrl) ? typeFromUrl : null
-  const canonicalPath = normalizedType
-    ? `/contact/${normalizedType}`
-    : "/contact"
-  const canonicalUrl = `https://ollisanta.fi${canonicalPath}`
+  const typeValue: ContactTypeValue | null = useMemo(() => {
+    const raw = (typeParam ?? typeFromQuery)?.toLowerCase() ?? null
+    if (!raw) return null
+
+    // Try parsing as localized slug for the current language first
+    const parsed =
+      parseContactTypeFromSlug(raw, language) ??
+      // Accept legacy/internal values regardless of current language
+      parseContactTypeFromSlug(raw, "en" as any) ??
+      parseContactTypeFromSlug(raw, "fi" as any)
+
+    return parsed
+  }, [typeParam, typeFromQuery, language])
+
+  const canonicalPath = useMemo(() => {
+    const base = getContactPath(language)
+    if (!typeValue) return base
+    return `${base}/${contactTypeToSlug(typeValue, language)}`
+  }, [language, typeValue])
+
+  const canonicalUrl = `${SITE_BASE_URL}${canonicalPath}`
+  const alternates = useMemo(() => {
+    const fiBase = getContactPath(ELang.fi)
+    const enBase = getContactPath(ELang.en)
+
+    const fiPath = typeValue
+      ? `${fiBase}/${contactTypeToSlug(typeValue, ELang.fi)}`
+      : fiBase
+    const enPath = typeValue
+      ? `${enBase}/${contactTypeToSlug(typeValue, ELang.en)}`
+      : enBase
+
+    return [
+      { hrefLang: "fi", href: `${SITE_BASE_URL}${fiPath}` },
+      { hrefLang: "en", href: `${SITE_BASE_URL}${enPath}` },
+    ]
+  }, [typeValue])
+
+  const xDefaultUrl = alternates.find((a) => a.hrefLang === "fi")?.href
+
   const subjectFromUrl =
-    (typeFromUrl
-      ? subjectOptions.find((o) => o.value === typeFromUrl)
+    (typeValue
+      ? subjectOptions.find((o) => o.value === typeValue)
       : undefined) ?? undefined
 
   const [subject, setSubject] = useState<SelectOption>(() => {
@@ -139,9 +176,9 @@ const ContactPage: FC<Props> = ({ heading }) => {
           : subjectFromUrl.label,
     }))
 
-    // If old query-based URL was used, canonicalize to /contact/:type on the client.
+    // If old query-based URL was used, canonicalize to the path-based URL.
     if (!typeParam && typeFromQuery && typeof window !== "undefined") {
-      navigate(`/contact/${subjectFromUrl.value}`, { replace: true })
+      navigate(canonicalPath, { replace: true })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subjectFromUrl?.value])
@@ -209,6 +246,8 @@ const ContactPage: FC<Props> = ({ heading }) => {
         description={t("contactInfo")}
         canonical={canonicalUrl}
         ogUrl={canonicalUrl}
+        alternates={alternates}
+        xDefault={xDefaultUrl}
         keywords={[
           "contact",
           "arrangement",
@@ -226,7 +265,7 @@ const ContactPage: FC<Props> = ({ heading }) => {
               "@type": "ListItem",
               position: 1,
               name: t("homePage"),
-              item: "https://ollisanta.fi/",
+              item: `${SITE_BASE_URL}${getHomePath(language)}`,
             },
             {
               "@type": "ListItem",
@@ -249,7 +288,10 @@ const ContactPage: FC<Props> = ({ heading }) => {
       <JsonLdScript data={getOrganizationJsonLd()} />
       <JsonLdScript
         data={getBreadcrumbJsonLd([
-          { name: t("homePage"), url: "https://ollisanta.fi/" },
+          {
+            name: t("homePage"),
+            url: `${SITE_BASE_URL}${getHomePath(language)}`,
+          },
           { name: t("contact"), url: canonicalUrl },
         ])}
       />

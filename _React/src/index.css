@@ -72,6 +72,10 @@
   --gap: 1em;
   --gap05: 0.5em;
 }
+.home footer {
+  margin-top: 0.3rem;
+}
+
 @media (min-width: 200px) {
   :root {
     --responsive_scale: 0.8;
@@ -210,8 +214,8 @@ section {
 }
 
 .app.home .inner {
-  padding-top: 40vh;
-  gap: 1em;
+  padding-top: 30vh;
+  gap: 0.6rem;
   max-height: clamp(400px, 100vh, 100vh);
 }
 
@@ -308,8 +312,6 @@ p {
   max-width: max-content;
   margin: 0 auto;
 }
-
- 
 
 button {
   display: inline-flex;
@@ -681,9 +683,9 @@ ol li:not(:first-of-type) {
     -o-transform: rotateY(0deg) scale(1.1);
     transform: rotateY(0deg) scale(1.1);
   }
-  .btn-wrap.btn-4 { 
+  .btn-wrap.btn-4 {
     gap: 0.1em;
-  } 
+  }
 }
 
 @media (min-width: 800px) {

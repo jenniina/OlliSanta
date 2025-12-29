@@ -14,6 +14,9 @@ import Accordion from "../components/Accordion/Accordion"
 import { Link, useLocation } from "react-router-dom"
 import SEO from "../components/SEO/SEO"
 import { Helmet } from "react-helmet-async"
+import { getContactPath, contactTypeToSlug } from "../utils/localizedRoutes"
+import { SITE_BASE_URL } from "../components/SEO/constants"
+import { getAboutPath, getHomePath } from "../utils/localizedRoutes"
 
 interface Props {
   heading: string
@@ -29,11 +32,24 @@ interface Video {
 
 const AboutPage: FC<Props> = ({ heading }) => {
   const darkMode = useTheme()
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const location = useLocation()
   const divRef = useRef<HTMLDivElement>(null)
 
+  const contactPath = getContactPath(language)
+  const canonical = `${SITE_BASE_URL}${getAboutPath(language)}`
+  const alternates = [
+    { hrefLang: "fi", href: `${SITE_BASE_URL}/tietoa` },
+    { hrefLang: "en", href: `${SITE_BASE_URL}/en/about` },
+  ]
+
   const videos: Partial<Video>[] = [
+    {
+      title: `Hän kulkevi kuin yli kukkien (${t("comp")} Olli Santa)`,
+      url: "https://www.youtube-nocookie.com/embed/0EkdsV4qTuw",
+      url2: "https://youtu.be/0EkdsV4qTuw",
+      description: `${t("comp")} Olli Santa, ${t("lyr")} Eino Leino`,
+    },
     {
       title: `Taas kaikki kauniit muistot (${t("comp")} Olli Santa)`,
       url: "https://www.youtube-nocookie.com/embed/Y4XaeaOnwd8",
@@ -43,12 +59,6 @@ const AboutPage: FC<Props> = ({ heading }) => {
       )} Jyväskylän Puhallinorkesteri, ${t("kuokkalaChurch")} 20.12.2021 \n${t(
         "lyr"
       )} Viljo Kojo \n${t("comp")} Olli Santa \n${t("solist")} Olli Santa`,
-    },
-    {
-      title: `Hän kulkevi kuin yli kukkien (${t("comp")} Olli Santa)`,
-      url: "https://www.youtube-nocookie.com/embed/0EkdsV4qTuw",
-      url2: "https://youtu.be/0EkdsV4qTuw",
-      description: `${t("comp")} Olli Santa, ${t("lyr")} Eino Leino`,
     },
     {
       title: `${t("greatWesternTitle3")}`,
@@ -161,8 +171,8 @@ const AboutPage: FC<Props> = ({ heading }) => {
     <>
       <SEO
         title={`${heading} - Olli Santa`}
-        description={`${t("aboutMe")} Olli Santa. ${t("introText1")}`}
-        canonical="https://ollisanta.fi/about"
+        description={`${t("aboutMetaDescription")}`}
+        canonical={canonical}
         keywords={[
           "about",
           "arrangements",
@@ -172,7 +182,9 @@ const AboutPage: FC<Props> = ({ heading }) => {
         ]}
         ogTitle={`${heading} - Olli Santa`}
         ogDescription={`${t("introText1")}`}
-        ogUrl="https://ollisanta.fi/about"
+        ogUrl={canonical}
+        alternates={alternates}
+        xDefault={`${SITE_BASE_URL}/tietoa`}
         twitterTitle={`${heading} - Olli Santa`}
         twitterDescription={`${t("introText1")}`}
       />
@@ -188,8 +200,11 @@ const AboutPage: FC<Props> = ({ heading }) => {
       <JsonLdScript data={getOrganizationJsonLd()} />
       <JsonLdScript
         data={getBreadcrumbJsonLd([
-          { name: t("homePage"), url: "https://ollisanta.fi/" },
-          { name: heading, url: "https://ollisanta.fi/about" },
+          {
+            name: t("homePage"),
+            url: `${SITE_BASE_URL}${getHomePath(language)}`,
+          },
+          { name: heading, url: canonical },
         ])}
       />
       <div
@@ -211,6 +226,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
                 {t("aboutMe")} <i>Olli Santa.</i> {t("introText1")}
               </p>
               <p>{t("introText2")}</p>
+              <p>{t("introText3")}</p>
               <Accordion
                 title={`${t("currentPlural")} ${t("choirs").toLowerCase()} `}
                 classNames={["left"]}
@@ -256,10 +272,10 @@ const AboutPage: FC<Props> = ({ heading }) => {
                       href="https://rekolansekakuoro.com"
                       rel="noopener noreferrer"
                     >
-                      {t("rekolaMixedChoir")}
+                      Rekolan Sekakuoro
                     </a>
                     <span className="tooltip below right narrow">
-                      {t("rekolaIntro")}
+                      {t("mixedChoir")}: {t("rekolaIntro")}
                     </span>
                   </li>
                   <li className="tooltip-wrap">
@@ -321,7 +337,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
           <div className="middle-wrap m3top flex center column">
             <big>{t("howToOrderProduct")}</big>
             <span>{t("contactThroughForm")}: </span>
-            <Link to="/contact">
+            <Link to={contactPath}>
               <span>{t("contactMe")}</span>
             </Link>
           </div>
@@ -345,7 +361,12 @@ const AboutPage: FC<Props> = ({ heading }) => {
                   {t("youWillReceiveAnOffer")} {t("eachOrderIndividual")}
                 </li>
               </ol>
-              <Link to="/contact/arrangement">
+              <Link
+                to={`${contactPath}/${contactTypeToSlug(
+                  "arrangement",
+                  language
+                )}`}
+              >
                 <span>
                   {t("order")} {firstToLowerCase(t("arrangement"))}{" "}
                   <TfiAngleDoubleRight
@@ -376,7 +397,12 @@ const AboutPage: FC<Props> = ({ heading }) => {
                   {t("youWillReceiveAnOffer")} {t("eachOrderIndividual")}
                 </li>
               </ol>
-              <Link to="/contact/composition">
+              <Link
+                to={`${contactPath}/${contactTypeToSlug(
+                  "composition",
+                  language
+                )}`}
+              >
                 <span>
                   {t("order")} {firstToLowerCase(t("composition"))}{" "}
                   <TfiAngleDoubleRight
@@ -415,7 +441,9 @@ const AboutPage: FC<Props> = ({ heading }) => {
                   {t("youWillReceiveAnOffer")} {t("eachOrderIndividual")}
                 </li>
               </ol>
-              <Link to="/contact/parts">
+              <Link
+                to={`${contactPath}/${contactTypeToSlug("parts", language)}`}
+              >
                 <span>
                   {t("order")} {t("partRecordings").toLowerCase()}{" "}
                   <TfiAngleDoubleRight
@@ -442,7 +470,9 @@ const AboutPage: FC<Props> = ({ heading }) => {
                 <li>{t("sendByMailOrAttachment")}</li>
                 <li>{t("receiveBack")}</li>
               </ol>
-              <Link to="/contact/notation">
+              <Link
+                to={`${contactPath}/${contactTypeToSlug("notation", language)}`}
+              >
                 <span>
                   {t("order")} {t("notation").toLowerCase()}{" "}
                   <TfiAngleDoubleRight

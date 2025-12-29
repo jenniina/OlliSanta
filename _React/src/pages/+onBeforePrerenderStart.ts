@@ -4,12 +4,23 @@ export const onBeforePrerenderStart: OnBeforePrerenderStartSync = () => {
   // Only public pages; protected/admin routes are intentionally excluded.
   return [
     "/",
-    "/about",
-    "/contact",
-    "/contact/arrangement",
-    "/contact/composition",
-    "/contact/parts",
-    "/contact/notation",
+    "/en",
+
+    "/tietoa",
+    "/en/about",
+
+    "/yhteys",
+    "/yhteys/sovitus",
+    "/yhteys/savellys",
+    "/yhteys/osien-nauhoitukset",
+    "/yhteys/nuottikirjoitus",
+
+    "/en/contact",
+    "/en/contact/arrangement",
+    "/en/contact/composition",
+    "/en/contact/parts",
+    "/en/contact/notation",
+
     "/login",
   ]
 }

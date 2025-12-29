@@ -2,33 +2,87 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ollisanta.fi/</loc>
-    <lastmod>2025-11-29</lastmod>
+    <lastmod>2025-12-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://ollisanta.fi/about</loc>
-    <lastmod>2025-11-29</lastmod>
+    <loc>https://ollisanta.fi/en</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://ollisanta.fi/tietoa</loc>
+    <lastmod>2025-12-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ollisanta.fi/contact</loc>
-    <lastmod>2025-11-29</lastmod>
+    <loc>https://ollisanta.fi/en/about</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ollisanta.fi/yhteys</loc>
+    <lastmod>2025-12-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ollisanta.fi/message</loc>
-    <lastmod>2025-11-29</lastmod>
+    <loc>https://ollisanta.fi/yhteys/sovitus</loc>
+    <lastmod>2025-12-27</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.1</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://ollisanta.fi/login</loc>
-    <lastmod>2025-11-29</lastmod>
+    <loc>https://ollisanta.fi/yhteys/savellys</loc>
+    <lastmod>2025-12-27</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.1</priority>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ollisanta.fi/yhteys/osien-nauhoitukset</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ollisanta.fi/yhteys/nuottikirjoitus</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://ollisanta.fi/en/contact</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ollisanta.fi/en/contact/arrangement</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ollisanta.fi/en/contact/composition</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ollisanta.fi/en/contact/parts</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://ollisanta.fi/en/contact/notation</loc>
+    <lastmod>2025-12-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 </urlset>
 

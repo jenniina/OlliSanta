@@ -1,4 +1,5 @@
 import { FC } from "react"
+import { Helmet } from "react-helmet-async"
 import Login from "../components/Login/Login"
 import { getBreadcrumbJsonLd } from "../utils"
 import JsonLdScript from "../components/SEO/JsonLdScript"
@@ -10,6 +11,9 @@ interface Props {
 const LoginPage: FC<Props> = ({ heading }) => {
   return (
     <div className="login-page">
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <section className="medium">
         <h2>{heading}</h2>
         <JsonLdScript

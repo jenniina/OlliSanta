@@ -22,13 +22,71 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 app.use("/api", routes)
 
 app.get("*", (_req, res) => {
-  if (_req.path === "/contact") {
-    const type = String((_req.query as any)?.type ?? "").toLowerCase()
-    const allowed = new Set(["arrangement", "composition", "parts", "notation"])
-    if (allowed.has(type)) {
-      res.redirect(302, `/contact/${type}`)
+  const pathOnly = _req.path
+  const queryType = String((_req.query as any)?.type ?? "").toLowerCase()
+
+  // Prevent indexing of private/utility pages (works even if bot doesn't run JS)
+  if (pathOnly === "/login" || pathOnly === "/message") {
+    res.setHeader("X-Robots-Tag", "noindex, nofollow")
+  }
+
+  const fiTypeByInternal: Record<string, string> = {
+    arrangement: "sovitus",
+    composition: "savellys",
+    parts: "osien-nauhoitukset",
+    notation: "nuottikirjoitus",
+    other: "muu",
+  }
+
+  const fiTypeSlugs = new Set(Object.values(fiTypeByInternal))
+  const enTypeSlugs = new Set(Object.keys(fiTypeByInternal))
+
+  // Legacy about
+  if (pathOnly === "/about") {
+    res.redirect(301, "/tietoa")
+    return
+  }
+
+  // Legacy contact base + query
+  if (pathOnly === "/contact") {
+    if (enTypeSlugs.has(queryType)) {
+      res.redirect(301, `/yhteys/${fiTypeByInternal[queryType]}`)
       return
     }
+    if (fiTypeSlugs.has(queryType)) {
+      res.redirect(301, `/yhteys/${queryType}`)
+      return
+    }
+    res.redirect(301, "/yhteys")
+    return
+  }
+
+  // Legacy contact type path
+  if (pathOnly.startsWith("/contact/")) {
+    const slug = pathOnly.split("/").filter(Boolean)[1]?.toLowerCase() ?? ""
+    if (enTypeSlugs.has(slug)) {
+      res.redirect(301, `/yhteys/${fiTypeByInternal[slug]}`)
+      return
+    }
+    res.redirect(301, "/yhteys")
+    return
+  }
+
+  // Support localized query on canonical paths
+  if (pathOnly === "/yhteys") {
+    if (enTypeSlugs.has(queryType)) {
+      res.redirect(301, `/yhteys/${fiTypeByInternal[queryType]}`)
+      return
+    }
+    if (fiTypeSlugs.has(queryType)) {
+      res.redirect(301, `/yhteys/${queryType}`)
+      return
+    }
+  }
+
+  if (pathOnly === "/en/contact" && enTypeSlugs.has(queryType)) {
+    res.redirect(301, `/en/contact/${queryType}`)
+    return
   }
 
   const reqPath = _req.path.replace(/^\/+/, "")

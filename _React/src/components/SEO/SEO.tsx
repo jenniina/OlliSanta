@@ -7,6 +7,8 @@ export default function SEO({
   description,
   canonical,
   keywords,
+  alternates,
+  xDefault,
   ogTitle,
   ogDescription,
   ogImage,
@@ -27,6 +29,18 @@ export default function SEO({
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords.join(", ")} />}
       {canonical && <link rel="canonical" href={canonical} />}
+
+      {alternates?.map((alt) => (
+        <link
+          key={`${alt.hrefLang}:${alt.href}`}
+          rel="alternate"
+          hrefLang={alt.hrefLang}
+          href={alt.href}
+        />
+      ))}
+      {xDefault && (
+        <link rel="alternate" hrefLang="x-default" href={xDefault} />
+      )}
 
       <meta property="og:title" content={ogTitle ?? title} />
       <meta property="og:description" content={ogDescription ?? description} />

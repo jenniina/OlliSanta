@@ -2,12 +2,16 @@ import { renderToString } from "react-dom/server"
 import { StaticRouter } from "react-router-dom/server"
 import { HelmetProvider } from "react-helmet-async"
 import { escapeInject, dangerouslySkipEscape } from "vike/server"
-import type { OnRenderHtmlAsync, PageContextServer } from "vike/types"
+import type { PageContextServer } from "vike/types"
 import Page from "./+Page"
 
-export const onRenderHtml: OnRenderHtmlAsync = async (
+type OnRenderHtmlReturn = {
+  documentHtml: ReturnType<typeof escapeInject>
+}
+
+export const onRenderHtml = (
   pageContext: PageContextServer
-) => {
+): OnRenderHtmlReturn => {
   const helmetContext: any = {}
 
   const appHtml = renderToString(
