@@ -61,10 +61,10 @@ const AboutPage: FC<Props> = ({ heading }) => {
       )} Viljo Kojo \n${t("comp")} Olli Santa \n${t("solist")} Olli Santa`,
     },
     {
-      title: `${t("greatWesternTitle3")}`,
-      url: "https://www.youtube-nocookie.com/embed/21abpPW9ZMw",
-      url2: "https://youtu.be/21abpPW9ZMw",
-      description: `${t("greatWesternText3")} \n${t("comp")} Olli Santa`,
+      title: `${t("greatWesternTitle1")}`,
+      url: "https://www.youtube-nocookie.com/embed/Jy-hBuXrnoQ",
+      url2: "https://youtu.be/Jy-hBuXrnoQ",
+      description: `${t("greatWesternText1")} \n${t("comp")} Olli Santa`,
     },
     {
       title: `${t("greatWesternTitle2")}`,
@@ -73,10 +73,10 @@ const AboutPage: FC<Props> = ({ heading }) => {
       description: `${t("comp")} Olli Santa`,
     },
     {
-      title: `${t("greatWesternTitle1")}`,
-      url: "https://www.youtube-nocookie.com/embed/Jy-hBuXrnoQ",
-      url2: "https://youtu.be/Jy-hBuXrnoQ",
-      description: `${t("greatWesternText1")} \n${t("comp")} Olli Santa`,
+      title: `${t("greatWesternTitle3")}`,
+      url: "https://www.youtube-nocookie.com/embed/21abpPW9ZMw",
+      url2: "https://youtu.be/21abpPW9ZMw",
+      description: `${t("greatWesternText3")} \n${t("comp")} Olli Santa`,
     },
   ]
 
@@ -505,6 +505,18 @@ const AboutPage: FC<Props> = ({ heading }) => {
                       className={styles["video-thumbnail"]}
                       aria-label={`${t("playVideo")} ${video.title}`}
                     >
+                      <i
+                        className={`${styles.note} ${styles.note1}`}
+                        aria-hidden="true"
+                      ></i>
+                      <i
+                        className={`${styles.note} ${styles.note2}`}
+                        aria-hidden="true"
+                      ></i>
+                      <i
+                        className={`${styles.note} ${styles.note3}`}
+                        aria-hidden="true"
+                      ></i>
                       <span
                         className={styles["play-button"]}
                         aria-hidden="true"
