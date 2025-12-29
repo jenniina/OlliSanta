@@ -3,6 +3,8 @@ export interface SEOProps {
   description: string
   canonical?: string
   keywords?: string[]
+  alternates?: Array<{ hrefLang: string; href: string }>
+  xDefault?: string
   ogTitle?: string
   ogDescription?: string
   ogImage?: string

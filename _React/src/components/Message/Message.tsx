@@ -5,6 +5,7 @@ import emailService from "../../services"
 import { user } from "../../utils"
 import { FData } from "../../interfaces"
 import { useEffect, useState } from "react"
+import { Helmet } from "react-helmet-async"
 import { Link, useNavigate } from "react-router-dom"
 import { useNotification } from "../../contexts/useNotification"
 import { formatDate } from "../../utils"
@@ -97,10 +98,21 @@ const Message = () => {
     }
   }
 
-  if (!data) return <div className="center">No data</div>
+  if (!data)
+    return (
+      <>
+        <Helmet>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+        <div className="center">No data</div>
+      </>
+    )
 
   return (
     <div>
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <h2>{data.orderID}</h2>
       <p>
         {data.createdAt ? (

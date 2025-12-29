@@ -47,7 +47,7 @@ const Header: FC<Props> = ({ location }) => {
   const spanRef = useRef<HTMLSpanElement>(null)
   const shadowStyle: CSSProperties = useShadow(elementRef, noShadow)
   const width =
-    location !== "/"
+    location !== "/" && location !== "/en"
       ? "130px"
       : windowWidth < 200
       ? "150px"
@@ -83,30 +83,36 @@ const Header: FC<Props> = ({ location }) => {
   return (
     <>
       {/* Preload images for the homepage for faster LCP */}
-      {location === "/" && (
-        <Helmet>
-          {/* If user prefers reduced motion, prefer the poster over the heavy animated file */}
-          {!prefersReducedMotion ? (
-            <>
+      {location === "/" ||
+        (location === "/en" && (
+          <Helmet>
+            {/* If user prefers reduced motion, prefer the poster over the heavy animated file */}
+            {!prefersReducedMotion ? (
+              <>
+                <link
+                  rel="preload"
+                  as="image"
+                  href={ollisantaWebP}
+                  type="image/webp"
+                  fetchPriority="high"
+                />
+                <link
+                  rel="preload"
+                  as="image"
+                  href={ollisantaGif}
+                  type="image/gif"
+                />
+              </>
+            ) : (
               <link
                 rel="preload"
                 as="image"
-                href={ollisantaWebP}
-                type="image/webp"
-                fetchPriority="high"
+                href={ollisanta}
+                type="image/jpeg"
               />
-              <link
-                rel="preload"
-                as="image"
-                href={ollisantaGif}
-                type="image/gif"
-              />
-            </>
-          ) : (
-            <link rel="preload" as="image" href={ollisanta} type="image/jpeg" />
-          )}
-        </Helmet>
-      )}
+            )}
+          </Helmet>
+        ))}
       <span
         ref={spanRef}
         aria-hidden="true"
@@ -125,7 +131,7 @@ const Header: FC<Props> = ({ location }) => {
         </picture>
       </span>
       <h1 ref={elementRef} className="tooltip-wrap" style={{ width: width }}>
-        {location === "/" && !noShadow ? (
+        {(location === "/" || location === "/en") && !noShadow ? (
           <Image
             id="gif"
             className={`gif ${noShadow ? "" : ""}`}
@@ -171,7 +177,7 @@ const Header: FC<Props> = ({ location }) => {
           </span>
         )}
       </h1>
-      {location === "/" && (
+      {(location === "/" || location === "/en") && (
         <p style={{ paddingTop: "0.3rem" }}>
           &mdash;&nbsp;{firstToLowerCase(t("compositions"))} &{" "}
           {firstToLowerCase(t("arrangements"))}&nbsp;&mdash;

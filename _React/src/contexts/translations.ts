@@ -6,6 +6,10 @@ export const translations = {
     en: "I am Olli Männistö, artist name",
     fi: "Olen Olli Männistö, taiteilijanimeltä",
   },
+  aboutMetaDescription: {
+    en: "Olli Santa is a choir and orchestra conductor in Southern Finland; composer and arranger for choirs, orchestras, and ensembles.",
+    fi: "Olli Santa on kuoron ja orkesterinjohtaja Etelä-Suomessa; säveltäjä ja sovittaja kuoroille, orkestereille ja yhtyeille.",
+  },
   addContactInfo: {
     en: "Add your contact information",
     fi: "Lisää yhteystietosi",
@@ -72,7 +76,7 @@ export const translations = {
   currentPlural: { en: "Current", fi: "Nykyiset" },
   eachOrderIndividual: {
     en: "Each order is individual in price and delivery time, depending on the scope and complexity of the order.",
-    fi: "Jokainen tilaus on yksilöllinen hinnassa ja toimitusajassa, riippuen tilauksen laajuudesta ja kompleksisuudesta.",
+    fi: "Jokainen tilaus on yksilöllinen hinnassa ja toimitusajassa, riippuen tilauksen laajuudesta ja monimutkaisuudesta.",
   },
   email: { en: "Email", fi: "Sähköposti" },
   emptyFields: { en: "Empty form", fi: "Tyhjennä lomake" },
@@ -137,17 +141,25 @@ export const translations = {
     en: "How to order a product?",
     fi: "Kuinka tilaan tuotteen?",
   },
+  introText0: {
+    fi: "Olli Santa on säveltäjä, sovittaja ja kapellimestari, joka tekee musiikkia kuorojen ja orkesterien käytännön tarpeisiin. Tilaa sovitus tai uusi teos; saat selkeät nuotit, toimivat stemmat ja tarvittaessa harjoitusäänitteet. Tutustu esimerkkeihin ja pyydä tarjous helposti.",
+    en: "Olli Santa is a composer, arranger, and conductor creating music for the practical needs of choirs and orchestras. Commission an arrangement or a new piece; you will receive clear notation, reliable parts, and, if needed, rehearsal recordings. Explore examples and request a quote with a simple message.",
+  },
   introText1: {
-    en: `I am a professional choir and orchestra conductor in the Southern Finland area. Choir and orchestra music is closest to my heart, but entertainment, pop, rock and jazz music have always been an essential part of my work.`,
-    fi: "Olen ammattimainen kuoron- ja orkesterinjohtaja Etelä-Suomen alueella. Kuoro- ja orkesterimusiikki ovat sydäntäni lähinnä, mutta viihde-, pop-, rock- ja jazzmusiikki ovat aina olleet tärkeä osa työtäni.",
+    en: `I am a Finnish choir and orchestra conductor based in Southern Finland. My work focuses on long term artistic direction, repertoire planning, rehearsals, and preparing performances. Choir and orchestral music are closest to my heart, but entertainment, pop, rock and jazz are also part of my work.`,
+    fi: "Olen suomalainen kuoron ja orkesterinjohtaja Etelä-Suomessa. Työni on pitkäjänteistä taiteellista johtamista, jossa yhdistyvät ohjelmistosuunnittelu, harjoitusprosessi ja esitysten valmistelu. Kuoro ja orkesterimusiikki ovat sydäntäni lähinnä, mutta myös viihde, pop, rock ja jazz ovat osa työtäni.",
   },
   introText2: {
-    en: `At the moment I conduct five choirs. In addition to the artistic director's work, I compose and arrange music for all types of choirs, orchestras and bands.`,
-    fi: "Tällä hetkellä johdan viittä kuoroa. Taiteellisen johtajan työn ohessa teen tilauksesta sävellyksiä ja sovituksia kaikille kuoromuodoille, orkestereille ja yhtyeille.",
+    en: "My background includes long-term work with ensembles and music education in different settings. The focus is always the same; music that is readable, practical to rehearse, and convincing in performance.",
+    fi: "Taustaani kuuluu pitkä työskentely erilaisten kokoonpanojen ja musiikkikasvatuksen parissa. Lähtökohta on aina sama; musiikin on oltava luettavaa, harjoiteltavaa ja esityksessä uskottavaa.",
+  },
+  introText3: {
+    en: `At the moment I conduct five choirs. I also take commissions for compositions and arrangements for choirs, orchestras and ensembles, delivering clear notation, reliable parts, and, if needed, rehearsal recordings.`,
+    fi: "Tällä hetkellä johdan viittä kuoroa. Teen myös tilaustöinä sävellyksiä ja sovituksia kuoroille, orkestereille ja yhtyeille, ja toimitan selkeät nuotit ja toimivat stemmat, tarvittaessa myös harjoitusäänitteet.",
   },
   introMetaDescription: {
-    en: `Professional choir and orchestra conductor in Southern Finland. Composer and arranger of music for choirs, orchestras and bands.`,
-    fi: "Ammattimainen kuoron- ja orkesterinjohtaja Etelä-Suomessa. Säveltäjä ja sovittaja kuoroille, orkestereille ja yhtyeille.",
+    en: `Olli Santa is a professional choir and orchestra conductor in Southern Finland. Composer and arranger of music for choirs, orchestras and bands.`,
+    fi: "Olli Santa on ammattimainen kuoron- ja orkesterinjohtaja Etelä-Suomessa. Säveltäjä ja sovittaja kuoroille, orkestereille ja yhtyeille.",
   },
   isCelebrating: {
     en: "is celebrating its 50th anniversary in 2026",

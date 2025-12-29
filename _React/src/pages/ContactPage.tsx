@@ -1,5 +1,5 @@
-import { FC, FormEvent, useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { FC, FormEvent, useEffect, useMemo, useState } from "react"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import { RiMailSendLine } from "react-icons/ri"
 import { GrStatusWarning } from "react-icons/gr"
 import "../components/Form/form.css"
@@ -18,6 +18,15 @@ import { getBreadcrumbJsonLd, getOrganizationJsonLd } from "../utils"
 import JsonLdScript from "../utils/JsonLd"
 import SEO from "../components/SEO/SEO"
 import Input from "../components/Form/Input"
+import { SITE_BASE_URL } from "../components/SEO/constants"
+import { ELang } from "../interfaces"
+import {
+  ContactTypeValue,
+  contactTypeToSlug,
+  getContactPath,
+  getHomePath,
+  parseContactTypeFromSlug,
+} from "../utils/localizedRoutes"
 
 interface Props {
   heading: string
@@ -34,18 +43,91 @@ const ContactPage: FC<Props> = ({ heading }) => {
   const { t, language } = useTranslation()
   const { notify } = useNotification()
   const navigate = useNavigate()
-  const subjectOptions: SelectOption[] = [
-    { value: "arrangement", label: t("arrangement") },
-    { value: "composition", label: t("composition") },
-    { value: "parts", label: t("partRecordings") },
-    { value: "notation", label: t("notation") },
-    { value: "other", label: t("other") },
-  ]
+  const location = useLocation()
+  const { type: typeParam } = useParams()
 
-  const [subject, setSubject] = useLocalStorage<SelectOption>(
-    "OlliSanta_subject",
-    subjectOptions[0]
+  const subjectOptions: SelectOption[] = useMemo(
+    () => [
+      { value: "arrangement", label: t("arrangement") },
+      { value: "composition", label: t("composition") },
+      { value: "parts", label: t("partRecordings") },
+      { value: "notation", label: t("notation") },
+      { value: "other", label: t("other") },
+    ],
+    [t]
   )
+
+  const typeFromQuery = useMemo(() => {
+    const params = new URLSearchParams(location.search)
+    return params.get("type")
+  }, [location.search])
+
+  const typeValue: ContactTypeValue | null = useMemo(() => {
+    const raw = (typeParam ?? typeFromQuery)?.toLowerCase() ?? null
+    if (!raw) return null
+
+    // Try parsing as localized slug for the current language first
+    const parsed =
+      parseContactTypeFromSlug(raw, language) ??
+      // Accept legacy/internal values regardless of current language
+      parseContactTypeFromSlug(raw, "en" as any) ??
+      parseContactTypeFromSlug(raw, "fi" as any)
+
+    return parsed
+  }, [typeParam, typeFromQuery, language])
+
+  const canonicalPath = useMemo(() => {
+    const base = getContactPath(language)
+    if (!typeValue) return base
+    return `${base}/${contactTypeToSlug(typeValue, language)}`
+  }, [language, typeValue])
+
+  const canonicalUrl = `${SITE_BASE_URL}${canonicalPath}`
+  const alternates = useMemo(() => {
+    const fiBase = getContactPath(ELang.fi)
+    const enBase = getContactPath(ELang.en)
+
+    const fiPath = typeValue
+      ? `${fiBase}/${contactTypeToSlug(typeValue, ELang.fi)}`
+      : fiBase
+    const enPath = typeValue
+      ? `${enBase}/${contactTypeToSlug(typeValue, ELang.en)}`
+      : enBase
+
+    return [
+      { hrefLang: "fi", href: `${SITE_BASE_URL}${fiPath}` },
+      { hrefLang: "en", href: `${SITE_BASE_URL}${enPath}` },
+    ]
+  }, [typeValue])
+
+  const xDefaultUrl = alternates.find((a) => a.hrefLang === "fi")?.href
+
+  const subjectFromUrl =
+    (typeValue
+      ? subjectOptions.find((o) => o.value === typeValue)
+      : undefined) ?? undefined
+
+  const [subject, setSubject] = useState<SelectOption>(() => {
+    if (subjectFromUrl) return subjectFromUrl
+
+    if (typeof window !== "undefined") {
+      try {
+        const raw = window.localStorage.getItem("OlliSanta_subject")
+        if (raw) {
+          const parsed = JSON.parse(raw) as Partial<SelectOption>
+          if (typeof parsed.value === "string") {
+            const match = subjectOptions.find((o) => o.value === parsed.value)
+            if (match) return match
+          }
+        }
+      } catch {
+        // ignore
+      }
+    }
+
+    return subjectOptions[0]
+  })
+
   const [data, setData] = useLocalStorage<FData>("OlliSanta_formData", {
     orderID: makeOrderID(),
     lang: language ?? "fi",
@@ -69,20 +151,52 @@ const ContactPage: FC<Props> = ({ heading }) => {
 
   const [isSending, setIsSending] = useState(false)
 
+  // Persist subject to localStorage (client only)
   useEffect(() => {
-    setSubject(
+    if (typeof window === "undefined") return
+    try {
+      window.localStorage.setItem(
+        "OlliSanta_subject",
+        JSON.stringify({ value: subject.value })
+      )
+    } catch {
+      // ignore
+    }
+  }, [subject.value])
+
+  // Initialize/override subject from URL (SSR-safe)
+  useEffect(() => {
+    if (!subjectFromUrl) return
+    setSubject(subjectFromUrl)
+    setData((prev) => ({
+      ...prev,
+      subject:
+        subjectFromUrl.value === "other"
+          ? subjectFromUrl.label + ": " + other
+          : subjectFromUrl.label,
+    }))
+
+    // If old query-based URL was used, canonicalize to the path-based URL.
+    if (!typeParam && typeFromQuery && typeof window !== "undefined") {
+      navigate(canonicalPath, { replace: true })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subjectFromUrl?.value])
+
+  useEffect(() => {
+    const updated =
       subjectOptions.find((o) => o.value === subject.value) ?? subjectOptions[0]
-    )
+    setSubject(updated)
     setData((prevData) => ({
       ...prevData,
       lang: language,
       subject:
-        subject.value === "other"
-          ? subject.label + ": " + other
-          : subject.label ?? "other",
+        updated.value === "other"
+          ? updated.label + ": " + other
+          : updated.label ?? "other",
     }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language, other])
+  }, [language, other, subject.value])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -123,33 +237,17 @@ const ContactPage: FC<Props> = ({ heading }) => {
       })
   }
 
-  // if the address has ?type=arrangement, set the subject to arrangement etc.
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const type = urlParams.get("type")
-    if (type) {
-      const option = subjectOptions.find((o) => o.value === type)
-      if (option) {
-        navigate("/contact")
-        setSubject(option)
-        setData((prevData) => ({
-          ...prevData,
-          subject:
-            option.value === "other"
-              ? option.label + ": " + other
-              : option.label,
-        }))
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate, setSubject, setData, other])
+  // (Old window.location.search logic removed; handled via useLocation/useParams)
 
   return (
     <>
       <SEO
         title={t("contact") + " - Olli Santa"}
         description={t("contactInfo")}
-        canonical={`https://ollisanta.fi/contact`}
+        canonical={canonicalUrl}
+        ogUrl={canonicalUrl}
+        alternates={alternates}
+        xDefault={xDefaultUrl}
         keywords={[
           "contact",
           "arrangement",
@@ -167,13 +265,13 @@ const ContactPage: FC<Props> = ({ heading }) => {
               "@type": "ListItem",
               position: 1,
               name: t("homePage"),
-              item: "https://ollisanta.fi/",
+              item: `${SITE_BASE_URL}${getHomePath(language)}`,
             },
             {
               "@type": "ListItem",
               position: 2,
               name: t("contact"),
-              item: "https://ollisanta.fi/contact",
+              item: canonicalUrl,
             },
           ],
         })}
@@ -190,8 +288,11 @@ const ContactPage: FC<Props> = ({ heading }) => {
       <JsonLdScript data={getOrganizationJsonLd()} />
       <JsonLdScript
         data={getBreadcrumbJsonLd([
-          { name: t("homePage"), url: "https://ollisanta.fi/" },
-          { name: t("contact"), url: "https://ollisanta.fi/contact" },
+          {
+            name: t("homePage"),
+            url: `${SITE_BASE_URL}${getHomePath(language)}`,
+          },
+          { name: t("contact"), url: canonicalUrl },
         ])}
       />
       <section className="medium">
