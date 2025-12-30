@@ -207,10 +207,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
           { name: heading, url: canonical },
         ])}
       />
-      <div
-        ref={divRef}
-        className={`${styles["tra"]} ${darkMode ? styles.dark : ""}`}
-      >
+      <div ref={divRef} className={`${darkMode ? styles.dark : ""}`}>
         <section>
           <h2>{heading}</h2>
           <div className={styles["intro-wrap"]}>

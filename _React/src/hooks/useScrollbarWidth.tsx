@@ -18,9 +18,18 @@ export const useScrollbarWidth = () => {
       outer.style.setProperty("msOverflowStyle", "scrollbar") // legacy WinJS
       document.body.appendChild(outer)
 
-      const width = outer.offsetWidth - outer.clientWidth
+      const elementWidth = outer.offsetWidth - outer.clientWidth
       outer.remove()
-      setScrollbarWidth(width)
+
+      // Firefox (and some OS/browser combos) can use overlay/auto-hiding scrollbars,
+      // making the element-based measurement 0. When a page scrollbar is present,
+      // this viewport-based measurement is often more representative.
+      const viewportWidth =
+        typeof window === "undefined"
+          ? 0
+          : window.innerWidth - document.documentElement.clientWidth
+
+      setScrollbarWidth(Math.max(0, elementWidth, viewportWidth))
     }
 
     measure()
