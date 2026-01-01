@@ -1,5 +1,5 @@
 import emailService from "../../services"
-import { user } from "../../utils"
+import useUser from "../../hooks/useUser"
 import { FData } from "../../interfaces"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
@@ -7,6 +7,7 @@ import { useTranslation } from "../../contexts/useTranslation"
 import { formatDate } from "../../utils"
 
 const Dashboard = () => {
+  const user = useUser<{ username?: string; email?: string; role?: number }>()
   const [data, setData] = useState<FData[]>([])
   const { t } = useTranslation()
 
@@ -61,7 +62,7 @@ const Dashboard = () => {
         <strong>
           {t("role")} ({user?.role}):
         </strong>{" "}
-        {user?.role > 2 ? "Admin" : "Moderaattori"}
+        {(user?.role ?? 0) > 2 ? "Admin" : "Moderaattori"}
       </p>
       <Link to="/change" className="m2top max-content margin0auto block">
         {t("changeInfo")}

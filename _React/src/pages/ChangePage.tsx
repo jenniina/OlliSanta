@@ -1,8 +1,8 @@
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import authService from "../services/auth"
 import Input from "../components/Form/Input"
-import { user } from "../utils"
+import useUser from "../hooks/useUser"
 import { useTranslation } from "../contexts/useTranslation"
 import { useNotification } from "../contexts/useNotification"
 import FormWrapper from "../components/Form/FormWrapper"
@@ -15,21 +15,33 @@ interface Props extends AnyProps {
 const ChangePage: FC<Props> = ({ heading }) => {
   const { notify } = useNotification()
   const navigate = useNavigate()
+  const user = useUser<{ email?: string; username?: string; role?: number }>()
   const email = user?.email
   const [oldPassword, setOldPassword] = useState<IUser["password"]>("")
   const [newPassword, setNewPassword] = useState<IUser["password"]>("")
   const [newPasswordAgain, setNewPasswordAgain] =
     useState<IUser["password"]>("")
   const [password, setPassword] = useState<IUser["password"]>("")
-  const [newUsername, setNewUsername] = useState<IUser["username"]>(
-    user?.username
-  )
+  const [newUsername, setNewUsername] = useState<IUser["username"]>("")
   const [isSending, setIsSending] = useState(false)
   const { t, language } = useTranslation()
+
+  useEffect(() => {
+    if (!newUsername && user?.username) {
+      setNewUsername(user.username)
+    }
+  }, [user?.username, newUsername])
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSending(true)
+
+    const emailValue = email
+    if (!emailValue) {
+      notify(t("errorChangingPassword"), true, 6)
+      setIsSending(false)
+      return
+    }
 
     //Check if newPassword and newPasswordAgain are the same
     if (newPassword !== newPasswordAgain) {
@@ -39,7 +51,7 @@ const ChangePage: FC<Props> = ({ heading }) => {
     }
 
     authService
-      .changePassword(email, oldPassword, newPassword, language)
+      .changePassword(emailValue, oldPassword, newPassword, language)
       .then(() => notify(t("passwordChangedSuccessfully"), false, 6))
       .catch((error) => {
         if (error.response?.data?.message)
@@ -57,9 +69,16 @@ const ChangePage: FC<Props> = ({ heading }) => {
     e.preventDefault()
     setIsSending(true)
 
+    const emailValue = email
+    if (!emailValue) {
+      notify(t("errorChangingUsername"), true, 6)
+      setIsSending(false)
+      return
+    }
+
     authService
-      .changeUsername(email, password, newUsername, language)
-      .then(() => authService.refreshToken(email, password, language))
+      .changeUsername(emailValue, password, newUsername, language)
+      .then(() => authService.refreshToken(emailValue, password, language))
       .then(() => {
         setIsSending(false)
         notify(t("usernameChangedSuccessfully"), false, 3)
@@ -143,7 +162,7 @@ const ChangePage: FC<Props> = ({ heading }) => {
         </form>
       </FormWrapper>
       <div className="m3top margin0auto flex column center gap">
-        {user?.role > 1 && (
+        {(user?.role ?? 0) > 1 && (
           <Link to="/dashboard" className="margin0auto">
             {t("messages")}
           </Link>

@@ -50,7 +50,7 @@ const Header: FC<Props> = ({ location }) => {
     location !== "/" && location !== "/en"
       ? "130px"
       : windowWidth < 200
-      ? "150px"
+      ? "100px"
       : windowWidth < 300
       ? "200px"
       : windowWidth < 400
@@ -94,7 +94,7 @@ const Header: FC<Props> = ({ location }) => {
                   as="image"
                   href={ollisantaWebP}
                   type="image/webp"
-                  fetchPriority="high"
+                  {...({ fetchpriority: "high" } as Record<string, unknown>)}
                 />
                 <link
                   rel="preload"

@@ -79,8 +79,8 @@
 .intro-wrap .intro-text,
 .landing .intro-text {
   flex: 0 1 100%;
-  max-width: 90%;
-  padding: 1em 1.6em 0.8em;
+  max-width: 100%;
+  padding: 1em 0.6em 0.8em;
 }
 .video-wrap {
   --color0: hsl(0, 100%, 33%);
@@ -238,6 +238,46 @@
 .video-thumbnail:focus-visible .note {
   animation-play-state: running;
 }
+
+/* Touch devices: first tap adds this class to run the same animations as hover */
+.touch-armed .note {
+  animation-play-state: running;
+}
+
+/* Touch devices: tapping outside sets this class to pause animations in-place */
+.touch-paused .note,
+.touch-paused .play-button,
+.touch-paused .play-button::before,
+.touch-paused .play-button::after,
+.touch-paused .play-button b,
+.touch-paused .play-button .top-fin::before,
+.touch-paused .play-button .front-fins::before,
+.touch-paused .play-button .front-fins::after,
+.touch-paused .play-button .back-fins::before,
+.touch-paused .play-button .back-fins::after,
+.touch-paused .play-button i::before {
+  animation-play-state: paused !important;
+}
+
+.touch-hint,
+.click-hint {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.4rem 0.4rem;
+  text-align: center;
+  font-size: 0.9em;
+  line-height: 0.8;
+  letter-spacing: 0.04em;
+  color: white;
+  background: hsla(210, 100%, 3%, 0.5);
+  pointer-events: none;
+}
 .play-button {
   --size: 4px;
   z-index: 1;
@@ -264,6 +304,10 @@
 .video-thumbnail:focus-visible .play-button {
   animation-play-state: running;
 }
+
+.touch-armed .play-button {
+  animation-play-state: running;
+}
 .play-button::before {
   /* ring around play symbol */
   content: "";
@@ -284,6 +328,10 @@
 .video-thumbnail:hover .play-button::before,
 .video-thumbnail:focus .play-button::before,
 .video-thumbnail:focus-visible .play-button::before {
+  animation-play-state: running;
+}
+
+.touch-armed .play-button::before {
   animation-play-state: running;
 }
 .play-button::after {
@@ -308,6 +356,10 @@
 .video-thumbnail:hover .play-button::after,
 .video-thumbnail:focus .play-button::after,
 .video-thumbnail:focus-visible .play-button::after {
+  animation-play-state: running;
+}
+
+.touch-armed .play-button::after {
   animation-play-state: running;
 }
 .play-button span,
@@ -335,6 +387,10 @@
 .video-thumbnail:hover .play-button b,
 .video-thumbnail:focus .play-button b,
 .video-thumbnail:focus-visible .play-button b {
+  animation-play-state: running;
+}
+
+.touch-armed .play-button b {
   animation-play-state: running;
 }
 .play-button .top-fin::before {
@@ -407,6 +463,12 @@
 .video-thumbnail:focus-visible .play-button .front-fins::before {
   animation-play-state: running;
 }
+
+.touch-armed .play-button .top-fin::before,
+.touch-armed .play-button .front-fins::after,
+.touch-armed .play-button .front-fins::before {
+  animation-play-state: running;
+}
 .video-thumbnail:hover .play-button .front-fins::before,
 .video-thumbnail:focus .play-button .front-fins::before,
 .video-thumbnail:focus-visible .play-button .front-fins::before {
@@ -417,13 +479,20 @@
 .video-thumbnail:focus-visible .play-button .front-fins::after {
   color: var(--color1);
 }
+
+.touch-armed .play-button .front-fins::before {
+  color: var(--color2);
+}
+.touch-armed .play-button .front-fins::after {
+  color: var(--color1);
+}
 .play-button b::before,
 .play-button b::after {
   /* tail fins */
   content: "";
   position: absolute;
   z-index: -1;
-  left: calc(var(--size) * -8.4);
+  left: calc(var(--size) * -8.1);
 }
 .play-button b::before {
   /* top tail fin */
@@ -441,7 +510,7 @@
 }
 .play-button b::after {
   /* bottom tail fin */
-  top: calc(50% - calc(var(--size) * 0.1));
+  top: calc(50% - calc(var(--size) * 0.2));
   width: 0;
   height: 0;
   color: var(--color1);
@@ -506,6 +575,15 @@
   color: var(--color1);
   animation-play-state: running;
 }
+
+.touch-armed .play-button .back-fins::before {
+  color: var(--color2);
+  animation-play-state: running;
+}
+.touch-armed .play-button .back-fins::after {
+  color: var(--color1);
+  animation-play-state: running;
+}
 .play-button i::before {
   /* tail end */
   content: "";
@@ -552,6 +630,11 @@
   transition-timing-function: ease-in-out;
 }
 .video-thumbnail:hover .play-button {
+  background-color: var(--color2);
+  color: var(--color2);
+}
+
+.touch-armed .play-button {
   background-color: var(--color2);
   color: var(--color2);
 }
@@ -693,7 +776,24 @@
   color: var(--color2);
 }
 
+.touch-armed .play-button::before,
+.touch-armed .play-button span,
+.touch-armed .play-button i,
+.touch-armed .play-button b,
+.touch-armed .play-button span::before,
+.touch-armed .play-button span::after,
+.touch-armed .play-button b::before,
+.touch-armed .play-button b::after,
+.touch-armed .play-button i::before,
+.touch-armed .play-button i::after {
+  color: var(--color2);
+}
+
 .video-thumbnail:hover .play-button::after {
+  border-left-color: rgba(255, 255, 255, 1);
+}
+
+.touch-armed .play-button::after {
   border-left-color: rgba(255, 255, 255, 1);
 }
 
@@ -741,6 +841,10 @@ ul.list li:focus-visible::marker {
   color: var(--color-1);
 }
 @media (min-width: 200px) {
+  .intro-wrap .intro-text,
+  .landing .intro-text {
+    padding: 1em 0.9em 0.8em;
+  }
   .video-wrap .video .video-thumbnail {
     height: 200px;
   }
@@ -754,6 +858,10 @@ ul.list li:focus-visible::marker {
 @media (min-width: 300px) {
   .video-wrap .video .video-thumbnail {
     height: 250px;
+  }
+  .intro-wrap .intro-text,
+  .landing .intro-text {
+    padding: 1em 1.6em 0.8em;
   }
   .intro-wrap .intro-text {
     width: clamp(150px, 70vw, 600px);

@@ -37,6 +37,10 @@ export const translations = {
     en: "Click me to toggle shadow effect and animation",
     fi: "Varjoefekti ja animointi päälle/pois klikkaamalla",
   },
+  clickToPlayVideo: {
+    en: "Click to play the video",
+    fi: "Klikkaa toistaaksesi videon",
+  },
   close: { en: "Close", fi: "Sulje" },
   comp: { en: "Comp.", fi: "Säv." },
   composerAndArranger: {
@@ -238,6 +242,10 @@ export const translations = {
   },
   pieceName: { en: "Name of the piece", fi: "Kappaleen nimi" },
   playVideo: { en: "Play video", fi: "Toista video" },
+  tapAgainForVideo: {
+    en: "Tap again to open the video",
+    fi: "Napauta uudelleen avataksesi videon",
+  },
   receiveBack: {
     en: "You will receive the finished product back within a week or two, either as a printout or in PDF format, according to your wishes.",
     fi: "Saat valmiin tuotteen takaisin viikon tai kahden sisällä, joko tulosteena tai PDF-muodossa, toiveidesi mukaan.",

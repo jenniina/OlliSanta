@@ -4,9 +4,11 @@ import authService from "../../services/auth"
 import InputFData from "../Form/Input"
 import { useTranslation } from "../../contexts/useTranslation"
 import { useNotification } from "../../contexts/useNotification"
-import { user } from "../../utils"
+import useUser from "../../hooks/useUser"
+import { getUserFromStorage } from "../../utils"
 
 const Login = () => {
+  const user = useUser<{ role?: number }>()
   const { t, language } = useTranslation()
   const navigate = useNavigate()
   const { notify } = useNotification()
@@ -22,7 +24,10 @@ const Login = () => {
       .login(email, password, language)
       .then(() => {
         setIsSending(false)
-        user && user.role > 1 ? navigate("/dashboard") : navigate("/change")
+        const nextUser = getUserFromStorage() as { role?: number } | null
+        nextUser && (nextUser.role ?? 0) > 1
+          ? navigate("/dashboard")
+          : navigate("/change")
       })
       .catch((error) => {
         if (error.response?.data?.message)
@@ -36,7 +41,7 @@ const Login = () => {
     return (
       <>
         <div className="flex column gap center margin0auto">
-          {user.role > 1 ? (
+          {(user.role ?? 0) > 1 ? (
             <Link to="/dashboard" className="margin0auto">
               {t("messages")}
             </Link>

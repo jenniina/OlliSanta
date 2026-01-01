@@ -2,7 +2,7 @@ type ApiError = { response?: { data?: { message?: string } } }
 const isApiError = (e: unknown): e is ApiError =>
   typeof e === "object" && e !== null && "response" in e
 import emailService from "../../services"
-import { user } from "../../utils"
+import useUser from "../../hooks/useUser"
 import { FData } from "../../interfaces"
 import { useEffect, useState } from "react"
 import { Helmet } from "react-helmet-async"
@@ -14,6 +14,7 @@ import { GrStatusWarning } from "react-icons/gr"
 import { split } from "../../utils/split"
 
 const Message = () => {
+  const user = useUser<{ role?: number }>()
   const { notify } = useNotification()
   const navigate = useNavigate()
   const { t } = useTranslation()

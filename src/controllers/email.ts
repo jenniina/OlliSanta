@@ -1,11 +1,11 @@
-import { Request, Response } from 'express'
-import fs from 'fs'
-import Email from '../models/email'
-import { deleteFile } from './delete'
-import path from 'path'
-const { validationResult } = require('express-validator')
-const sanitizeHtml = require('sanitize-html')
-const nodemailer = require('nodemailer')
+import { Request, Response } from "express"
+import fs from "fs"
+import Email from "../models/email"
+import { deleteFile } from "./delete"
+import path from "path"
+const { validationResult } = require("express-validator")
+const sanitizeHtml = require("sanitize-html")
+const nodemailer = require("nodemailer")
 import {
   FData,
   ELang,
@@ -17,7 +17,7 @@ import {
   ESchedule,
   EThankYouForYourMessage,
   EIWillSoonBeInTouch,
-} from '../interfaces'
+} from "../interfaces"
 
 const transporter = nodemailer.createTransport({
   host: process.env.NODEMAILER_HOST,
@@ -32,7 +32,7 @@ export const sendMail = (
   subject: string,
   message: string,
   email: string | undefined,
-  attachments: FData['attachments']
+  attachments: FData["attachments"]
 ) => {
   return new Promise((resolve, reject) => {
     transporter.sendMail(
@@ -45,7 +45,13 @@ export const sendMail = (
           attachments.length > 0
             ? attachments?.map((attachment) => ({
                 filename: attachment.filename,
-                path: path.join(__dirname, '..', '..', 'uploads', attachment.filename),
+                path: path.join(
+                  __dirname,
+                  "..",
+                  "..",
+                  "uploads",
+                  attachment.filename
+                ),
               }))
             : undefined,
       },
@@ -54,7 +60,7 @@ export const sendMail = (
           console.error(error)
           reject(error)
         } else {
-          console.log('Email sent: ' + info.response)
+          console.log("Email sent: " + info.response)
           resolve(info.response)
         }
       }
@@ -65,7 +71,7 @@ export const sendMail = (
 export const send = async (req: Request, res: Response) => {
   try {
     const sanitizedOrderID = sanitizeHtml(req.body.orderID)
-    const lang = (req.body.lang as ELang) ?? 'fi'
+    const lang = (req.body.lang as ELang) ?? "fi"
     const sanitizedEmail = sanitizeHtml(req.body.email)
     const sanitizedFirstName = sanitizeHtml(req.body.firstName)
     const sanitizedLastName = sanitizeHtml(req.body.lastName)
@@ -82,14 +88,14 @@ export const send = async (req: Request, res: Response) => {
     const attachments = req.files
       ? (req.files as Express.Multer.File[])?.map((file) => ({
           filename: file.filename,
-          path: path.join(__dirname, '..', '..', 'uploads', file.filename),
+          path: path.join(__dirname, "..", "..", "uploads", file.filename),
           file: file,
         }))
       : []
 
     const email = new Email({
       orderID: sanitizedOrderID,
-      lang: lang ?? 'fi',
+      lang: lang ?? "fi",
       email: sanitizedEmail,
       firstName: sanitizedFirstName,
       lastName: sanitizedLastName,
@@ -107,17 +113,21 @@ export const send = async (req: Request, res: Response) => {
 
     await email.save()
 
-    const message = `${EOrderID[lang ?? 'fi']}: ${sanitizedOrderID} \n\n
-    ${sanitizedPiece !== '' ? `${EPiece[lang ?? 'fi']}: ${sanitizedPiece} \n\n` : ''} ${
-      sanitizedEnsemble !== ''
-        ? `${EEnsemble[lang ?? 'fi']}: ${sanitizedEnsemble} \n\n`
-        : ''
+    const message = `${EOrderID[lang ?? "fi"]}: ${sanitizedOrderID} \n\n
+    ${
+      sanitizedPiece !== ""
+        ? `${EPiece[lang ?? "fi"]}: ${sanitizedPiece} \n\n`
+        : ""
+    } ${
+      sanitizedEnsemble !== ""
+        ? `${EEnsemble[lang ?? "fi"]}: ${sanitizedEnsemble} \n\n`
+        : ""
     }${
-      sanitizedSchedule !== ''
-        ? `${ESchedule[lang ?? 'fi']}: ${sanitizedSchedule} \n`
-        : ''
+      sanitizedSchedule !== ""
+        ? `${ESchedule[lang ?? "fi"]}: ${sanitizedSchedule} \n`
+        : ""
     }
-      ${EMessage[lang ?? 'fi']}: \n
+      ${EMessage[lang ?? "fi"]}: \n
       ${sanitizedMessage} \n\n${sanitizedFirstName} ${sanitizedLastName}: ${sanitizedEmail}\n\n${sanitizedAddress}\n${sanitizedZip} ${sanitizedCity}\n${sanitizedCountry}`
 
     await sendMail(
@@ -129,18 +139,21 @@ export const send = async (req: Request, res: Response) => {
 
     //send confirmation email to the user
     await sendMail(
-      EThankYouForYourMessage[lang ?? 'fi'],
-      `${EIWillSoonBeInTouch[lang ?? 'fi']} \n\n${message}`,
+      EThankYouForYourMessage[lang ?? "fi"],
+      `${EIWillSoonBeInTouch[lang ?? "fi"]} \n\n${message}`,
       sanitizedEmail,
       []
     )
 
     return res.status(200).json({
-      message: `${EMessageSentSuccessfully[(req.body.lang as ELang) ?? 'fi']}`,
+      success: true,
+      message: `${EMessageSentSuccessfully[(req.body.lang as ELang) ?? "fi"]}`,
     })
   } catch (error) {
     console.error(error)
-    return res.status(500).json({ message: `${(error as Error).message}`, error: error })
+    return res
+      .status(500)
+      .json({ message: `${(error as Error).message}`, error: error })
   }
 }
 
@@ -150,7 +163,9 @@ export const getEmails = async (req: Request, res: Response) => {
     return res.status(200).json(emails)
   } catch (error) {
     console.error(error)
-    return res.status(500).json({ message: `${(error as Error).message}`, error: error })
+    return res
+      .status(500)
+      .json({ message: `${(error as Error).message}`, error: error })
   }
 }
 
@@ -160,7 +175,9 @@ export const getEmail = async (req: Request, res: Response) => {
     return res.status(200).json(email)
   } catch (error) {
     console.error(error)
-    return res.status(500).json({ message: `${(error as Error).message}`, error: error })
+    return res
+      .status(500)
+      .json({ message: `${(error as Error).message}`, error: error })
   }
 }
 
@@ -168,13 +185,19 @@ export const deleteEmail = async (req: Request, res: Response) => {
   try {
     const email = await Email.findOne({ orderID: req.params.orderID })
     if (!email) {
-      return res.status(404).json({ message: 'Message not found' })
+      return res.status(404).json({ message: "Message not found" })
     }
 
     // Delete associated files
     if (email.attachments && email.attachments.length > 0) {
       email.attachments.forEach((attachment) => {
-        const filePath = path.join(__dirname, '..', '..', 'uploads', attachment.filename)
+        const filePath = path.join(
+          __dirname,
+          "..",
+          "..",
+          "uploads",
+          attachment.filename
+        )
         fs.unlink(filePath, (err) => {
           if (err) {
             console.error(`Error deleting file ${attachment.filename}:`, err)
@@ -185,10 +208,12 @@ export const deleteEmail = async (req: Request, res: Response) => {
     await Email.deleteOne({ orderID: req.params.orderID })
     return res
       .status(200)
-      .json({ message: 'Message and associated files deleted successfully' })
+      .json({ message: "Message and associated files deleted successfully" })
   } catch (error) {
     console.error(error)
-    return res.status(500).json({ message: `${(error as Error).message}`, error: error })
+    return res
+      .status(500)
+      .json({ message: `${(error as Error).message}`, error: error })
   }
 }
 
@@ -196,11 +221,11 @@ export const editEmail = async (req: Request, res: Response) => {
   try {
     const email = await Email.findOne({ orderID: req.params.orderID })
     if (!email) {
-      return res.status(404).json({ message: 'Message not found' })
+      return res.status(404).json({ message: "Message not found" })
     }
 
     const sanitizedOrderID = sanitizeHtml(req.body.orderID)
-    const lang = (req.body.lang as ELang) ?? 'fi'
+    const lang = (req.body.lang as ELang) ?? "fi"
     const sanitizedEmail = sanitizeHtml(req.body.email)
     const sanitizedFirstName = sanitizeHtml(req.body.firstName)
     const sanitizedLastName = sanitizeHtml(req.body.lastName)
@@ -217,20 +242,24 @@ export const editEmail = async (req: Request, res: Response) => {
     const attachments = req.files
       ? (req.files as Express.Multer.File[])?.map((file) => ({
           filename: file.filename,
-          path: path.join(__dirname, '..', '..', 'uploads', file.filename),
+          path: path.join(__dirname, "..", "..", "uploads", file.filename),
           file: file,
         }))
       : []
 
     // Delete attachments that are missing from the updated email
-    const existingAttachments = email.attachments.map((attachment) => attachment.filename)
-    const updatedAttachments = attachments.map((attachment) => attachment.filename)
+    const existingAttachments = email.attachments.map(
+      (attachment) => attachment.filename
+    )
+    const updatedAttachments = attachments.map(
+      (attachment) => attachment.filename
+    )
     const attachmentsToDelete = existingAttachments.filter(
       (filename) => !updatedAttachments.includes(filename)
     )
 
     attachmentsToDelete.forEach((filename) => {
-      const filePath = path.join(__dirname, '..', '..', 'uploads', filename)
+      const filePath = path.join(__dirname, "..", "..", "uploads", filename)
       fs.unlink(filePath, (err) => {
         if (err) {
           console.error(`Error deleting file ${filename}:`, err)
@@ -244,7 +273,7 @@ export const editEmail = async (req: Request, res: Response) => {
     )
 
     email.orderID = sanitizedOrderID
-    email.lang = lang ?? 'fi'
+    email.lang = lang ?? "fi"
     email.email = sanitizedEmail
     email.firstName = sanitizedFirstName
     email.lastName = sanitizedLastName
@@ -261,10 +290,12 @@ export const editEmail = async (req: Request, res: Response) => {
 
     await email.save()
 
-    return res.status(200).json({ message: 'Message updated successfully' })
+    return res.status(200).json({ message: "Message updated successfully" })
   } catch (error) {
     console.error(error)
-    return res.status(500).json({ message: `${(error as Error).message}`, error: error })
+    return res
+      .status(500)
+      .json({ message: `${(error as Error).message}`, error: error })
   }
 }
 

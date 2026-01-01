@@ -1,6 +1,6 @@
 import { CSSProperties, useEffect, useMemo, useRef, useState } from "react"
 import { Routes, Route, useLocation, Navigate } from "react-router-dom"
-import { user } from "./utils"
+import useUser from "./hooks/useUser"
 import AboutPage from "./pages/AboutPage"
 import LandingPage from "./pages/LandingPage"
 import ContactPage from "./pages/ContactPage"
@@ -20,6 +20,7 @@ import Message from "./components/Message/Message"
 import ChangePage from "./pages/ChangePage"
 
 function App() {
+  const user = useUser<{ role?: number }>()
   const darkMode = useTheme()
   const location = useLocation()
   const { t, language, setLanguage } = useTranslation()
