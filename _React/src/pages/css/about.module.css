@@ -79,8 +79,8 @@
 .intro-wrap .intro-text,
 .landing .intro-text {
   flex: 0 1 100%;
-  max-width: 90%;
-  padding: 1em 1.6em 0.8em;
+  max-width: 100%;
+  padding: 1em 0.6em 0.8em;
 }
 .video-wrap {
   --color0: hsl(0, 100%, 33%);
@@ -109,7 +109,7 @@
 .video-wrap .video .video-thumbnail {
   position: relative;
   width: 100%;
-  height: 250px;
+  height: 150px;
   background-image: linear-gradient(
     6deg,
     var(--color-1) 0%,
@@ -122,7 +122,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition-property: border, outline, transform, background-position;
+  transition-property: border, outline-offset, outline-width, transform,
+    background-position;
   transition-duration: 0.5s;
   transition-timing-function: ease-in-out;
   border-radius: 0.25rem;
@@ -140,18 +141,15 @@
 }
 
 .video-wrap .video .video-thumbnail:hover,
-.dark .video-thumbnail:hover {
-  transform: scale(1.05, 1.01);
-  outline-color: var(--color-7);
-  background-position: center 100%;
-}
-
+.dark .video-thumbnail:hover,
 .video-wrap .video .video-thumbnail:focus-visible {
-  outline: 2px solid var(--color-7);
-  outline-offset: 2px;
+  transform: scale(1.02, 1.05);
+  background-position: center 100%;
+  outline-offset: -8px;
+  outline: 3px solid var(--color-9);
 }
 .note {
-  --size: 20px;
+  --size: 10px;
   position: absolute;
   width: var(--size);
   height: calc(var(--size) * 1.2);
@@ -163,25 +161,25 @@
   /* note head left */
   content: "";
   position: absolute;
-  top: calc(var(--size) * 0.86);
+  top: calc(var(--size) * 0.95);
   left: calc(var(--size) * -0.5);
   width: calc(var(--size) * 0.5);
   height: calc(var(--size) * 0.4);
   border-radius: 50%;
   background-color: var(--color2);
-  transform: rotate(-20deg);
+  transform: skewY(-30deg) rotate(-20deg);
 }
 .note::after {
   /* note head right */
   content: "";
   position: absolute;
-  top: calc(var(--size) * 0.86);
+  top: calc(var(--size) * 0.95);
   right: -2px;
   width: calc(var(--size) * 0.5);
   height: calc(var(--size) * 0.4);
   border-radius: 50%;
   background-color: var(--color2);
-  transform: rotate(-20deg);
+  transform: skewY(-30deg) rotate(-20deg);
 }
 .note1,
 .note3 {
@@ -191,24 +189,12 @@
 }
 .note1::before,
 .note3::before {
-  top: calc(var(--size) * 0.99);
+  top: calc(var(--size) * 1.1);
 }
 .note1::after,
 .note3::after {
   display: none;
 }
-/* .note1 {
-  top: 20%;
-  left: 58%;
-}
-.note2 {
-  top: 22%;
-  left: 62%;
-}
-.note3 {
-  top: 28%;
-  left: 70%;
-} */
 .note {
   top: 28%;
   left: 70%;
@@ -219,7 +205,8 @@
 @supports (offset-path: path("M0 0 L 1 1")) {
   .note {
     top: 30%;
-    left: calc(50% + 77px);
+    left: calc(50% + calc(var(--size) * 4));
+    transform: skew(-6deg, 20deg);
     /* Smooth arc: path is relative to the note's initial position */
     offset-path: path("M 0 0 C -14 -26 -34 -40 -50 -30");
     offset-rotate: 0deg;
@@ -230,7 +217,7 @@
   animation-delay: -0.7s;
 }
 .note2 {
-  animation-delay: -1.9s;
+  animation-delay: -2s;
 }
 .note3 {
   animation-delay: -2.8s;
@@ -240,20 +227,73 @@
 .video-thumbnail:focus-visible .note {
   animation-play-state: running;
 }
+
+/* Touch devices: first tap adds this class to run the same animations as hover */
+.touch-armed .note {
+  animation-play-state: running;
+}
+
+/* Touch devices: tapping outside sets this class to pause animations in-place */
+.touch-paused .note,
+.touch-paused .play-button,
+.touch-paused .play-button::before,
+.touch-paused .play-button::after,
+.touch-paused .play-button b,
+.touch-paused .play-button .top-fin::before,
+.touch-paused .play-button .front-fins::before,
+.touch-paused .play-button .front-fins::after,
+.touch-paused .play-button .back-fins::before,
+.touch-paused .play-button .back-fins::after,
+.touch-paused .play-button i::before {
+  animation-play-state: paused !important;
+}
+
+.touch-hint,
+.click-hint {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3em 0.4em 0.4em;
+  text-align: center;
+  font-size: 0.9em;
+  line-height: 0.8;
+  letter-spacing: 0.04em;
+  color: white;
+  background-color: hsla(210, 100%, 28%, 0.4);
+  pointer-events: none;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+  mix-blend-mode: hard-light;
+}
+.video-thumbnail:hover .touch-hint,
+.video-thumbnail:focus .touch-hint,
+.video-thumbnail:focus-visible .touch-hint,
+.video-thumbnail:hover .click-hint,
+.video-thumbnail:focus .click-hint,
+.video-thumbnail:focus-visible .click-hint {
+  background-color: hsla(210, 100%, 22%, 0.5);
+}
 .play-button {
+  --size: 4px;
   z-index: 1;
   display: flex;
   position: relative;
   align-items: center;
   justify-content: center;
-  left: 30px;
-  width: 132px;
-  height: 38px;
+  left: calc(var(--size) * 3);
+  width: calc(var(--size) * 13.2);
+  height: calc(var(--size) * 3.8);
   background-color: var(--color1);
-  border-radius: 12px;
+  border-radius: calc(var(--size) * 1.2);
   border-radius: 70% 50% 90% 90% / 80% 60% 120% 80%;
   color: var(--color1);
-  font-size: 24px;
+  font-size: calc(var(--size) * 2.4);
   transition-property: background-color;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
@@ -265,26 +305,34 @@
 .video-thumbnail:focus-visible .play-button {
   animation-play-state: running;
 }
+
+.touch-armed .play-button {
+  animation-play-state: running;
+}
 .play-button::before {
   /* ring around play symbol */
   content: "";
   position: absolute;
   z-index: 2;
-  width: 32px;
-  height: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  width: calc(var(--size) * 3.2);
+  height: calc(var(--size) * 3);
+  border: calc(var(--size) * 0.2) solid hsl(0, 0%, 100%, 0.5);
   border-radius: 50%;
   transition-property: border-color, transform;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
   animation: sideToSideMovement 2s infinite ease-in-out;
   animation-play-state: paused;
-  top: 4px;
-  left: calc(50% - 21px);
+  top: calc(var(--size) * 0.4);
+  left: calc(50% - calc(var(--size) * 2.1));
 }
 .video-thumbnail:hover .play-button::before,
 .video-thumbnail:focus .play-button::before,
 .video-thumbnail:focus-visible .play-button::before {
+  animation-play-state: running;
+}
+
+.touch-armed .play-button::before {
   animation-play-state: running;
 }
 .play-button::after {
@@ -296,10 +344,10 @@
   position: relative;
   z-index: 3;
   top: 0;
-  left: -3px;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-left: 16px solid rgba(255, 255, 255, 0.84);
+  left: calc(var(--size) * -0.3);
+  border-top: calc(var(--size) * 1) solid transparent;
+  border-bottom: calc(var(--size) * 1) solid transparent;
+  border-left: calc(var(--size) * 1.6) solid hsla(0, 0%, 100%, 0.84);
   transition-property: color, border-color, transform;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
@@ -309,6 +357,10 @@
 .video-thumbnail:hover .play-button::after,
 .video-thumbnail:focus .play-button::after,
 .video-thumbnail:focus-visible .play-button::after {
+  animation-play-state: running;
+}
+
+.touch-armed .play-button::after {
   animation-play-state: running;
 }
 .play-button span,
@@ -331,6 +383,7 @@
   animation: tailMovement 2s infinite ease-in-out;
   animation-delay: -0.1s;
   animation-play-state: paused;
+  transform-origin: 8% center;
   z-index: -1;
 }
 .video-thumbnail:hover .play-button b,
@@ -338,19 +391,23 @@
 .video-thumbnail:focus-visible .play-button b {
   animation-play-state: running;
 }
+
+.touch-armed .play-button b {
+  animation-play-state: running;
+}
 .play-button .top-fin::before {
   /* Top fin */
   content: "";
   position: absolute;
   z-index: 1;
-  top: -38px;
+  top: calc(var(--size) * -3.8);
   left: 30%;
   width: 0;
   height: 0;
   color: var(--color1);
-  border-bottom: 40px solid currentColor;
-  border-right: 36px solid transparent;
-  transform-origin: 18px 40px;
+  border-bottom: calc(var(--size) * 4) solid currentColor;
+  border-right: calc(var(--size) * 3.6) solid transparent;
+  transform-origin: calc(var(--size) * 1.8) calc(var(--size) * 4);
   transition-property: color, border-color;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
@@ -363,13 +420,13 @@
   content: "";
   position: absolute;
   z-index: 1;
-  bottom: -20px;
+  bottom: calc(var(--size) * -2);
   left: 40%;
   width: 0;
   height: 0;
   color: var(--color1);
-  border-top: 26px solid currentColor;
-  border-right: 26px solid transparent;
+  border-top: calc(var(--size) * 2.6) solid currentColor;
+  border-right: calc(var(--size) * 2.6) solid transparent;
   transition-property: color, border-color;
   transition-duration: 0.3s;
   transform-origin: center top;
@@ -382,13 +439,13 @@
   content: "";
   position: absolute;
   z-index: -3;
-  bottom: -14px;
+  bottom: calc(var(--size) * -1.4);
   left: 53%;
   width: 0;
   height: 0;
   color: var(--color0);
-  border-top: 15px solid currentColor;
-  border-left: 15px solid transparent;
+  border-top: calc(var(--size) * 1.5) solid currentColor;
+  border-left: calc(var(--size) * 1.5) solid transparent;
   transition-property: color, border-color;
   transition-duration: 0.3s;
   transform-origin: center top;
@@ -408,6 +465,12 @@
 .video-thumbnail:focus-visible .play-button .front-fins::before {
   animation-play-state: running;
 }
+
+.touch-armed .play-button .top-fin::before,
+.touch-armed .play-button .front-fins::after,
+.touch-armed .play-button .front-fins::before {
+  animation-play-state: running;
+}
 .video-thumbnail:hover .play-button .front-fins::before,
 .video-thumbnail:focus .play-button .front-fins::before,
 .video-thumbnail:focus-visible .play-button .front-fins::before {
@@ -418,23 +481,30 @@
 .video-thumbnail:focus-visible .play-button .front-fins::after {
   color: var(--color1);
 }
+
+.touch-armed .play-button .front-fins::before {
+  color: var(--color2);
+}
+.touch-armed .play-button .front-fins::after {
+  color: var(--color1);
+}
 .play-button b::before,
 .play-button b::after {
   /* tail fins */
   content: "";
   position: absolute;
   z-index: -1;
-  left: -84px;
+  left: calc(var(--size) * -8.1);
 }
 .play-button b::before {
   /* top tail fin */
-  bottom: 50%;
+  bottom: calc(50% + calc(var(--size) * 0.2));
   width: 0;
   height: 0;
   color: var(--color1);
-  border-left: 1px solid transparent;
-  border-right: 24px solid transparent;
-  border-bottom: 44px solid currentColor;
+  border-left: calc(var(--size) * 0.1) solid transparent;
+  border-right: calc(var(--size) * 2.4) solid transparent;
+  border-bottom: calc(var(--size) * 4.4) solid currentColor;
   transform: skew(20deg);
   transition-property: color, border-color;
   transition-duration: 0.3s;
@@ -442,13 +512,13 @@
 }
 .play-button b::after {
   /* bottom tail fin */
-  top: calc(50% - 1px);
+  top: calc(50% - calc(var(--size) * 0.2));
   width: 0;
   height: 0;
   color: var(--color1);
-  border-left: 1px solid transparent;
-  border-right: 24px solid transparent;
-  border-top: 20px solid currentColor;
+  border-left: calc(var(--size) * 0.1) solid transparent;
+  border-right: calc(var(--size) * 2.4) solid transparent;
+  border-top: calc(var(--size) * 2) solid currentColor;
   transform: skew(-40deg);
   transition-property: color, border-color;
   transition-duration: 0.3s;
@@ -460,15 +530,15 @@
   display: block;
   position: absolute;
   z-index: 1;
-  bottom: -3px;
+  bottom: calc(var(--size) * -0.3);
   left: 5%;
   width: 0;
   height: 0;
   color: var(--color1);
-  transform-origin: center -5px;
-  border-top: 14px solid transparent;
-  border-left: 14px solid currentColor;
-  border-bottom: 11px solid transparent;
+  transform-origin: center calc(var(--size) * -0.5);
+  border-top: calc(var(--size) * 1.4) solid transparent;
+  border-left: calc(var(--size) * 1.4) solid currentColor;
+  border-bottom: calc(var(--size) * 1.1) solid transparent;
   transition-property: color, border-color;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
@@ -481,13 +551,13 @@
   display: block;
   position: absolute;
   z-index: -1;
-  bottom: -1px;
+  bottom: calc(var(--size) * -0.1);
   left: 7%;
   width: 0;
   height: 0;
   color: var(--color0);
-  border-left: 9px solid currentColor;
-  border-bottom: 8px solid transparent;
+  border-left: calc(var(--size) * 0.9) solid currentColor;
+  border-bottom: calc(var(--size) * 0.8) solid transparent;
   transition-property: color, border-color;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
@@ -507,25 +577,34 @@
   color: var(--color1);
   animation-play-state: running;
 }
+
+.touch-armed .play-button .back-fins::before {
+  color: var(--color2);
+  animation-play-state: running;
+}
+.touch-armed .play-button .back-fins::after {
+  color: var(--color1);
+  animation-play-state: running;
+}
 .play-button i::before {
   /* tail end */
   content: "";
   z-index: -1;
   position: absolute;
   width: 0;
-  height: 6px;
-  top: 7px;
-  left: -66px;
+  height: calc(var(--size) * 1);
+  top: calc(var(--size) * 0.55);
+  left: calc(var(--size) * -6.5);
   color: var(--color1);
-  border-top: 11px solid transparent;
-  border-bottom: 11px solid transparent;
-  border-right: 77px solid currentColor;
+  border-top: calc(var(--size) * 1.1) solid transparent;
+  border-bottom: calc(var(--size) * 1.1) solid transparent;
+  border-right: calc(var(--size) * 8) solid currentColor;
   border-radius: 0;
   background-color: transparent;
   transition-property: color, border-color;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
-  transform-origin: right center;
+  transform-origin: calc(100% - calc(var(--size) * -0.1)) center;
   animation: tailMovement 2s infinite ease-in-out;
   animation-delay: -0.1s;
   animation-play-state: paused;
@@ -541,18 +620,23 @@
   display: block;
   position: absolute;
   z-index: 1;
-  bottom: 2px;
-  right: 16px;
-  width: 4px;
-  height: 4px;
+  bottom: calc(var(--size) * 0.2);
+  right: calc(var(--size) * 1.9);
+  width: calc(var(--size) * 0.4);
+  height: calc(var(--size) * 0.4);
   color: var(--color1);
-  border-bottom: 15px solid currentColor;
-  border-right: 30px solid transparent;
+  border-bottom: calc(var(--size) * 1.5) solid currentColor;
+  border-right: calc(var(--size) * 3) solid transparent;
   transition-property: color, border-color;
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
 }
 .video-thumbnail:hover .play-button {
+  background-color: var(--color2);
+  color: var(--color2);
+}
+
+.touch-armed .play-button {
   background-color: var(--color2);
   color: var(--color2);
 }
@@ -608,43 +692,43 @@
 @keyframes bodyMovement {
   0%,
   100% {
-    transform: translateY(-2px) scaleX(0.94);
+    transform: translateY(calc(var(--size) * -0.2)) scaleX(0.94);
   }
   25% {
-    transform: translateY(0px) scaleX(1);
+    transform: translateY(0) scaleX(1);
   }
   50% {
-    transform: translateY(2px) scaleX(0.94);
+    transform: translateY(calc(var(--size) * 0.2)) scaleX(0.94);
   }
   75% {
-    transform: translateY(0px) scaleX(1);
+    transform: translateY(0) scaleX(1);
   }
 }
 @keyframes frontFin {
   0%,
   100% {
-    transform: skewX(-10deg) translateX(-3px);
+    transform: skewX(-10deg) translateX(calc(var(--size) * -0.3));
   }
   50% {
-    transform: skewX(44deg) translateX(3px);
+    transform: skewX(44deg) translateX(calc(var(--size) * 0.3));
   }
 }
 @keyframes frontFinBehind {
   0%,
   100% {
-    transform: rotate(-3deg) skewX(-10deg) translateX(-4px);
+    transform: rotate(-3deg) skewX(-10deg) translateX(calc(var(--size) * -0.4));
   }
   50% {
-    transform: rotate(-3deg) skewX(14deg) translateX(4px);
+    transform: rotate(-3deg) skewX(14deg) translateX(calc(var(--size) * 0.4));
   }
 }
 @keyframes backFin {
   0%,
   100% {
-    transform: rotate(16deg) translateX(-2px);
+    transform: rotate(16deg) translateX(calc(var(--size) * -0.2));
   }
   50% {
-    transform: rotate(7deg) translateX(2px);
+    transform: rotate(7deg) translateX(calc(var(--size) * 0.2));
   }
 }
 @keyframes backFinBehind {
@@ -659,10 +743,10 @@
 @keyframes sideToSideMovement {
   0%,
   100% {
-    transform: translateX(-8px);
+    transform: translateX(calc(var(--size) * -0.8));
   }
   50% {
-    transform: translateX(8px);
+    transform: translateX(calc(var(--size) * 0.8));
   }
 }
 @keyframes topFinScale {
@@ -694,8 +778,25 @@
   color: var(--color2);
 }
 
+.touch-armed .play-button::before,
+.touch-armed .play-button span,
+.touch-armed .play-button i,
+.touch-armed .play-button b,
+.touch-armed .play-button span::before,
+.touch-armed .play-button span::after,
+.touch-armed .play-button b::before,
+.touch-armed .play-button b::after,
+.touch-armed .play-button i::before,
+.touch-armed .play-button i::after {
+  color: var(--color2);
+}
+
 .video-thumbnail:hover .play-button::after {
-  border-left-color: rgba(255, 255, 255, 1);
+  border-left-color: hsla(0, 0%, 100%, 1);
+}
+
+.touch-armed .play-button::after {
+  border-left-color: hsla(0, 0%, 100%, 1);
 }
 
 .heading3 {
@@ -741,16 +842,59 @@ ul.list li:focus-visible::marker {
 .dark ul.list li:focus-visible::marker {
   color: var(--color-1);
 }
-
+@media (min-width: 200px) {
+  .intro-wrap .intro-text,
+  .landing .intro-text {
+    padding: 1em 0.9em 0.8em;
+  }
+  .video-wrap .video .video-thumbnail {
+    height: 200px;
+  }
+  .note {
+    --size: 14px;
+  }
+  .play-button {
+    --size: 6px;
+  }
+}
 @media (min-width: 300px) {
+  .video-wrap .video .video-thumbnail {
+    height: 250px;
+  }
+  .video-wrap .video .video-thumbnail:hover,
+  .dark .video-thumbnail:hover,
+  .video-wrap .video .video-thumbnail:focus-visible {
+    outline-offset: -9px;
+    outline: 4px solid var(--color-9);
+  }
+  .intro-wrap .intro-text,
+  .landing .intro-text {
+    padding: 1em 1.6em 0.8em;
+  }
   .intro-wrap .intro-text {
-    max-width: 400px;
+    width: clamp(150px, 70vw, 600px);
+    max-width: 600px;
   }
   .video-wrap h4 {
     min-height: 2.4em;
   }
+  .note {
+    --size: 20px;
+  }
+  .play-button {
+    --size: 10px;
+  }
 }
 @media (min-width: 600px) {
+  .landing-section .landing .intro-text {
+    width: clamp(150px, 70vw, 400px);
+    max-width: clamp(150px, 70vw, 400px);
+  }
+  .video {
+    flex: 1 1 calc(50% - 2em);
+  }
+}
+@media (min-width: 700px) {
   .intro-wrap .olli {
     width: clamp(100px, calc(25vw - 2em), 200px);
     height: clamp(100px, calc(25vw - 2em), 200px);
@@ -761,13 +905,6 @@ ul.list li:focus-visible::marker {
   .intro-wrap .intro-text {
     flex: 0 1 calc(clamp(200px, 60vw, 660px) - 2em);
     max-width: calc(clamp(200px, 60vw, 660px) - 2em);
-  }
-  .landing-section .landing .intro-text {
-    width: clamp(150px, 70vw, 400px);
-    max-width: clamp(150px, 70vw, 400px);
-  }
-  .video {
-    flex: 1 1 calc(50% - 2em);
   }
 }
 @media (min-width: 1000px) {

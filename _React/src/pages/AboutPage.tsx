@@ -87,9 +87,70 @@ const AboutPage: FC<Props> = ({ heading }) => {
 
   const [loadedVideos, setLoadedVideos] = useState<Set<string>>(new Set())
 
+  const [isTouchScreen, setIsTouchScreen] = useState(false)
+  const [armedVideoId, setArmedVideoId] = useState<string | null>(null)
+  const [pausedVideoId, setPausedVideoId] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+
+    const isTouchByNavigator = (
+      navigator as Navigator & { maxTouchPoints?: number }
+    ).maxTouchPoints
+      ? (navigator as Navigator & { maxTouchPoints?: number }).maxTouchPoints! >
+        0
+      : false
+
+    const mq = window.matchMedia("(hover: none) and (pointer: coarse)")
+    const update = () =>
+      setIsTouchScreen(Boolean(isTouchByNavigator || mq.matches))
+    update()
+
+    if (mq.addEventListener) mq.addEventListener("change", update)
+    else mq.addListener(update)
+
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", update)
+      else mq.removeListener(update)
+    }
+  }, [])
+
   const handleVideoClick = (videoId: string) => {
     setLoadedVideos((prev) => new Set(prev).add(videoId))
+    setArmedVideoId(null)
+    setPausedVideoId(null)
   }
+
+  // Touch UX: tapping anywhere outside the armed thumbnail cancels the animation.
+  // Also blur the thumbnail (mobile browsers keep :focus) and pause animations in-place.
+  useEffect(() => {
+    if (!isTouchScreen) return
+    if (!armedVideoId) return
+    if (typeof document === "undefined") return
+
+    const onPointerDown = (ev: PointerEvent) => {
+      const target = ev.target as Element | null
+      const thumbnail =
+        target?.closest?.('[data-video-thumbnail="true"]') ?? null
+
+      const clickedVideoId = thumbnail?.getAttribute("data-video-id")
+      if (clickedVideoId === armedVideoId) return
+
+      const active = document.activeElement as HTMLElement | null
+      if (active?.getAttribute?.("data-video-thumbnail") === "true") {
+        active.blur()
+      }
+
+      setPausedVideoId(armedVideoId)
+      setArmedVideoId(null)
+    }
+
+    // capture so we run before the click handler
+    document.addEventListener("pointerdown", onPointerDown, true)
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown, true)
+    }
+  }, [isTouchScreen, armedVideoId])
 
   useEffect(() => {
     divRef.current?.classList.remove(styles["tra"])
@@ -207,10 +268,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
           { name: heading, url: canonical },
         ])}
       />
-      <div
-        ref={divRef}
-        className={`${styles["tra"]} ${darkMode ? styles.dark : ""}`}
-      >
+      <div ref={divRef} className={`${darkMode ? styles.dark : ""}`}>
         <section>
           <h2>{heading}</h2>
           <div className={styles["intro-wrap"]}>
@@ -495,14 +553,35 @@ const AboutPage: FC<Props> = ({ heading }) => {
           <div className={styles["video-wrap"]}>
             {videosWithID?.map((video) => {
               const isLoaded = loadedVideos.has(video.id)
+              const isArmed = isTouchScreen && armedVideoId === video.id
+              const isPaused = isTouchScreen && pausedVideoId === video.id
 
               return (
                 <div key={video.id} id={video.id} className={styles["video"]}>
                   <h4>{video.title}</h4>
                   {!isLoaded ? (
                     <button
-                      onClick={() => handleVideoClick(video.id)}
-                      className={styles["video-thumbnail"]}
+                      data-video-thumbnail="true"
+                      data-video-id={video.id}
+                      onClick={() => {
+                        // Touch UX: first tap runs the CSS animation; second tap opens.
+                        if (isTouchScreen) {
+                          if (armedVideoId !== video.id) {
+                            setPausedVideoId(null)
+                            setArmedVideoId(video.id)
+                            return
+                          }
+
+                          setPausedVideoId(null)
+                          handleVideoClick(video.id)
+                          return
+                        }
+
+                        handleVideoClick(video.id)
+                      }}
+                      className={`${styles["video-thumbnail"]} ${
+                        isArmed ? styles["touch-armed"] : ""
+                      } ${isPaused ? styles["touch-paused"] : ""}`}
                       aria-label={`${t("playVideo")} ${video.title}`}
                     >
                       <i
@@ -527,6 +606,22 @@ const AboutPage: FC<Props> = ({ heading }) => {
                         <i></i>
                         <b></b>
                       </span>
+                      {!isTouchScreen && (
+                        <span
+                          className={styles["click-hint"]}
+                          aria-hidden="true"
+                        >
+                          {t("clickToPlayVideo")}
+                        </span>
+                      )}
+                      {isArmed && (
+                        <span
+                          className={styles["touch-hint"]}
+                          aria-hidden="true"
+                        >
+                          {t("tapAgainForVideo")}
+                        </span>
+                      )}
                     </button>
                   ) : (
                     <iframe

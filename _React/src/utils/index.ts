@@ -12,26 +12,30 @@ const decodeBase64Url = (value: string) => {
   throw new Error("No Base64 decoder available")
 }
 
-export const user = (() => {
+export const parseUserFromToken = (token: string): unknown | null => {
+  if (
+    !token ||
+    token === "undefined" ||
+    token === "null" ||
+    !/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/.test(token)
+  ) {
+    return null
+  }
+
+  try {
+    return JSON.parse(decodeBase64Url(token.split(".")[1]))
+  } catch (error) {
+    console.error("Error parsing token:", error)
+    return null
+  }
+}
+
+export const getUserFromStorage = (): unknown | null => {
   if (typeof window === "undefined") return null
   const token = window.localStorage.getItem("OlliSanta_token")
-  if (
-    token &&
-    token !== undefined &&
-    token !== null &&
-    token !== "undefined" &&
-    token !== "null" &&
-    /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/.test(token) // Check if the token is a valid JWT format
-  ) {
-    try {
-      return JSON.parse(decodeBase64Url(token.split(".")[1]))
-    } catch (error) {
-      console.error("Error parsing token:", error)
-      return null
-    }
-  }
-  return null
-})()
+  if (!token) return null
+  return parseUserFromToken(token)
+}
 
 export const sanitize = (string: string) => {
   return string.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]/g, "-")

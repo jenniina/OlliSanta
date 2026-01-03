@@ -1,4 +1,11 @@
-import { FC, useEffect, useMemo, useState, ImgHTMLAttributes } from "react"
+import {
+  FC,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  ImgHTMLAttributes,
+} from "react"
 import styles from "./image.module.css"
 
 type Source = { srcSet: string; type?: string; media?: string }
@@ -62,6 +69,7 @@ const Image: FC<ImageProps> = ({
 }) => {
   const [reducedMotion, setReducedMotion] = useState(false)
   const [loaded, setLoaded] = useState(false)
+  const imgRef = useRef<HTMLImageElement | null>(null)
 
   useEffect(() => {
     try {
@@ -98,6 +106,23 @@ const Image: FC<ImageProps> = ({
     return src
   }, [src, poster, animated, reducedMotion])
 
+  // Reset visibility when the underlying image URL changes.
+  useEffect(() => {
+    setLoaded(false)
+  }, [effectiveSrc])
+
+  // When SSR is used, the browser may load the image before React attaches the onLoad handler.
+  // In that case, the load event won't fire again and the image would remain invisible.
+  useEffect(() => {
+    const img = imgRef.current
+    if (!img) return
+
+    if (img.complete) {
+      // naturalWidth === 0 typically indicates a failed load.
+      setLoaded(img.naturalWidth > 0)
+    }
+  }, [effectiveSrc])
+
   const combinedStyle: React.CSSProperties = {
     width: width ?? undefined,
     height: height ?? undefined,
@@ -114,18 +139,25 @@ const Image: FC<ImageProps> = ({
       {srcSet && <source srcSet={srcSet} sizes={sizes} />}
       {/* img fallback */}
       <img
+        ref={imgRef}
         src={effectiveSrc}
         alt={alt}
         title={title}
         loading={loading}
         onClick={onClick}
-        onError={onError}
+        onError={(e) => {
+          // Don't keep it permanently hidden if the image fails to load.
+          setLoaded(true)
+          onError?.(e)
+        }}
         width={width}
         height={height}
         role={role ?? "img"}
         aria-label={ariaLabel ?? alt}
         className={loaded ? styles.visible : styles.hidden}
-        fetchPriority={fetchPriority}
+        {...(fetchPriority
+          ? ({ fetchpriority: fetchPriority } as Record<string, unknown>)
+          : {})}
         onLoad={() => setLoaded(true)}
         {...rest}
       />

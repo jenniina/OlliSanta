@@ -256,35 +256,24 @@ const ContactPage: FC<Props> = ({ heading }) => {
           "parts",
         ]}
       />
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            {
-              "@type": "ListItem",
-              position: 1,
-              name: t("homePage"),
-              item: `${SITE_BASE_URL}${getHomePath(language)}`,
-            },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: t("contact"),
-              item: canonicalUrl,
-            },
-          ],
-        })}
-      </script>
-      <script type="application/ld+json">
-        {JSON.stringify({
+      <JsonLdScript
+        data={getBreadcrumbJsonLd([
+          {
+            name: t("homePage"),
+            url: `${SITE_BASE_URL}${getHomePath(language)}`,
+          },
+          { name: t("contact"), url: canonicalUrl },
+        ])}
+      />
+      <JsonLdScript
+        data={{
           "@context": "https://schema.org",
           "@type": "Organization",
           name: "Olli Santa",
           url: "https://ollisanta.fi",
           logo: "https://ollisanta.fi/OlliSanta_x3.png",
-        })}
-      </script>
+        }}
+      />
       <JsonLdScript data={getOrganizationJsonLd()} />
       <JsonLdScript
         data={getBreadcrumbJsonLd([
