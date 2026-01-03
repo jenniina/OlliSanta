@@ -54,8 +54,8 @@ const LandingPage: FC = () => {
       <section
         className={
           darkMode
-            ? `${styles.dark} dark ${styles["landing-section"]}`
-            : styles["landing-section"]
+            ? `${styles.dark} dark ${styles["landing-section"]} landing-section`
+            : `${styles["landing-section"]} landing-section`
         }
       >
         <div className={`${styles.landing} middle-wrap`}>

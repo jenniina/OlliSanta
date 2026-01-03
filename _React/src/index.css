@@ -205,6 +205,10 @@ section {
     98vw - var(--scrollbar-width, 0px) - var(--page-padding, 0.2rem) * 2
   );
 }
+.app.home main {
+  flex-grow: 1;
+}
+
 @media (min-width: 300px) {
   .app main {
     --page-padding: 0.5rem;
