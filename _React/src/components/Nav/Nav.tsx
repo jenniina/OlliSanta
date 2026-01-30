@@ -79,7 +79,7 @@ const Nav: FC<NavProps> = ({ location }) => {
       <nav className={styles["skip-links"]}>
         <SkipLinks skipLinks={links} />
       </nav>
-      <nav ref={navRef} id="site-navigation" className={`${styles.nav}`}>
+      <nav ref={navRef} id="site-navigation" className={styles.nav}>
         <ul>
           {location !== homePath && (
             <li>

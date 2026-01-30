@@ -1,6 +1,8 @@
 import { Router, Response, Request, NextFunction } from 'express'
 import { body, check, validationResult } from 'express-validator'
 import upload from '../middleware/uploadMiddleware'
+import { rateLimit } from '../middleware/rateLimit'
+import { requireAuth } from '../middleware/requireAuth'
 import {
   login,
   register,
@@ -29,16 +31,96 @@ export enum EPleaseProvideAValidEmailAddress {
 
 const router = Router()
 
-router.post('/register', register)
-router.post('/login', login)
-router.post('/refresh', refreshToken)
-router.post('/user/password', changePassword)
-router.post('/user/username', changeUsername)
+const handleValidationErrors = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      message: errors.array().join('\n'),
+      error: errors.array(),
+    })
+  }
+  next()
+}
 
-router.delete('/data', deleteFile)
+const authLimiter = rateLimit({ windowMs: 15 * 60_000, max: 30 })
+const sendLimiter = rateLimit({ windowMs: 10 * 60_000, max: 20 })
+const adminLimiter = rateLimit({ windowMs: 5 * 60_000, max: 120 })
+
+router.post(
+  '/register',
+  authLimiter,
+  [
+    body('username').isString().trim().isLength({ min: 2, max: 64 }),
+    body('email').isEmail().normalizeEmail(),
+    body('password').isString().isLength({ min: 8, max: 200 }),
+    body('lang').optional().isString().trim().isLength({ min: 2, max: 2 }),
+  ],
+  handleValidationErrors,
+  register
+)
+router.post(
+  '/login',
+  authLimiter,
+  [
+    body('email').isEmail().normalizeEmail(),
+    body('password').isString().isLength({ min: 1, max: 200 }),
+    body('lang').optional().isString().trim().isLength({ min: 2, max: 2 }),
+  ],
+  handleValidationErrors,
+  login
+)
+router.post(
+  '/refresh',
+  authLimiter,
+  [
+    body('email').isEmail().normalizeEmail(),
+    body('password').isString().isLength({ min: 1, max: 200 }),
+    body('lang').optional().isString().trim().isLength({ min: 2, max: 2 }),
+  ],
+  handleValidationErrors,
+  refreshToken
+)
+router.post(
+  '/user/password',
+  authLimiter,
+  [
+    body('email').isEmail().normalizeEmail(),
+    body('oldPassword').isString().isLength({ min: 1, max: 200 }),
+    body('newPassword').isString().isLength({ min: 8, max: 200 }),
+    body('lang').optional().isString().trim().isLength({ min: 2, max: 2 }),
+  ],
+  handleValidationErrors,
+  changePassword
+)
+router.post(
+  '/user/username',
+  authLimiter,
+  [
+    body('email').isEmail().normalizeEmail(),
+    body('password').isString().isLength({ min: 1, max: 200 }),
+    body('username').isString().trim().isLength({ min: 2, max: 64 }),
+    body('lang').optional().isString().trim().isLength({ min: 2, max: 2 }),
+  ],
+  handleValidationErrors,
+  changeUsername
+)
+
+router.delete(
+  '/data',
+  requireAuth({ minRole: 1 }),
+  adminLimiter,
+  [body('filename').isString().trim().isLength({ min: 1, max: 200 })],
+  handleValidationErrors,
+  deleteFile
+)
 
 router.post(
   '/send',
+  sendLimiter,
   upload.array('attachments', 10),
   [
     body('lang').trim().escape(),
@@ -61,19 +143,10 @@ router.post(
     body('ensemble').trim().escape(),
     body('schedule').trim().escape(),
   ],
-  (req: Request, res: Response, next: NextFunction) => {
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        message: errors.array().join('\n'),
-        error: errors.array(),
-      })
-    }
-    next()
-  },
+  handleValidationErrors,
   send
 )
-router.get('/send', getEmails)
+router.get('/send', requireAuth({ minRole: 1 }), adminLimiter, getEmails)
 router.get('/send/:orderID', getEmail)
 router.put('/send/:orderID', editEmail)
 router.delete('/send/:orderID', deleteEmail)

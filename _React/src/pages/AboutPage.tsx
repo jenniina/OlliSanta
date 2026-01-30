@@ -352,7 +352,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
             </div>
           </div>
         </section>
-        <section>
+        <section id="srv">
           <h3 className={styles["heading3"]}>{t("services")}</h3>
           <div className={`btn-wrap btn-4`}>
             <button
@@ -548,7 +548,7 @@ const AboutPage: FC<Props> = ({ heading }) => {
             </div>
           </div>
         </section>
-        <section>
+        <section id="video">
           <h3 className={styles["heading3"]}>{t("videos")}</h3>
           <div className={styles["video-wrap"]}>
             {videosWithID?.map((video) => {

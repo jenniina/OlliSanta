@@ -6,12 +6,20 @@ export const deleteFile = (req: Request, res: Response) => {
   const { filename } = req.body
 
   if (filename && typeof filename === 'string') {
-    const filePath = path.join(__dirname, '..', '..', 'uploads', filename)
+    const uploadsDir = path.resolve(__dirname, '..', '..', 'uploads')
+    const safeName = path.basename(filename)
+    const filePath = path.resolve(uploadsDir, safeName)
+
+    if (!safeName || filePath !== path.join(uploadsDir, safeName)) {
+      return res.status(400).json({ message: 'Invalid filename' })
+    }
 
     fs.unlink(filePath, (err) => {
       if (err) {
         console.error(err)
-        return res.status(500).json({ message: 'Error deleting file', error: err })
+        return res
+          .status(500)
+          .json({ message: 'Error deleting file', error: err })
       }
 
       res.status(200).json({ message: 'File deleted successfully' })
