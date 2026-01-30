@@ -6,8 +6,17 @@
   list-style: none;
   padding: 0.1rem 0.5rem 0.3rem;
   margin: 0 0 0.35rem;
-  gap: 0.8em;
-  font-size: 1.1em;
+  gap: 0.5em;
+  font-size: 1em;
+}
+.nav ul li {
+  flex: 1 1 100%;
+  text-align: center;
+  margin: 0 auto;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
 }
 .nav ul a,
 .nav ul button {
@@ -64,30 +73,30 @@
   top: 0;
   padding: 0;
   margin: 0;
+  width: auto;
 }
 .skip-links li {
   white-space: nowrap;
 }
 
-@media (max-width: 300px) {
+@media (min-width: 300px) {
   .nav ul {
-    max-width: 200px;
-  }
-}
-@media (max-width: 250px) {
-  .nav ul {
-    max-width: 160px;
+    gap: 0.8em;
+    font-size: 1.1em;
+    flex-flow: row wrap;
+    justify-content: center;
   }
   .nav ul li {
-    flex: 1 1 100%;
-    text-align: center;
-    margin: 0 auto;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: center;
-    align-items: center;
+    flex-basis: unset;
+    flex-grow: 0;
+    margin: 0;
+    flex-flow: row wrap;
   }
-  .nav ul li > * {
-    flex: 1 1 100%;
+}
+@media (min-width: 600px) {
+  .nav ul {
+    max-width: unset;
+    gap: 1em;
+    font-size: 1.1em;
   }
 }

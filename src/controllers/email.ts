@@ -1,11 +1,9 @@
-import { Request, Response } from "express"
-import fs from "fs"
-import Email from "../models/email"
-import { deleteFile } from "./delete"
-import path from "path"
-const { validationResult } = require("express-validator")
-const sanitizeHtml = require("sanitize-html")
-const nodemailer = require("nodemailer")
+import { Request, Response } from 'express'
+import fs from 'fs'
+import Email from '../models/email'
+import path from 'path'
+const sanitizeHtml = require('sanitize-html')
+const nodemailer = require('nodemailer')
 import {
   FData,
   ELang,
@@ -17,22 +15,49 @@ import {
   ESchedule,
   EThankYouForYourMessage,
   EIWillSoonBeInTouch,
-} from "../interfaces"
+} from '../interfaces'
 
 const transporter = nodemailer.createTransport({
   host: process.env.NODEMAILER_HOST,
-  port: process.env.NODEMAILER_PORT,
+  port: process.env.NODEMAILER_PORT
+    ? Number(process.env.NODEMAILER_PORT)
+    : undefined,
   auth: {
     user: process.env.NODEMAILER_USER,
     pass: process.env.NODEMAILER_PASSWORD,
   },
 })
 
+const sanitizeText = (value: unknown): string => {
+  return sanitizeHtml(String(value ?? ''), {
+    allowedTags: [],
+    allowedAttributes: {},
+  }).trim()
+}
+
+const uploadsDir = path.resolve(__dirname, '..', '..', 'uploads')
+const safeUploadPath = (filename: string): string => {
+  const safeName = path.basename(filename)
+  return path.resolve(uploadsDir, safeName)
+}
+
+const stripAttachmentPaths = (doc: any) => {
+  if (!doc) return doc
+  const raw = typeof doc.toObject === 'function' ? doc.toObject() : doc
+  if (!raw || !raw.attachments) return raw
+  return {
+    ...raw,
+    attachments: Array.isArray(raw.attachments)
+      ? raw.attachments.map((a: any) => ({ filename: a?.filename }))
+      : raw.attachments,
+  }
+}
+
 export const sendMail = (
   subject: string,
   message: string,
   email: string | undefined,
-  attachments: FData["attachments"]
+  attachments: FData['attachments']
 ) => {
   return new Promise((resolve, reject) => {
     transporter.sendMail(
@@ -47,9 +72,9 @@ export const sendMail = (
                 filename: attachment.filename,
                 path: path.join(
                   __dirname,
-                  "..",
-                  "..",
-                  "uploads",
+                  '..',
+                  '..',
+                  'uploads',
                   attachment.filename
                 ),
               }))
@@ -60,7 +85,7 @@ export const sendMail = (
           console.error(error)
           reject(error)
         } else {
-          console.log("Email sent: " + info.response)
+          console.log('Email sent: ' + info.response)
           resolve(info.response)
         }
       }
@@ -70,32 +95,32 @@ export const sendMail = (
 
 export const send = async (req: Request, res: Response) => {
   try {
-    const sanitizedOrderID = sanitizeHtml(req.body.orderID)
-    const lang = (req.body.lang as ELang) ?? "fi"
-    const sanitizedEmail = sanitizeHtml(req.body.email)
-    const sanitizedFirstName = sanitizeHtml(req.body.firstName)
-    const sanitizedLastName = sanitizeHtml(req.body.lastName)
-    const sanitizedAddress = sanitizeHtml(req.body.address)
-    const sanitizedCity = sanitizeHtml(req.body.city)
-    const sanitizedZip = sanitizeHtml(req.body.zip)
-    const sanitizedPiece = sanitizeHtml(req.body.piece)
-    const sanitizedEnsemble = sanitizeHtml(req.body.ensemble)
-    const sanitizedSchedule = sanitizeHtml(req.body.schedule)
-    const sanitizedCountry = sanitizeHtml(req.body.country)
-    const sanitizedSubject = sanitizeHtml(req.body.subject)
-    const sanitizedMessage = sanitizeHtml(req.body.message)
+    const sanitizedOrderID = sanitizeText(req.body.orderID)
+    const lang = (req.body.lang as ELang) ?? 'fi'
+    const sanitizedEmail = sanitizeText(req.body.email)
+    const sanitizedFirstName = sanitizeText(req.body.firstName)
+    const sanitizedLastName = sanitizeText(req.body.lastName)
+    const sanitizedAddress = sanitizeText(req.body.address)
+    const sanitizedCity = sanitizeText(req.body.city)
+    const sanitizedZip = sanitizeText(req.body.zip)
+    const sanitizedPiece = sanitizeText(req.body.piece)
+    const sanitizedEnsemble = sanitizeText(req.body.ensemble)
+    const sanitizedSchedule = sanitizeText(req.body.schedule)
+    const sanitizedCountry = sanitizeText(req.body.country)
+    const sanitizedSubject = sanitizeText(req.body.subject)
+    const sanitizedMessage = sanitizeText(req.body.message)
 
     const attachments = req.files
       ? (req.files as Express.Multer.File[])?.map((file) => ({
           filename: file.filename,
-          path: path.join(__dirname, "..", "..", "uploads", file.filename),
+          path: safeUploadPath(file.filename),
           file: file,
         }))
       : []
 
     const email = new Email({
       orderID: sanitizedOrderID,
-      lang: lang ?? "fi",
+      lang: lang ?? 'fi',
       email: sanitizedEmail,
       firstName: sanitizedFirstName,
       lastName: sanitizedLastName,
@@ -113,21 +138,21 @@ export const send = async (req: Request, res: Response) => {
 
     await email.save()
 
-    const message = `${EOrderID[lang ?? "fi"]}: ${sanitizedOrderID} \n\n
+    const message = `${EOrderID[lang ?? 'fi']}: ${sanitizedOrderID} \n\n
     ${
-      sanitizedPiece !== ""
-        ? `${EPiece[lang ?? "fi"]}: ${sanitizedPiece} \n\n`
-        : ""
+      sanitizedPiece !== ''
+        ? `${EPiece[lang ?? 'fi']}: ${sanitizedPiece} \n\n`
+        : ''
     } ${
-      sanitizedEnsemble !== ""
-        ? `${EEnsemble[lang ?? "fi"]}: ${sanitizedEnsemble} \n\n`
-        : ""
+      sanitizedEnsemble !== ''
+        ? `${EEnsemble[lang ?? 'fi']}: ${sanitizedEnsemble} \n\n`
+        : ''
     }${
-      sanitizedSchedule !== ""
-        ? `${ESchedule[lang ?? "fi"]}: ${sanitizedSchedule} \n`
-        : ""
+      sanitizedSchedule !== ''
+        ? `${ESchedule[lang ?? 'fi']}: ${sanitizedSchedule} \n`
+        : ''
     }
-      ${EMessage[lang ?? "fi"]}: \n
+      ${EMessage[lang ?? 'fi']}: \n
       ${sanitizedMessage} \n\n${sanitizedFirstName} ${sanitizedLastName}: ${sanitizedEmail}\n\n${sanitizedAddress}\n${sanitizedZip} ${sanitizedCity}\n${sanitizedCountry}`
 
     await sendMail(
@@ -139,15 +164,15 @@ export const send = async (req: Request, res: Response) => {
 
     //send confirmation email to the user
     await sendMail(
-      EThankYouForYourMessage[lang ?? "fi"],
-      `${EIWillSoonBeInTouch[lang ?? "fi"]} \n\n${message}`,
+      EThankYouForYourMessage[lang ?? 'fi'],
+      `${EIWillSoonBeInTouch[lang ?? 'fi']} \n\n${message}`,
       sanitizedEmail,
       []
     )
 
     return res.status(200).json({
       success: true,
-      message: `${EMessageSentSuccessfully[(req.body.lang as ELang) ?? "fi"]}`,
+      message: `${EMessageSentSuccessfully[(req.body.lang as ELang) ?? 'fi']}`,
     })
   } catch (error) {
     console.error(error)
@@ -160,7 +185,7 @@ export const send = async (req: Request, res: Response) => {
 export const getEmails = async (req: Request, res: Response) => {
   try {
     const emails = await Email.find()
-    return res.status(200).json(emails)
+    return res.status(200).json(emails.map(stripAttachmentPaths))
   } catch (error) {
     console.error(error)
     return res
@@ -172,7 +197,7 @@ export const getEmails = async (req: Request, res: Response) => {
 export const getEmail = async (req: Request, res: Response) => {
   try {
     const email = await Email.findOne({ orderID: req.params.orderID })
-    return res.status(200).json(email)
+    return res.status(200).json(stripAttachmentPaths(email))
   } catch (error) {
     console.error(error)
     return res
@@ -185,19 +210,13 @@ export const deleteEmail = async (req: Request, res: Response) => {
   try {
     const email = await Email.findOne({ orderID: req.params.orderID })
     if (!email) {
-      return res.status(404).json({ message: "Message not found" })
+      return res.status(404).json({ message: 'Message not found' })
     }
 
     // Delete associated files
     if (email.attachments && email.attachments.length > 0) {
       email.attachments.forEach((attachment) => {
-        const filePath = path.join(
-          __dirname,
-          "..",
-          "..",
-          "uploads",
-          attachment.filename
-        )
+        const filePath = safeUploadPath(String(attachment.filename ?? ''))
         fs.unlink(filePath, (err) => {
           if (err) {
             console.error(`Error deleting file ${attachment.filename}:`, err)
@@ -208,7 +227,7 @@ export const deleteEmail = async (req: Request, res: Response) => {
     await Email.deleteOne({ orderID: req.params.orderID })
     return res
       .status(200)
-      .json({ message: "Message and associated files deleted successfully" })
+      .json({ message: 'Message and associated files deleted successfully' })
   } catch (error) {
     console.error(error)
     return res
@@ -221,11 +240,11 @@ export const editEmail = async (req: Request, res: Response) => {
   try {
     const email = await Email.findOne({ orderID: req.params.orderID })
     if (!email) {
-      return res.status(404).json({ message: "Message not found" })
+      return res.status(404).json({ message: 'Message not found' })
     }
 
     const sanitizedOrderID = sanitizeHtml(req.body.orderID)
-    const lang = (req.body.lang as ELang) ?? "fi"
+    const lang = (req.body.lang as ELang) ?? 'fi'
     const sanitizedEmail = sanitizeHtml(req.body.email)
     const sanitizedFirstName = sanitizeHtml(req.body.firstName)
     const sanitizedLastName = sanitizeHtml(req.body.lastName)
@@ -242,7 +261,7 @@ export const editEmail = async (req: Request, res: Response) => {
     const attachments = req.files
       ? (req.files as Express.Multer.File[])?.map((file) => ({
           filename: file.filename,
-          path: path.join(__dirname, "..", "..", "uploads", file.filename),
+          path: path.join(__dirname, '..', '..', 'uploads', file.filename),
           file: file,
         }))
       : []
@@ -259,7 +278,7 @@ export const editEmail = async (req: Request, res: Response) => {
     )
 
     attachmentsToDelete.forEach((filename) => {
-      const filePath = path.join(__dirname, "..", "..", "uploads", filename)
+      const filePath = path.join(__dirname, '..', '..', 'uploads', filename)
       fs.unlink(filePath, (err) => {
         if (err) {
           console.error(`Error deleting file ${filename}:`, err)
@@ -273,7 +292,7 @@ export const editEmail = async (req: Request, res: Response) => {
     )
 
     email.orderID = sanitizedOrderID
-    email.lang = lang ?? "fi"
+    email.lang = lang ?? 'fi'
     email.email = sanitizedEmail
     email.firstName = sanitizedFirstName
     email.lastName = sanitizedLastName
@@ -290,7 +309,7 @@ export const editEmail = async (req: Request, res: Response) => {
 
     await email.save()
 
-    return res.status(200).json({ message: "Message updated successfully" })
+    return res.status(200).json({ message: 'Message updated successfully' })
   } catch (error) {
     console.error(error)
     return res

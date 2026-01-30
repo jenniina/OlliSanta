@@ -3,6 +3,11 @@ import { EErrorSendingMessage, FData } from '../interfaces'
 
 const baseURL = '/api/send'
 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('OlliSanta_token')
+  return token ? { Authorization: `Bearer ${token}` } : undefined
+}
+
 const sendMail = async (data: FData, attachments: FData['attachments']) => {
   try {
     const formData = new FormData()
@@ -39,7 +44,7 @@ const sendMail = async (data: FData, attachments: FData['attachments']) => {
 
 const getData = async () => {
   try {
-    const response = await axios.get(baseURL)
+    const response = await axios.get(baseURL, { headers: getAuthHeaders() })
     return response.data
   } catch (error) {
     console.error('Error getting data', error)
@@ -87,4 +92,11 @@ const deleteData = async (orderID: FData['orderID']) => {
   }
 }
 
-export default { getData, getSingleData, postData, editData, deleteData, sendMail }
+export default {
+  getData,
+  getSingleData,
+  postData,
+  editData,
+  deleteData,
+  sendMail,
+}

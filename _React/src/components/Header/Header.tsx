@@ -52,13 +52,13 @@ const Header: FC<Props> = ({ location }) => {
       : windowWidth < 200
       ? "100px"
       : windowWidth < 300
-      ? "200px"
+      ? "160px"
       : windowWidth < 400
-      ? "300px"
+      ? "250px"
       : windowWidth < 500
-      ? "350px"
+      ? "300px"
       : windowWidth < 700
-      ? "390px"
+      ? "380px"
       : windowWidth < 1000
       ? "400px"
       : "420px"
@@ -134,7 +134,7 @@ const Header: FC<Props> = ({ location }) => {
         {(location === "/" || location === "/en") && !noShadow ? (
           <Image
             id="gif"
-            className={`gif ${noShadow ? "" : ""}`}
+            className="gif"
             src={ollisantaGif}
             alt="Olli Santa name animation"
             title="Olli Santa"
@@ -145,8 +145,8 @@ const Header: FC<Props> = ({ location }) => {
             animated
             loading="eager"
             onClick={() => {
+              setShadow((prev) => !prev)
               clickCounter < 2 ? setClickCounter(clickCounter + 1) : null
-              setShadow(!noShadow)
             }}
           />
         ) : (
@@ -161,8 +161,8 @@ const Header: FC<Props> = ({ location }) => {
             width={width}
             height="auto"
             onClick={() => {
+              setShadow((prev) => !prev)
               clickCounter < 2 ? setClickCounter(clickCounter + 1) : null
-              setShadow(!noShadow)
             }}
           />
         )}

@@ -270,17 +270,33 @@
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
   mix-blend-mode: hard-light;
+  border-radius: 0 0 0.25rem 0.25rem;
 }
+
 .video-thumbnail:hover .touch-hint,
 .video-thumbnail:focus .touch-hint,
 .video-thumbnail:focus-visible .touch-hint,
 .video-thumbnail:hover .click-hint,
 .video-thumbnail:focus .click-hint,
 .video-thumbnail:focus-visible .click-hint {
-  background-color: hsla(210, 100%, 22%, 0.5);
+  background-color: hsla(210, 100%, 22%, 0.9);
+}
+.dark .touch-hint,
+.dark .click-hint {
+  background-color: hsla(210, 100%, 25%, 0.2);
+  font-weight: bold;
+  mix-blend-mode: screen;
+}
+.dark .video-thumbnail:hover .touch-hint,
+.dark .video-thumbnail:focus .touch-hint,
+.dark .video-thumbnail:focus-visible .touch-hint,
+.dark .video-thumbnail:hover .click-hint,
+.dark .video-thumbnail:focus .click-hint,
+.dark .video-thumbnail:focus-visible .click-hint {
+  background-color: hsla(210, 100%, 20%, 0.2);
 }
 .play-button {
-  --size: 4px;
+  --size: 3px;
   z-index: 1;
   display: flex;
   position: relative;
@@ -842,6 +858,11 @@ ul.list li:focus-visible::marker {
 .dark ul.list li:focus-visible::marker {
   color: var(--color-1);
 }
+@media (min-width: 140px) {
+  .play-button {
+    --size: 4px;
+  }
+}
 @media (min-width: 200px) {
   .intro-wrap .intro-text,
   .landing .intro-text {
@@ -862,10 +883,13 @@ ul.list li:focus-visible::marker {
     height: 250px;
   }
   .video-wrap .video .video-thumbnail:hover,
-  .dark .video-thumbnail:hover,
   .video-wrap .video .video-thumbnail:focus-visible {
     outline-offset: -9px;
     outline: 4px solid var(--color-9);
+  }
+  .dark .video .video-thumbnail:hover {
+    outline-offset: -8px;
+    outline: 5px solid var(--color-9);
   }
   .intro-wrap .intro-text,
   .landing .intro-text {
@@ -896,15 +920,19 @@ ul.list li:focus-visible::marker {
 }
 @media (min-width: 700px) {
   .intro-wrap .olli {
-    width: clamp(100px, calc(25vw - 2em), 200px);
-    height: clamp(100px, calc(25vw - 2em), 200px);
+    width: clamp(100px, calc(35vw - 2rem - var(--scrollbar-width, 0px)), 200px);
+    height: clamp(
+      100px,
+      calc(35vw - 2rem - var(--scrollbar-width, 0px)),
+      200px
+    );
     margin-top: 1rem;
     margin-right: -0.4rem;
   }
 
   .intro-wrap .intro-text {
-    flex: 0 1 calc(clamp(200px, 60vw, 660px) - 2em);
-    max-width: calc(clamp(200px, 60vw, 660px) - 2em);
+    flex: 0 1 calc(clamp(200px, 64vw, 660px) - 2rem);
+    max-width: calc(clamp(200px, 64vw, 660px) - 2rem);
   }
 }
 @media (min-width: 1000px) {
