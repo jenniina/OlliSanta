@@ -165,7 +165,7 @@ export const send = async (req: Request, res: Response) => {
     //send confirmation email to the user
     await sendMail(
       EThankYouForYourMessage[lang ?? 'fi'],
-      `${EIWillSoonBeInTouch[lang ?? 'fi']} \n\n${message}`,
+      `${EIWillSoonBeInTouch[lang ?? 'fi']} \n\n${sanitizedSubject} \n\n${message}`,
       sanitizedEmail,
       []
     )
