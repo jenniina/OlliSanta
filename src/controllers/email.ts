@@ -15,13 +15,91 @@ import {
   ESchedule,
   EThankYouForYourMessage,
   EIWillSoonBeInTouch,
+  EPleaseNotify,
 } from '../interfaces'
+
+const getConfiguredPort = (): number => {
+  const fromEnv = Number(process.env.NODEMAILER_PORT)
+  return Number.isFinite(fromEnv) && fromEnv > 0 ? fromEnv : 587
+}
+
+const getConfiguredSecure = (port: number): boolean => {
+  const fromEnv = process.env.NODEMAILER_SECURE
+  if (typeof fromEnv === 'string') {
+    return ['1', 'true', 'yes', 'on'].includes(fromEnv.toLowerCase())
+  }
+  return port === 465
+}
+
+const getSenderAddress = (): string => {
+  return process.env.NODEMAILER_SENDER ?? process.env.NODEMAILER_USER ?? ''
+}
+
+const resolveLang = (value: unknown): ELang => {
+  return value === ELang.fi ? ELang.fi : ELang.en
+}
+
+const withNotifyMessage = (message: string, lang: ELang): string => {
+  return `${message} ${EPleaseNotify[lang]} ${getSenderAddress() || '-'}`
+}
+
+type MailerLikeError = Error & {
+  code?: string
+  command?: string
+  responseCode?: number
+  response?: string
+}
+
+const shouldIncludeNotify = (error: unknown): boolean => {
+  if (!error || typeof error !== 'object') return false
+
+  const e = error as MailerLikeError
+  const code = String(e.code ?? '').toUpperCase()
+  const command = String(e.command ?? '').toUpperCase()
+  const responseCode =
+    typeof e.responseCode === 'number' ? e.responseCode : undefined
+  const text = `${e.message ?? ''} ${e.response ?? ''}`.toLowerCase()
+
+  // Typical nodemailer/SMTP transport and auth failures.
+  const smtpCodes = new Set([
+    'EAUTH',
+    'ECONNECTION',
+    'ESOCKET',
+    'ETIMEDOUT',
+    'EENVELOPE',
+    'EMESSAGE',
+  ])
+
+  if (smtpCodes.has(code)) return true
+  if (command.includes('AUTH')) return true
+  if (typeof responseCode === 'number' && responseCode >= 500) return true
+
+  return (
+    text.includes('smtp') ||
+    text.includes('authentication') ||
+    text.includes('invalid login') ||
+    text.includes('username and password not accepted')
+  )
+}
+
+const buildErrorMessage = (
+  message: string,
+  lang: ELang,
+  error: unknown
+): string => {
+  if (shouldIncludeNotify(error)) {
+    return withNotifyMessage(message, lang)
+  }
+  return message
+}
+
+const mailPort = getConfiguredPort()
+const mailSecure = getConfiguredSecure(mailPort)
 
 const transporter = nodemailer.createTransport({
   host: process.env.NODEMAILER_HOST,
-  port: process.env.NODEMAILER_PORT
-    ? Number(process.env.NODEMAILER_PORT)
-    : undefined,
+  port: mailPort,
+  secure: mailSecure,
   auth: {
     user: process.env.NODEMAILER_USER,
     pass: process.env.NODEMAILER_PASSWORD,
@@ -35,7 +113,14 @@ const sanitizeText = (value: unknown): string => {
   }).trim()
 }
 
-const uploadsDir = path.resolve(__dirname, '..', '..', 'uploads')
+const resolveUploadsDir = (): string => {
+  if (process.env.UPLOADS_DIR) {
+    return path.resolve(process.env.UPLOADS_DIR)
+  }
+  return path.resolve(__dirname, '..', '..', 'uploads')
+}
+
+const uploadsDir = resolveUploadsDir()
 const safeUploadPath = (filename: string): string => {
   const safeName = path.basename(filename)
   return path.resolve(uploadsDir, safeName)
@@ -59,10 +144,24 @@ export const sendMail = (
   email: string | undefined,
   attachments: FData['attachments']
 ) => {
+  const fromAddress = getSenderAddress()
+
+  if (!fromAddress) {
+    return Promise.reject(
+      new Error(
+        'Email sender is not configured. Set NODEMAILER_SENDER or NODEMAILER_USER.'
+      )
+    )
+  }
+
+  if (!email) {
+    return Promise.reject(new Error('Email recipient is missing.'))
+  }
+
   return new Promise((resolve, reject) => {
     transporter.sendMail(
       {
-        from: process.env.NODEMAILER_SENDER,
+        from: fromAddress,
         to: email,
         subject: subject,
         text: `${message}\n\n`,
@@ -70,13 +169,7 @@ export const sendMail = (
           attachments.length > 0
             ? attachments?.map((attachment) => ({
                 filename: attachment.filename,
-                path: path.join(
-                  __dirname,
-                  '..',
-                  '..',
-                  'uploads',
-                  attachment.filename
-                ),
+                path: safeUploadPath(attachment.filename),
               }))
             : undefined,
       },
@@ -94,6 +187,7 @@ export const sendMail = (
 }
 
 export const send = async (req: Request, res: Response) => {
+  const responseLang = resolveLang(req.body.lang)
   try {
     const sanitizedOrderID = sanitizeText(req.body.orderID)
     const lang = (req.body.lang as ELang) ?? 'fi'
@@ -158,17 +252,21 @@ export const send = async (req: Request, res: Response) => {
     await sendMail(
       `Uusi viesti: ${sanitizedSubject} (${sanitizedFirstName} ${sanitizedLastName})`,
       message,
-      process.env.NODEMAILER_SENDER,
+      getSenderAddress(),
       attachments
     )
 
-    //send confirmation email to the user
-    await sendMail(
-      EThankYouForYourMessage[lang ?? 'fi'],
-      `${EIWillSoonBeInTouch[lang ?? 'fi']} \n\n${sanitizedSubject} \n\n${message}`,
-      sanitizedEmail,
-      []
-    )
+    // Send confirmation email to the user. If it fails, do not fail the whole request.
+    try {
+      await sendMail(
+        EThankYouForYourMessage[lang ?? 'fi'],
+        `${EIWillSoonBeInTouch[lang ?? 'fi']} \n\n${sanitizedSubject} \n\n${message}`,
+        sanitizedEmail,
+        []
+      )
+    } catch (confirmationError) {
+      console.error('Confirmation email failed:', confirmationError)
+    }
 
     return res.status(200).json({
       success: true,
@@ -176,37 +274,55 @@ export const send = async (req: Request, res: Response) => {
     })
   } catch (error) {
     console.error(error)
-    return res
-      .status(500)
-      .json({ message: `${(error as Error).message}`, error: error })
+    return res.status(500).json({
+      message: buildErrorMessage(
+        `${(error as Error).message}`,
+        responseLang,
+        error
+      ),
+      error: error,
+    })
   }
 }
 
 export const getEmails = async (req: Request, res: Response) => {
+  const responseLang = resolveLang(req.query.lang)
   try {
     const emails = await Email.find()
     return res.status(200).json(emails.map(stripAttachmentPaths))
   } catch (error) {
     console.error(error)
-    return res
-      .status(500)
-      .json({ message: `${(error as Error).message}`, error: error })
+    return res.status(500).json({
+      message: buildErrorMessage(
+        `${(error as Error).message}`,
+        responseLang,
+        error
+      ),
+      error: error,
+    })
   }
 }
 
 export const getEmail = async (req: Request, res: Response) => {
+  const responseLang = resolveLang(req.query.lang)
   try {
     const email = await Email.findOne({ orderID: req.params.orderID })
     return res.status(200).json(stripAttachmentPaths(email))
   } catch (error) {
     console.error(error)
-    return res
-      .status(500)
-      .json({ message: `${(error as Error).message}`, error: error })
+    return res.status(500).json({
+      message: buildErrorMessage(
+        `${(error as Error).message}`,
+        responseLang,
+        error
+      ),
+      error: error,
+    })
   }
 }
 
 export const deleteEmail = async (req: Request, res: Response) => {
+  const responseLang = resolveLang(req.query.lang)
   try {
     const email = await Email.findOne({ orderID: req.params.orderID })
     if (!email) {
@@ -230,13 +346,19 @@ export const deleteEmail = async (req: Request, res: Response) => {
       .json({ message: 'Message and associated files deleted successfully' })
   } catch (error) {
     console.error(error)
-    return res
-      .status(500)
-      .json({ message: `${(error as Error).message}`, error: error })
+    return res.status(500).json({
+      message: buildErrorMessage(
+        `${(error as Error).message}`,
+        responseLang,
+        error
+      ),
+      error: error,
+    })
   }
 }
 
 export const editEmail = async (req: Request, res: Response) => {
+  const responseLang = resolveLang(req.body.lang)
   try {
     const email = await Email.findOne({ orderID: req.params.orderID })
     if (!email) {
@@ -312,9 +434,14 @@ export const editEmail = async (req: Request, res: Response) => {
     return res.status(200).json({ message: 'Message updated successfully' })
   } catch (error) {
     console.error(error)
-    return res
-      .status(500)
-      .json({ message: `${(error as Error).message}`, error: error })
+    return res.status(500).json({
+      message: buildErrorMessage(
+        `${(error as Error).message}`,
+        responseLang,
+        error
+      ),
+      error: error,
+    })
   }
 }
 
