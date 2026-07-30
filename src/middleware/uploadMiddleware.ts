@@ -1,12 +1,31 @@
 import multer from 'multer'
+import fs from 'fs'
 import path from 'path'
+
+const resolveUploadsDir = (): string => {
+  if (process.env.UPLOADS_DIR) {
+    return path.resolve(process.env.UPLOADS_DIR)
+  }
+  return path.resolve(__dirname, '..', '..', 'uploads')
+}
+
+const uploadsDir = resolveUploadsDir()
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/')
+    try {
+      fs.mkdirSync(uploadsDir, { recursive: true })
+    } catch (error) {
+      cb(error as Error, uploadsDir)
+      return
+    }
+    cb(null, uploadsDir)
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${Math.floor(Math.random() * 1000)}-${file.originalname}`)
+    cb(
+      null,
+      `${Date.now()}-${Math.floor(Math.random() * 1000)}-${file.originalname}`
+    )
   },
 })
 

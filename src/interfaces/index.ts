@@ -71,3 +71,8 @@ export enum EInvalidFileType {
   en = 'Invalid file type. Only .pdf, .jpg, and .png files are allowed.',
   fi = 'Virheellinen tiedostotyyppi. Vain .pdf, .jpg ja .png -tiedostot ovat sallittuja.',
 }
+
+export enum EPleaseNotify {
+  en = 'Please notify:',
+  fi = 'Ilmoitathan virheestä osoitteeseen:',
+}
